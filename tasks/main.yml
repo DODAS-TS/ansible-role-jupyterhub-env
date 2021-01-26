@@ -19,5 +19,6 @@
 - name: install docker [Debian]
   shell:
     cmd: curl https://get.docker.com | sh
-    # creates: """
+    creates: /usr/bin/docker
+  command_warnings: False # To prevent warning on using curl as a cmd
   when: ansible_facts.os_family == "Debian"
