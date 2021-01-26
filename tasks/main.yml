@@ -1,33 +1,33 @@
 ---
 # tasks file for ansible-role-nvidia-docker
-- name: Install gcc
-  apt:
-    name: gcc
-    state: present
-    autoclean: yes
-    autoremove: yes
-    update_cache: yes
+# - name: Install gcc
+#   apt:
+#     name: gcc
+#     state: present
+#     autoclean: yes
+#     autoremove: yes
+#     update_cache: yes
 
-- name: Install make
-  apt:
-    name: make
-    state: present
-    autoclean: yes
-    autoremove: yes
-    update_cache: yes
+# - name: Install make
+#   apt:
+#     name: make
+#     state: present
+#     autoclean: yes
+#     autoremove: yes
+#     update_cache: yes
 
 - name: install docker [Debian]
   shell:
     cmd: curl https://get.docker.com | sh
     creates: /usr/bin/docker
-  command_warnings: False # To prevent warning on using curl as a cmd
+    command_warnings: False # To prevent warning on using curl as a cmd
   when: ansible_facts.os_family == "Debian"
 
 - name: start and enable docker service
   ansible.builtin.systemd:
+    name: docker
     state: started
     enabled: yes
-    name: docker
 
 - name: NVIDIA Container Toolkit [Debian]
   shell:
@@ -36,5 +36,5 @@
         && curl -s -L https://nvidia.github.io/nvidia-docker/gpgkey | sudo apt-key add - \
         && curl -s -L https://nvidia.github.io/nvidia-docker/$distribution/nvidia-docker.list | tee /etc/apt/sources.list.d/nvidia-docker.list
     creates: /etc/apt/sources.list.d/nvidia-docker.list
-  command_warnings: False # To prevent warning on using curl as a cmd
+    command_warnings: False # To prevent warning on using curl as a cmd
   when: ansible_facts.os_family == "Debian"
