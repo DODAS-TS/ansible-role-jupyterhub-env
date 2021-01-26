@@ -39,6 +39,14 @@
     warn: False # To prevent warning on using curl as a cmd
   when: ansible_facts.os_family == "Debian"
 
+- name: Install cuda-drivers
+  apt:
+    name: cuda-drivers
+    state: present
+    autoclean: yes
+    autoremove: yes
+    update_cache: yes
+
 - name: Install nvidia-docker2
   apt:
     name: nvidia-docker2
