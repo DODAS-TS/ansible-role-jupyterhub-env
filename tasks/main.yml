@@ -1,7 +1,14 @@
 ---
-- name: install docker [Debian]
-  include_tasks: Debian-docker.yml
-  when: ansible_facts.os_family == "Debian"
+# ---------- check OS ----------
+- name: check OS
+  fail:
+    msg: "distro {{ ansible_facts['distribution'] }} not supported"
+  when: ansible_facts['distribution'] != 'Ubuntu' and ansible_os_family != 'RedHat'
+
+# ---------- Docker ----------
+- name: install docker [Ubuntu]
+  include_tasks: Ubuntu-docker.yml
+  when: ansible_facts['distribution'] == "Ubuntu"
 
 - name: start and enable docker service
   systemd:
@@ -9,9 +16,26 @@
     state: started
     enabled: yes
 
-- name: install nvidia driver and container toolkit [Debian]
-  include_tasks: Debian-nvidia-stuff.yml
-  when: ansible_facts.os_family == "Debian"
+# ---------- Nvidia Driver ----------
+- name: install nvidia driver [RedHat]
+  include_role:
+    name: nvidia.nvidia_driver
+  vars:
+    nvidia_driver_skip_reboot: yes
+  when: "ansible_facts['os_family'] == 'RedHat'"
+
+- name: install nvidia driver [Ubuntu]
+  include_role:
+    name: nvidia.nvidia_driver
+  vars:
+    nvidia_driver_skip_reboot: yes
+    nvidia_driver_ubuntu_install_from_cuda_repo: yes
+  when: ansible_facts['distribution'] == 'Ubuntu'
+
+# ---------- Nvidia Container Toolkit ----------
+- name: install nvidia container toolkit [Ubuntu]
+  include_tasks: Ubuntu-nvidia-container-toolkit.yml
+  when: ansible_facts['distribution'] == 'Ubuntu'
 
 - name: restart docker service
   systemd:

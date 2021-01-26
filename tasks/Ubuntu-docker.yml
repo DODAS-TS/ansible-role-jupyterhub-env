@@ -1,5 +1,5 @@
 ---
-- name: install docker [Debian]
+- name: install docker [Ubuntu]
   shell:
     cmd: curl https://get.docker.com | sh
     creates: /usr/bin/docker
