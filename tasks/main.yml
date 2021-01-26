@@ -8,7 +8,7 @@
 # ---------- Gen nvidia driver role ----------
 - name: get nvidia.nvidia_driver role
   shell:
-    cmd: ansible-galaxy install -f nvidia.nvidia_driver
+    cmd: ansible-galaxy install -f -p /tmp/roles nvidia.nvidia_driver
 
 # ---------- Docker ----------
 - name: install docker [Ubuntu]
@@ -24,14 +24,14 @@
 # ---------- Nvidia Driver ----------
 - name: install nvidia driver [RedHat]
   include_role:
-    name: nvidia.nvidia_driver
+    name: /tmp/roles/nvidia.nvidia_driver
   vars:
     nvidia_driver_skip_reboot: yes
   when: "ansible_facts['os_family'] == 'RedHat'"
 
 - name: install nvidia driver [Ubuntu]
   include_role:
-    name: nvidia.nvidia_driver
+    name: /tmp/roles/nvidia.nvidia_driver
   vars:
     nvidia_driver_skip_reboot: yes
     nvidia_driver_ubuntu_install_from_cuda_repo: yes
