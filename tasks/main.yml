@@ -22,3 +22,19 @@
     creates: /usr/bin/docker
   command_warnings: False # To prevent warning on using curl as a cmd
   when: ansible_facts.os_family == "Debian"
+
+- name: start and enable docker service
+  ansible.builtin.systemd:
+    state: started
+    enabled: yes
+    name: docker
+
+- name: NVIDIA Container Toolkit [Debian]
+  shell:
+    cmd: |
+      distribution=$(. /etc/os-release;echo $ID$VERSION_ID) \
+        && curl -s -L https://nvidia.github.io/nvidia-docker/gpgkey | sudo apt-key add - \
+        && curl -s -L https://nvidia.github.io/nvidia-docker/$distribution/nvidia-docker.list | tee /etc/apt/sources.list.d/nvidia-docker.list
+    creates: /etc/apt/sources.list.d/nvidia-docker.list
+  command_warnings: False # To prevent warning on using curl as a cmd
+  when: ansible_facts.os_family == "Debian"
