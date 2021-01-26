@@ -1,7 +1,6 @@
 ---
 - name: install docker [Debian]
-  include: Debian-docker.yaml"
-  static: false
+  include_tasks: Debian-docker.yaml
   when: ansible_facts.os_family == "Debian"
 
 - name: start and enable docker service
@@ -11,8 +10,7 @@
     enabled: yes
 
 - name: install nvidia driver and container toolkit [Debian]
-  include: Debian-nvidia-stuff.yaml"
-  static: false
+  include_tasks: Debian-nvidia-stuff.yaml
   when: ansible_facts.os_family == "Debian"
 
 - name: restart docker service
