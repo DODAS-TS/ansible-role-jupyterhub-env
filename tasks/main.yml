@@ -23,14 +23,14 @@
 
 # ---------- Nvidia Driver ----------
 - name: install nvidia driver [RedHat]
-  include_role:
+  import_role:
     name: /tmp/roles/nvidia.nvidia_driver
   vars:
     nvidia_driver_skip_reboot: yes
   when: "ansible_facts['os_family'] == 'RedHat'"
 
 - name: install nvidia driver [Ubuntu]
-  include_role:
+  import_role:
     name: /tmp/roles/nvidia.nvidia_driver
   vars:
     nvidia_driver_skip_reboot: yes
