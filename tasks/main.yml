@@ -5,6 +5,11 @@
     msg: "distro {{ ansible_facts['distribution'] }} not supported"
   when: ansible_facts['distribution'] != 'Ubuntu' and ansible_os_family != 'RedHat'
 
+# ---------- Gen nvidia driver role ----------
+- name: get nvidia.nvidia_driver role
+  shell:
+    cmd: ansible-galaxy install -f nvidia.nvidia_driver role
+
 # ---------- Docker ----------
 - name: install docker [Ubuntu]
   include_tasks: Ubuntu-docker.yml
