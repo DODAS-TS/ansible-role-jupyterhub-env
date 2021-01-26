@@ -38,3 +38,16 @@
     creates: /etc/apt/sources.list.d/nvidia-docker.list
     warn: False # To prevent warning on using curl as a cmd
   when: ansible_facts.os_family == "Debian"
+
+- name: Install nvidia-docker2
+  apt:
+    name: nvidia-docker2
+    state: present
+    autoclean: yes
+    autoremove: yes
+    update_cache: yes
+
+- name: restart docker service
+  systemd:
+    name: docker
+    state: restarted
