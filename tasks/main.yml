@@ -17,10 +17,8 @@
 #     update_cache: yes
 
 - name: install docker [Debian]
-  shell:
-    cmd: curl https://get.docker.com | sh
-    creates: /usr/bin/docker
-    warn: False # To prevent warning on using curl as a cmd
+  include: Debian-docker.yaml"
+  static: false
   when: ansible_facts.os_family == "Debian"
 
 - name: start and enable docker service
@@ -29,49 +27,10 @@
     state: started
     enabled: yes
 
-- name: NVIDIA Cuda Driver repository [Debian]
-  shell:
-    cmd: |
-      apt-get install linux-headers-$(uname -r) \
-        && distribution=$(. /etc/os-release;echo $ID$VERSION_ID | sed -e 's/\.//g') \
-        && wget https://developer.download.nvidia.com/compute/cuda/repos/$distribution/x86_64/cuda-$distribution.pin \
-        && mv cuda-$distribution.pin /etc/apt/preferences.d/cuda-repository-pin-600 \
-        && apt-key adv --fetch-keys https://developer.download.nvidia.com/compute/cuda/repos/$distribution/x86_64/7fa2af80.pub \
-        && echo "deb http://developer.download.nvidia.com/compute/cuda/repos/$distribution/x86_64 /" | tee /etc/apt/sources.list.d/cuda.list
-    creates:
-      - /etc/apt/preferences.d/cuda-repository-pin-600
-      - /etc/apt/sources.list.d/cuda.list
-    warn: False # To prevent warning on using curl as a cmd
+- name: install nvidia driver and container toolkit [Debian]
+  include: Debian-nvidia-stuff.yaml"
+  static: false
   when: ansible_facts.os_family == "Debian"
-
-- name: NVIDIA Container Toolkit [Debian]
-  shell:
-    cmd: |
-      distribution=$(. /etc/os-release;echo $ID$VERSION_ID) \
-        && curl -s -L https://nvidia.github.io/nvidia-docker/gpgkey | sudo apt-key add - \
-        && curl -s -L https://nvidia.github.io/nvidia-docker/$distribution/nvidia-docker.list | tee /etc/apt/sources.list.d/nvidia-docker.list
-    creates: /etc/apt/sources.list.d/nvidia-docker.list
-    warn: False # To prevent warning on using curl as a cmd
-  when: ansible_facts.os_family == "Debian"
-
-- name: Install cuda-drivers
-  apt:
-    name: cuda-drivers
-    state: present
-    autoclean: yes
-    autoremove: yes
-    update_cache: yes
-    # Use the --no-install-recommends option for a lean driver install without any dependencies on X packages.
-    # This is particularly useful for headless installations on cloud instances.
-    install_recommends: no
-
-- name: Install nvidia-docker2
-  apt:
-    name: nvidia-docker2
-    state: present
-    autoclean: yes
-    autoremove: yes
-    update_cache: yes
 
 - name: restart docker service
   systemd:
