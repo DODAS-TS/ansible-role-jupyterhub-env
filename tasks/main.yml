@@ -10,6 +10,15 @@
   shell:
     cmd: ansible-galaxy install -f -p /tmp/roles nvidia.nvidia_driver
 
+# ---------- Fix reboot cmd ----------
+# Only supported in Ansible >= 2.7
+- name: get nvidia.nvidia_driver role
+  replace:
+    path: /tmp/roles/nvidia.nvidia_driver/tasks/main.yml
+    regexp: 'reboot\:'
+    replace: "shell: reboot"
+  when: ansible_version.major == 2 and ansible_version.minor < 7
+
 # ---------- Docker ----------
 - name: install docker [Ubuntu]
   include_tasks: Ubuntu-docker.yml
@@ -23,14 +32,14 @@
 
 # ---------- Nvidia Driver ----------
 - name: install nvidia driver [RedHat]
-  import_role:
+  include_role:
     name: /tmp/roles/nvidia.nvidia_driver
   vars:
     nvidia_driver_skip_reboot: yes
   when: "ansible_facts['os_family'] == 'RedHat'"
 
 - name: install nvidia driver [Ubuntu]
-  import_role:
+  include_role:
     name: /tmp/roles/nvidia.nvidia_driver
   vars:
     nvidia_driver_skip_reboot: yes
