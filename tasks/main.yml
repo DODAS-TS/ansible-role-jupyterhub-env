@@ -8,7 +8,7 @@
 # ---------- Gen nvidia driver role ----------
 - name: get nvidia.nvidia_driver role
   shell:
-    cmd: ansible-galaxy install -f nvidia.nvidia_driver role
+    cmd: ansible-galaxy install -f nvidia.nvidia_driver
 
 # ---------- Docker ----------
 - name: install docker [Ubuntu]
