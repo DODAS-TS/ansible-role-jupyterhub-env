@@ -24,7 +24,7 @@
   when: ansible_facts.os_family == "Debian"
 
 - name: start and enable docker service
-  ansible.builtin.systemd:
+  systemd:
     name: docker
     state: started
     enabled: yes
