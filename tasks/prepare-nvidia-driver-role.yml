@@ -18,10 +18,10 @@
   replace:
     path: /tmp/roles/nvidia.nvidia_driver/defaults/main.yml
     regexp: 'nvidia_driver_skip_reboot\:\ no'
-    replace: "nvidia_driver_skip_reboot: yes"
+    replace: "nvidia_driver_skip_reboot: {{nvidia_driver_skip_reboot}}"
 
 - name: change nvidia_driver_ubuntu_install_from_cuda_repo to yes
   replace:
     path: /tmp/roles/nvidia.nvidia_driver/defaults/main.yml
     regexp: 'nvidia_driver_ubuntu_install_from_cuda_repo\:\ no'
-    replace: "nvidia_driver_ubuntu_install_from_cuda_repo: yes"
+    replace: "nvidia_driver_ubuntu_install_from_cuda_repo: {{nvidia_driver_skip_reboot}}"

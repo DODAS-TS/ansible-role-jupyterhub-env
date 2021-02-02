@@ -8,7 +8,7 @@
 # ---------- Docker ----------
 - name: install docker [Ubuntu]
   include_tasks: Ubuntu-docker.yml
-  when: docker.install and ansible_facts['distribution'] == "Ubuntu"
+  when: install_docker and ansible_facts['distribution'] == "Ubuntu"
 
 - name: start and enable docker service
   systemd:
@@ -19,7 +19,7 @@
 # ---------- Docker compose ----------
 - name: install docker compose [Ubuntu]
   include_tasks: Ubuntu-docker-compose.yml
-  when: docker.compose.install and ansible_facts['distribution'] == "Ubuntu"
+  when: install_docker_compose and ansible_facts['distribution'] == "Ubuntu"
 
 # ---------- Prepare nvidia driver role ----------
 - name: prepare nvidia driver role
@@ -31,7 +31,7 @@
     name: /tmp/roles/nvidia.nvidia_driver
   # vars:
   #   nvidia_driver_skip_reboot: nvidia.skip_reboot
-  when: nvidia.driver.install and "ansible_facts['os_family'] == 'RedHat'"
+  when: install_nvidia_driver and "ansible_facts['os_family'] == 'RedHat'"
 
 - name: install nvidia driver [Ubuntu]
   include_role:
@@ -39,12 +39,12 @@
   # vars:
   #   nvidia_driver_ubuntu_install_from_cuda_repo: nvidia.driver.from_cuda
   #   nvidia_driver_skip_reboot: nvidia.skip_reboot
-  when: nvidia.driver.install and ansible_facts['distribution'] == 'Ubuntu'
+  when: install_nvidia_driver and ansible_facts['distribution'] == 'Ubuntu'
 
 # ---------- Nvidia Container Toolkit ----------
 - name: install nvidia container toolkit [Ubuntu]
   include_tasks: Ubuntu-nvidia-container-toolkit.yml
-  when: nvidia.container.install and ansible_facts['distribution'] == 'Ubuntu'
+  when: install_nvidia_container_toolkit and ansible_facts['distribution'] == 'Ubuntu'
 
 - name: restart docker service
   systemd:
@@ -54,10 +54,10 @@
 # ---------- Jupyter hub ----------
 - name: prepare Jupyter Hub
   include_tasks: prepare-jupyter-hub.yml
-  when: compose.jupyter_hub.prepare
+  when: prepare_jupyter
 
 - name: run Jupyter Hub
   shell:
     cmd: docker-compose up -d
     chdir: /usr/local/MLinD-INFN
-  when: compose.jupyter_hub.run
+  when: run_jupyter

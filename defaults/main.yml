@@ -1,27 +1,16 @@
 ---
-# Input vars
+# Input var defaults
+
+# docker
 install_docker: yes
 install_docker_compose: yes
-install_nvidia_container: yes
-compose_jupyter: yes
-
-# defaults file for ansible-role-nvidia-docker
-docker:
-  install: install_docker
-  compose:
-    install: install_docker_compose
-    version: 1.28.2
-
-nvidia:
-  skip_reboot: yes
-  driver:
-    install: yes
-    from_cuda: yes
-  container:
-    install: install_nvidia_container
-
-compose:
-  jupyter_hub:
-    prepare: compose_jupyter
-    run: yes
-    ip: "0.0.0.0"
+docker_compose_version: "1.28.2"
+# nvidia
+install_nvidia_driver: yes
+install_nvidia_driver_from_cuda: yes
+install_nvidia_container_toolkit: yes
+nvidia_driver_skip_reboot: yes
+# jupyter
+prepare_jupyter: yes
+run_jupyter: yes
+jupyter_ip: "0.0.0.0"
