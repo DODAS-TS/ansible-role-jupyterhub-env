@@ -55,3 +55,9 @@
 - name: prepare Jupyter Hub
   include_tasks: prepare-jupyter-hub.yml
   when: compose.jupyter_hub.prepare
+
+- name: run Jupyter Hub
+  shell:
+    cmd: docker-compose up -d
+    chdir: /usr/local/MLinD-INFN
+  when: compose.jupyter_hub.run

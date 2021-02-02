@@ -17,4 +17,5 @@ nvidia:
 compose:
   jupyter_hub:
     prepare: yes
+    run: yes
     ip: "0.0.0.0"
