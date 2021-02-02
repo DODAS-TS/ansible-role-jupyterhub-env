@@ -14,14 +14,14 @@
   when: ansible_version.major == 2 and ansible_version.minor < 7
 
 # ---------- change defaults ----------
-- name: change nvidia_driver_skip_reboot to yes
+- name: "change nvidia_driver_skip_reboot to {{nvidia_driver_skip_reboot}}"
   replace:
     path: /tmp/roles/nvidia.nvidia_driver/defaults/main.yml
     regexp: 'nvidia_driver_skip_reboot\:\ no'
     replace: "nvidia_driver_skip_reboot: {{nvidia_driver_skip_reboot}}"
 
-- name: change nvidia_driver_ubuntu_install_from_cuda_repo to yes
+- name: "change nvidia_driver_ubuntu_install_from_cuda_repo to {{install_nvidia_driver_from_cuda}}"
   replace:
     path: /tmp/roles/nvidia.nvidia_driver/defaults/main.yml
     regexp: 'nvidia_driver_ubuntu_install_from_cuda_repo\:\ no'
-    replace: "nvidia_driver_ubuntu_install_from_cuda_repo: {{nvidia_driver_skip_reboot}}"
+    replace: "nvidia_driver_ubuntu_install_from_cuda_repo: {{install_nvidia_driver_from_cuda}}"
