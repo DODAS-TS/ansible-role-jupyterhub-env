@@ -9,6 +9,9 @@ A role to have a nvidia docker environment
   * RedHat (CentOS)
 * Installation of **nvidia-docker2**:
   * Ubuntu *(tested on 18.04)*
+* Installation of **docker-compose**
+* Installation of [Jupyter-Hub from dodas-ts](https://github.com/dodas-ts/MLinD-INFN)
+  * Run the Jupyter-hub
 
 ## :link: Useful resources
 
