@@ -53,5 +53,5 @@
 
 # ---------- Jupyter hub ----------
 - name: prepare Jupyter Hub
-  include_tasks: Jupyter-Hub.yml
+  include_tasks: prepare-jupyter-hub.yml
   when: compose.jupyter_hub.prepare
