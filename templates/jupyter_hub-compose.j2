@@ -12,7 +12,7 @@ services:
       - 8888:8888
     environment:
       - OAUTH_ENDPOINT=https://iam.cloud.infn.it
-      - OAUTH_CALLBACK_URL=http://{{compose.jupyter_hub.ip}}:8888/hub/oauth_callback
+      - OAUTH_CALLBACK_URL=http://{{jupyter_ip}}:8888/hub/oauth_callback
       - OAUTH_GROUPS=group1 group2
       - WITH_GPU=true
 
