@@ -3,6 +3,7 @@
   git:
     repo: "https://github.com/dodas-ts/MLinD-INFN"
     dest: /usr/local/MLinD-INFN
+    force: yes
 
 - name: prepare compose file
   ansible.builtin.template:
