@@ -1,9 +1,15 @@
 ---
+# Input vars
+install_docker: yes
+install_docker_compose: yes
+install_nvidia_container: yes
+compose_jupyter: yes
+
 # defaults file for ansible-role-nvidia-docker
 docker:
-  install: yes
+  install: install_docker
   compose:
-    install: yes
+    install: install_docker_compose
     version: 1.28.2
 
 nvidia:
@@ -12,10 +18,10 @@ nvidia:
     install: yes
     from_cuda: yes
   container:
-    install: yes
+    install: install_nvidia_container
 
 compose:
   jupyter_hub:
-    prepare: yes
+    prepare: compose_jupyter
     run: yes
     ip: "0.0.0.0"
