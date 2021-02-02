@@ -22,7 +22,7 @@
 # ---------- Docker ----------
 - name: install docker [Ubuntu]
   include_tasks: Ubuntu-docker.yml
-  when: ansible_facts['distribution'] == "Ubuntu"
+  when: docker.install and ansible_facts['distribution'] == "Ubuntu"
 
 - name: start and enable docker service
   systemd:
@@ -30,13 +30,18 @@
     state: started
     enabled: yes
 
+# ---------- Docker compose ----------
+- name: install docker compose [Ubuntu]
+  include_tasks: Ubuntu-docker-compose.yml
+  when: docker.compose.install and ansible_facts['distribution'] == "Ubuntu"
+
 # ---------- Nvidia Driver ----------
 - name: install nvidia driver [RedHat]
   include_role:
     name: /tmp/roles/nvidia.nvidia_driver
   vars:
     nvidia_driver_skip_reboot: yes
-  when: "ansible_facts['os_family'] == 'RedHat'"
+  when: nvidia.driver.install and "ansible_facts['os_family'] == 'RedHat'"
 
 - name: install nvidia driver [Ubuntu]
   include_role:
@@ -44,12 +49,12 @@
   vars:
     nvidia_driver_skip_reboot: yes
     nvidia_driver_ubuntu_install_from_cuda_repo: yes
-  when: ansible_facts['distribution'] == 'Ubuntu'
+  when: nvidia.driver.install and ansible_facts['distribution'] == 'Ubuntu'
 
 # ---------- Nvidia Container Toolkit ----------
 - name: install nvidia container toolkit [Ubuntu]
   include_tasks: Ubuntu-nvidia-container-toolkit.yml
-  when: ansible_facts['distribution'] == 'Ubuntu'
+  when: nvidia.container.install and ansible_facts['distribution'] == 'Ubuntu'
 
 - name: restart docker service
   systemd:

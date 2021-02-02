@@ -1,0 +1,6 @@
+---
+- name: install docker [Ubuntu]
+  shell:
+    cmd: curl -L "https://github.com/docker/compose/releases/download/{{docker.compose.version}}/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
+    creates: /usr/local/bin/docker-compose
+    warn: False # To prevent warning on using curl as a cmd

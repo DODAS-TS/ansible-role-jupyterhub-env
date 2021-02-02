@@ -1,2 +1,13 @@
 ---
 # defaults file for ansible-role-nvidia-docker
+docker:
+  install: true
+  compose:
+    install: true
+    version: 1.28.2
+
+nvidia:
+  driver:
+    install: true
+  container:
+    install: true
