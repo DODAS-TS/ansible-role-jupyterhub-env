@@ -6,6 +6,6 @@
     force: yes
 
 - name: prepare compose file
-  ansible.builtin.template:
+  template:
     src: templates/jupyter_hub-compose.yml
     dest: /usr/local/MLinD-INFN/docker-compose.yaml
