@@ -19,6 +19,19 @@
     replace: "shell: reboot"
   when: ansible_version.major == 2 and ansible_version.minor < 7
 
+# ---------- change defaults ----------
+- name: change nvidia_driver_skip_reboot to yes
+  replace:
+    path: /tmp/roles/nvidia.nvidia_driver/defaults/main.yml
+    regexp: 'nvidia_driver_skip_reboot\:\ no'
+    replace: "nvidia_driver_skip_reboot: yes"
+
+- name: change nvidia_driver_ubuntu_install_from_cuda_repo to yes
+  replace:
+    path: /tmp/roles/nvidia.nvidia_driver/defaults/main.yml
+    regexp: 'nvidia_driver_ubuntu_install_from_cuda_repo\:\ no'
+    replace: "nvidia_driver_ubuntu_install_from_cuda_repo: yes"
+
 # ---------- Docker ----------
 - name: install docker [Ubuntu]
   include_tasks: Ubuntu-docker.yml
