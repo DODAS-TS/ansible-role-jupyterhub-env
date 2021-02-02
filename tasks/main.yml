@@ -50,3 +50,8 @@
   systemd:
     name: docker
     state: restarted
+
+# ---------- Jupyter hub ----------
+- name: prepare Jupyter Hub
+  include_tasks: Jupyter-Hub.yml
+  when: compose.jupyter_hub.prepare

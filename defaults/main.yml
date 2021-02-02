@@ -13,3 +13,8 @@ nvidia:
     from_cuda: yes
   container:
     install: yes
+
+compose:
+  jupyter_hub:
+    prepare: yes
+    ip: "0.0.0.0"
