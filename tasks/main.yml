@@ -5,33 +5,6 @@
     msg: "distro {{ ansible_facts['distribution'] }} not supported"
   when: ansible_facts['distribution'] != 'Ubuntu' and ansible_os_family != 'RedHat'
 
-# ---------- Gen nvidia driver role ----------
-- name: get nvidia.nvidia_driver role
-  shell:
-    cmd: ansible-galaxy install -f -p /tmp/roles nvidia.nvidia_driver
-
-# ---------- Fix reboot cmd ----------
-# Only supported in Ansible >= 2.7
-- name: get nvidia.nvidia_driver role
-  replace:
-    path: /tmp/roles/nvidia.nvidia_driver/tasks/main.yml
-    regexp: 'reboot\:'
-    replace: "shell: reboot"
-  when: ansible_version.major == 2 and ansible_version.minor < 7
-
-# ---------- change defaults ----------
-- name: change nvidia_driver_skip_reboot to yes
-  replace:
-    path: /tmp/roles/nvidia.nvidia_driver/defaults/main.yml
-    regexp: 'nvidia_driver_skip_reboot\:\ no'
-    replace: "nvidia_driver_skip_reboot: yes"
-
-- name: change nvidia_driver_ubuntu_install_from_cuda_repo to yes
-  replace:
-    path: /tmp/roles/nvidia.nvidia_driver/defaults/main.yml
-    regexp: 'nvidia_driver_ubuntu_install_from_cuda_repo\:\ no'
-    replace: "nvidia_driver_ubuntu_install_from_cuda_repo: yes"
-
 # ---------- Docker ----------
 - name: install docker [Ubuntu]
   include_tasks: Ubuntu-docker.yml
@@ -47,6 +20,10 @@
 - name: install docker compose [Ubuntu]
   include_tasks: Ubuntu-docker-compose.yml
   when: docker.compose.install and ansible_facts['distribution'] == "Ubuntu"
+
+# ---------- Prepare nvidia driver role ----------
+- name: prepare nvidia driver role
+  include_tasks: prepare-nvidia-driver-role.yml
 
 # ---------- Nvidia Driver ----------
 - name: install nvidia driver [RedHat]
