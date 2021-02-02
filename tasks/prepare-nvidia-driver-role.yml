@@ -6,7 +6,7 @@
 
 # ---------- Fix reboot cmd ----------
 # Only supported in Ansible >= 2.7
-- name: change reboot command for Ansible < 2.7
+- name: "change reboot command for Ansible < 2.7"
   replace:
     path: /tmp/roles/nvidia.nvidia_driver/tasks/main.yml
     regexp: 'reboot\:'
