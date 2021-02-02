@@ -7,5 +7,5 @@
 
 - name: prepare compose file
   template:
-    src: templates/jupyter_hub-compose.yml
+    src: jupyter_hub-compose.j2
     dest: /usr/local/MLinD-INFN/docker-compose.yaml
