@@ -37,18 +37,18 @@
 
 # ---------- Nvidia Driver ----------
 - name: install nvidia driver [RedHat]
-  roles:
-    - role: /tmp/roles/nvidia.nvidia_driver
-      vars:
-        nvidia_driver_skip_reboot: nvidia.skip_reboot
+  include_role:
+    name: /tmp/roles/nvidia.nvidia_driver
+  vars:
+    nvidia_driver_skip_reboot: nvidia.skip_reboot
   when: nvidia.driver.install and "ansible_facts['os_family'] == 'RedHat'"
 
 - name: install nvidia driver [Ubuntu]
-  roles:
-    - role: /tmp/roles/nvidia.nvidia_driver
-      vars:
-        nvidia_driver_skip_reboot: nvidia.skip_reboot
-        nvidia_driver_ubuntu_install_from_cuda_repo: nvidia.driver.from_cuda
+  include_role:
+    name: /tmp/roles/nvidia.nvidia_driver
+  vars:
+    nvidia_driver_ubuntu_install_from_cuda_repo: nvidia.driver.from_cuda
+    nvidia_driver_skip_reboot: nvidia.skip_reboot
   when: nvidia.driver.install and ansible_facts['distribution'] == 'Ubuntu'
 
 # ---------- Nvidia Container Toolkit ----------
