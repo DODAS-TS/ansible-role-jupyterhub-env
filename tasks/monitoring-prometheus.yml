@@ -50,21 +50,8 @@
     state: directory
     mode: u+rwx,g+wr,o+rw
 
-# ---------- Create docker compose for monitoring from template ----------
-- name: Create docker compose for monitoring from template
-  template:
-    src: monitoring-prometheus-compose.j2
-    dest: /usr/local/monitoring/docker-compose-prometheus.yml
-
 # ---------- Create prometheus config for monitoring from template ----------
 - name: Create prometheus config for monitoring from template
   template:
     src: prometheus-config.j2
     dest: /usr/local/monitoring/prometheus/config/prometheus.yml
-
-# ---------- Run prometheus ----------
-- name: Run prometheus
-  shell:
-    cmd: docker-compose -f docker-compose-prometheus.yml up -d
-    chdir: /usr/local/monitoring
-  when: run_prometheus

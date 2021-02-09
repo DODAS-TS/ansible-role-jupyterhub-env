@@ -61,6 +61,20 @@
   include_tasks: monitoring-grafana.yml
   when: monitoring and grafana
 
+# ---------- Create monitoring compose ----------
+- name: Create monitoring compose
+  template:
+    src: monitoring-compose.j2
+    dest: /usr/local/monitoring/docker-compose-monitoring.yml
+  when: monitoring
+
+# ---------- Run monitoring ----------
+- name: Run monitoring
+  shell:
+    cmd: docker-compose -f docker-compose-monitoring.yml up -d
+    chdir: /usr/local/monitoring
+  when: monitoring
+
 # ---------- Jupyter hub ----------
 - name: prepare Jupyter Hub
   include_tasks: prepare-jupyter-hub.yml

@@ -17,3 +17,27 @@
     src: "{{ role_path }}/files/grafana"
     dest: /usr/local/monitoring
     directory_mode: yes
+
+# ---------- Enable monitoring also with nvidia ----------
+- name: prepare variables for monitoring
+  set_fact:
+    grafana_service: |
+      grafana:
+          image: grafana/grafana:latest
+          container_name: monitoring_grafana
+          restart: unless-stopped
+          command:
+          - "-config"
+          - "/opt/grafana/custom.ini"
+          links:
+            - prometheus:prometheus
+          ports:
+          - 3000:3000
+          volumes:
+          - ./grafana/config:/opt/grafana/
+          - ./grafana/config/provisioning:/etc/grafana/provisioning
+          - ./grafana/dash_models:/opt/dash_models
+          environment:
+            - GF_SECURITY_ADMIN_PASSWORD={{grafana_password}}
+            - GF_USERS_ALLOW_SIGN_UP=false
+    cacheable: yes
