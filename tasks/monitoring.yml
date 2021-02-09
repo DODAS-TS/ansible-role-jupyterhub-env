@@ -12,7 +12,7 @@
           - 9400
         #ports:
         #  - 9400:9400
-    prometheus-nvidia: "- 'nvidia:9400'"
+    prometheus_nvidia: "- 'nvidia:9400'"
     cacheable: yes
   when: install_nvidia_container_toolkit
 
@@ -20,7 +20,7 @@
 - name: prepare variables for monitoring without nvidia
   set_fact:
     nvidia_monitoring: ""
-    prometheus-nvidia: ""
+    prometheus_nvidia: ""
     cacheable: yes
   when: not install_nvidia_container_toolkit
 
