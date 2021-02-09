@@ -15,5 +15,5 @@
 - name: Create grafana configs
   copy:
     src: "{{ role_path }}/files/grafana"
-    dest: /usr/local/monitoring/grafana
+    dest: /usr/local/monitoring
     directory_mode: yes
