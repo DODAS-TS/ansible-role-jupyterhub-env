@@ -1,0 +1,12 @@
+---
+# ---------- Create directory for monitoring ----------
+- name: Create directory for monitoring
+  file:
+    path: /usr/local/monitoring
+    state: directory
+
+# ---------- Create directory for grafana ----------
+- name: Create directory for grafana
+  file:
+    path: /usr/local/monitoring/grafana
+    state: directory

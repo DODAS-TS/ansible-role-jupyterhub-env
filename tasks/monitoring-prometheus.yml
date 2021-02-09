@@ -1,4 +1,5 @@
---- # ---------- Enable monitoring also with nvidia ----------
+---
+# ---------- Enable monitoring also with nvidia ----------
 - name: prepare variables for monitoring
   set_fact:
     nvidia_monitoring: |
@@ -28,12 +29,6 @@
 - name: Create directory for monitoring
   file:
     path: /usr/local/monitoring
-    state: directory
-
-# ---------- Create directory for grafana ----------
-- name: Create directory for grafana
-  file:
-    path: /usr/local/monitoring/grafana
     state: directory
 
 # ---------- Create directory for prometheus ----------

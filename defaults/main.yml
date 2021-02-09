@@ -16,3 +16,4 @@ run_jupyter: yes
 jupyter_ip: "0.0.0.0"
 # monitoring
 monitoring: yes
+grafana: yes

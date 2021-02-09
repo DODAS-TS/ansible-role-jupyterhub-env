@@ -51,10 +51,15 @@
     name: docker
     state: restarted
 
-# ---------- Setup Monitoring ----------
+# ---------- Setup Monitoring [prometheus] ----------
 - name: install nvidia container toolkit [Ubuntu]
-  include_tasks: monitoring.yml
+  include_tasks: monitoring-prometheus.yml
   when: monitoring
+
+# ---------- Setup Monitoring [prometheus] ----------
+- name: install nvidia container toolkit [Ubuntu]
+  include_tasks: monitoring-grafana.yml
+  when: monitoring and grafana
 
 # ---------- Jupyter hub ----------
 - name: prepare Jupyter Hub
