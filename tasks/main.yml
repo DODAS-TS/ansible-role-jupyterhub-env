@@ -52,12 +52,12 @@
     state: restarted
 
 # ---------- Setup Monitoring [prometheus] ----------
-- name: install nvidia container toolkit [Ubuntu]
+- name: Setup Monitoring [prometheus]
   include_tasks: monitoring-prometheus.yml
   when: monitoring
 
-# ---------- Setup Monitoring [prometheus] ----------
-- name: install nvidia container toolkit [Ubuntu]
+# ---------- Setup Monitoring [grafana] ----------
+- name: Setup Monitoring [grafana]
   include_tasks: monitoring-grafana.yml
   when: monitoring and grafana
 
