@@ -12,6 +12,7 @@
           - 9400
         #ports:
         #  - 9400:9400
+    prometheus-nvidia: "- 'nvidia:9400'"
     cacheable: yes
   when: install_nvidia_container_toolkit
 
@@ -19,6 +20,7 @@
 - name: prepare variables for monitoring without nvidia
   set_fact:
     nvidia_monitoring: ""
+    prometheus-nvidia: ""
     cacheable: yes
   when: not install_nvidia_container_toolkit
 
@@ -28,8 +30,32 @@
     path: /usr/local/monitoring
     state: directory
 
+# ---------- Create directory for grafana ----------
+- name: Create directory for grafana
+  file:
+    path: /usr/local/monitoring/grafana
+    state: directory
+
+# ---------- Create directory for prometheus ----------
+- name: Create directory for prometheus
+  file:
+    path: /usr/local/monitoring/prometheus
+    state: directory
+
+# ---------- Create directory for prometheus config ----------
+- name: Create directory for prometheus config
+  file:
+    path: /usr/local/monitoring/prometheus/config
+    state: directory
+
 # ---------- Create docker compose for monitoring from template ----------
 - name: Create docker compose for monitoring from template
   template:
     src: monitoring-compose.j2
     dest: /usr/local/monitoring/docker-compose.yaml
+
+# ---------- Create prometheus config for monitoring from template ----------
+- name: Create prometheus config for monitoring from template
+  template:
+    src: prometheus-config.j2
+    dest: /usr/local/monitoring/prometheus/config/prometheus.yml
