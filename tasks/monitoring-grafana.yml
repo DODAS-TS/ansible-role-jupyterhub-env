@@ -10,3 +10,10 @@
   file:
     path: /usr/local/monitoring/grafana
     state: directory
+
+# ---------- Create grafana configs ----------
+- name: Create grafana configs
+  copy:
+    src: "{{ role_path }}/grafana"
+    dest: /usr/local/monitoring/grafana
+    directory_mode: yes
