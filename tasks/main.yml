@@ -51,28 +51,9 @@
     name: docker
     state: restarted
 
-# ---------- Setup Monitoring [prometheus] ----------
-- name: Setup Monitoring [prometheus]
-  include_tasks: monitoring-prometheus.yml
-  when: monitoring
-
-# ---------- Setup Monitoring [grafana] ----------
-- name: Setup Monitoring [grafana]
-  include_tasks: monitoring-grafana.yml
-  when: monitoring and grafana
-
-# ---------- Create monitoring compose ----------
-- name: Create monitoring compose
-  template:
-    src: monitoring-compose.j2
-    dest: /usr/local/monitoring/docker-compose-monitoring.yml
-  when: monitoring
-
-# ---------- Run monitoring ----------
-- name: Run monitoring
-  shell:
-    cmd: docker-compose -f docker-compose-monitoring.yml up -d
-    chdir: /usr/local/monitoring
+# ---------- Setup monitoring ----------
+- name: Setup monitoring
+  include_tasks: monitoring.yml
   when: monitoring
 
 # ---------- Jupyter hub ----------
