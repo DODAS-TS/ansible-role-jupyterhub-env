@@ -20,7 +20,14 @@
     nvidia_monitoring: ""
   when: not install_nvidia_container_toolkit
 
-- name: create docker compose for monitoring from template
+# ---------- Create directory for monitoring ----------
+- name: Create directory for monitoring
+  file:
+    path: /usr/local/monitoring
+    state: directory
+
+# ---------- Create docker compose for monitoring from template ----------
+- name: Create docker compose for monitoring from template
   template:
     src: monitoring-compose.j2
     dest: /usr/local/monitoring/docker-compose.yaml
