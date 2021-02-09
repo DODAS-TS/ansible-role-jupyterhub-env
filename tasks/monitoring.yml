@@ -12,12 +12,14 @@
         - 9400
       #ports:
       #  - 9400:9400
+    cacheable: yes
   when: install_nvidia_container_toolkit
 
 # ---------- Enable monitoring without nvidia ----------
 - name: prepare variables for monitoring without nvidia
   set_fact:
     nvidia_monitoring: ""
+    cacheable: yes
   when: not install_nvidia_container_toolkit
 
 # ---------- Create directory for monitoring ----------
