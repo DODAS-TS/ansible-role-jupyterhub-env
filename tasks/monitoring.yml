@@ -3,15 +3,15 @@
   set_fact:
     nvidia_monitoring: |
       nvidia:
-      runtime: nvidia
-      image: nvidia/dcgm-exporter:2.0.13-2.1.1-ubuntu18.04
-      container_name: monitoring_nvidia
-      privileged: true
-      restart: unless-stopped
-      expose:
-        - 9400
-      #ports:
-      #  - 9400:9400
+        runtime: nvidia
+        image: nvidia/dcgm-exporter:2.0.13-2.1.1-ubuntu18.04
+        container_name: monitoring_nvidia
+        privileged: true
+        restart: unless-stopped
+        expose:
+          - 9400
+        #ports:
+        #  - 9400:9400
     cacheable: yes
   when: install_nvidia_container_toolkit
 
