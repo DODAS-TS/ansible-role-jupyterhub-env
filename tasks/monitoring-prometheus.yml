@@ -58,5 +58,5 @@
 # ---------- Run prometheus ----------
 - name: Run prometheus
   shell:
-    cmd: docker-compose up -d -f docker-compose-prometheus.yml
+    cmd: docker-compose -f docker-compose-prometheus.yml up -d
     chdir: /usr/local/monitoring
