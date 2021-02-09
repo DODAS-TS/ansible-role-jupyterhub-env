@@ -67,3 +67,4 @@
   shell:
     cmd: docker-compose -f docker-compose-prometheus.yml up -d
     chdir: /usr/local/monitoring
+  when: run_prometheus
