@@ -48,6 +48,7 @@
   file:
     path: /usr/local/monitoring/prometheus/data
     state: directory
+    mode: u+rwx,g+wr,o+rw
 
 # ---------- Create docker compose for monitoring from template ----------
 - name: Create docker compose for monitoring from template
