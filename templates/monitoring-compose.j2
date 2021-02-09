@@ -1,0 +1,60 @@
+services:
+  prometheus:
+    image: prom/prometheus:latest
+    container_name: monitoring_prometheus
+    restart: unless-stopped
+    volumes:
+      - ./prometheus/config:/etc/prometheus/
+      - ./prometheus/data:/data
+    command:
+      - '--config.file=/etc/prometheus/prometheus.yml'
+      - '--storage.tsdb.path=/data'
+      - '--storage.tsdb.retention.time=15d'
+    expose:
+      - 9090
+    ports:
+      - 9090:9090
+    links:
+      - cadvisor:cadvisor
+      - node-exporter:node-exporter
+
+  node-exporter:
+    image: prom/node-exporter:latest
+    container_name: monitoring_node_exporter
+    restart: unless-stopped
+    expose:
+      - 9100
+
+  {{nvidia_monitoring}}
+
+  cadvisor:
+    image: google/cadvisor:latest
+    container_name: monitoring_cadvisor
+    privileged: true
+    restart: unless-stopped
+    volumes:
+      - /:/rootfs:ro
+      - /var/run:/var/run:rw
+      - /sys:/sys:ro
+      - /var/lib/docker/:/var/lib/docker:ro
+    expose:
+      - 8080
+
+  grafana:
+    image: grafana/grafana:latest
+    container_name: monitoring_grafana
+    restart: unless-stopped
+    command:
+    - "-config"
+    - "/opt/grafana/custom.ini"
+    links:
+      - prometheus:prometheus
+    ports:
+    - 3000:3000
+    volumes:
+    - ./grafana/config:/opt/grafana/
+    - ./grafana/config/provisioning:/etc/grafana/provisioning
+    - ./grafana/dash_models:/opt/dash_models
+    environment:
+      - GF_SECURITY_ADMIN_PASSWORD=__PUT MY SECRET PWD__
+      - GF_USERS_ALLOW_SIGN_UP=false

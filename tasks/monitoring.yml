@@ -1,0 +1,26 @@
+--- # ---------- Enable monitoring also with nvidia ----------
+- name: prepare variables for monitoring
+  set_fact:
+    nvidia_monitoring: |
+      nvidia:
+      runtime: nvidia
+      image: nvidia/dcgm-exporter:2.0.13-2.1.1-ubuntu18.04
+      container_name: monitoring_nvidia
+      privileged: true
+      restart: unless-stopped
+      expose:
+        - 9400
+      #ports:
+      #  - 9400:9400
+  when: install_nvidia_container_toolkit
+
+# ---------- Enable monitoring without nvidia ----------
+- name: prepare variables for monitoring without nvidia
+  set_fact:
+    nvidia_monitoring: ""
+  when: not install_nvidia_container_toolkit
+
+- name: create docker compose for monitoring from template
+  template:
+    src: monitoring-compose.j2
+    dest: /usr/local/monitoring/docker-compose.yaml

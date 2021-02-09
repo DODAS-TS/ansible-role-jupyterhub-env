@@ -31,7 +31,7 @@
     name: /tmp/roles/nvidia.nvidia_driver
   # vars:
   #   nvidia_driver_skip_reboot: nvidia.skip_reboot
-  when: install_nvidia_driver and "ansible_facts['os_family'] == 'RedHat'"
+  when: install_nvidia_container_toolkit and install_nvidia_driver and "ansible_facts['os_family'] == 'RedHat'"
 
 - name: install nvidia driver [Ubuntu]
   include_role:
@@ -39,7 +39,7 @@
   # vars:
   #   nvidia_driver_ubuntu_install_from_cuda_repo: nvidia.driver.from_cuda
   #   nvidia_driver_skip_reboot: nvidia.skip_reboot
-  when: install_nvidia_driver and ansible_facts['distribution'] == 'Ubuntu'
+  when: install_nvidia_container_toolkit and install_nvidia_driver and ansible_facts['distribution'] == 'Ubuntu'
 
 # ---------- Nvidia Container Toolkit ----------
 - name: install nvidia container toolkit [Ubuntu]
@@ -50,6 +50,11 @@
   systemd:
     name: docker
     state: restarted
+
+# ---------- Setup Monitoring ----------
+- name: install nvidia container toolkit [Ubuntu]
+  include_tasks: monitoring.yml
+  when: monitoring
 
 # ---------- Jupyter hub ----------
 - name: prepare Jupyter Hub
