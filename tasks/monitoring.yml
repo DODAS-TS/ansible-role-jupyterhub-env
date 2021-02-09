@@ -51,8 +51,8 @@
 # ---------- Create docker compose for monitoring from template ----------
 - name: Create docker compose for monitoring from template
   template:
-    src: monitoring-compose.j2
-    dest: /usr/local/monitoring/docker-compose.yaml
+    src: monitoring-prometheus-compose.j2
+    dest: /usr/local/monitoring/docker-compose-prometheus.yml
 
 # ---------- Create prometheus config for monitoring from template ----------
 - name: Create prometheus config for monitoring from template
@@ -63,5 +63,5 @@
 # ---------- Run prometheus ----------
 - name: Run prometheus
   shell:
-    cmd: docker-compose up -d
+    cmd: docker-compose up -d -f docker-compose-prometheus.yml
     chdir: /usr/local/monitoring
