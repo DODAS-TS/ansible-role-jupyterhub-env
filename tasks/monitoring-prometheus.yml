@@ -20,8 +20,8 @@
 # ---------- Enable monitoring without nvidia ----------
 - name: prepare variables for monitoring without nvidia
   set_fact:
-    nvidia_monitoring: ""
-    prometheus_nvidia: ""
+    nvidia_monitoring: "\n"
+    prometheus_nvidia: "\n"
     cacheable: yes
   when: not use_gpu
 
