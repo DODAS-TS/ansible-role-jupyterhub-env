@@ -1,2 +1,4 @@
 ---
 # vars file for ansible-role-nvidia-docker
+nvidia_monitoring: ""
+prometheus_nvidia: ""

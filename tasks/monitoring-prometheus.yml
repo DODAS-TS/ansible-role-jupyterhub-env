@@ -18,15 +18,6 @@
     cacheable: yes
   when: use_gpu
 
-# ---------- Enable monitoring without nvidia ----------
-- name: "prepare variables for monitoring without nvidia"
-  set_fact:
-    key_value: "yes"
-    nvidia_monitoring: ""
-    prometheus_nvidia: ""
-    cacheable: yes
-  when: not use_gpu
-
 # ---------- Create directory for monitoring ----------
 - name: Create directory for monitoring
   file:
