@@ -24,7 +24,7 @@
 # ---------- Nvidia stuff ----------
 - name: Nvidia stuff
   include_tasks: nvidia-driver-and-toolkit.yml
-  when: use_gpu
+  when: (use_gpu | bool)
 
 # ---------- Setup monitoring ----------
 - name: Setup monitoring

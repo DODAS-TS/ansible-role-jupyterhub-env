@@ -16,7 +16,7 @@
           #  - 9400:9400
     prometheus_nvidia: "- 'nvidia:9400'"
     cacheable: yes
-  when: use_gpu
+  when: (use_gpu | bool)
 
 # ---------- Create directory for monitoring ----------
 - name: Create directory for monitoring
