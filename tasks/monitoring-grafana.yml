@@ -16,11 +16,12 @@
   copy:
     src: "{{ role_path }}/files/grafana"
     dest: /usr/local/monitoring
-    directory_mode: yes
+    directory_mode: "yes"
 
 # ---------- Enable monitoring also with nvidia ----------
 - name: prepare variables for monitoring
   set_fact:
+    key_value: "yes"
     grafana_service: |
       grafana:
           image: grafana/grafana:latest

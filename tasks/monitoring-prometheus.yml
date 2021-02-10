@@ -1,7 +1,8 @@
 ---
 # ---------- Enable monitoring also with nvidia ----------
-- name: prepare variables for monitoring
+- name: "prepare variables for monitoring"
   set_fact:
+    key_value: "yes"
     nvidia_monitoring: |
       nvidia:
           runtime: nvidia
@@ -18,10 +19,11 @@
   when: use_gpu
 
 # ---------- Enable monitoring without nvidia ----------
-- name: prepare variables for monitoring without nvidia
+- name: "prepare variables for monitoring without nvidia"
   set_fact:
-    nvidia_monitoring: "\n"
-    prometheus_nvidia: "\n"
+    key_value: "yes"
+    nvidia_monitoring: ""
+    prometheus_nvidia: ""
     cacheable: yes
   when: not use_gpu
 
@@ -48,7 +50,7 @@
   file:
     path: /usr/local/monitoring/prometheus/data
     state: directory
-    mode: u+rwx,g+wr,o+rw
+    mode: "u+rwx,g+wr,o+rw"
 
 # ---------- Create prometheus config for monitoring from template ----------
 - name: Create prometheus config for monitoring from template
