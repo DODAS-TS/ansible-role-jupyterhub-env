@@ -16,7 +16,8 @@
 
 # ---------- Setup Monitoring [grafana] ----------
 - name: Setup Monitoring [grafana]
-  include_tasks: monitoring-grafana.yml and grafana
+  include_tasks: monitoring-grafana.yml
+  when: (grafana | bool)
 
 # ---------- Create monitoring compose ----------
 - name: Create monitoring compose
