@@ -8,7 +8,7 @@
 # ---------- Docker ----------
 - name: install docker [Ubuntu]
   include_tasks: Ubuntu-docker.yml
-  when: install_docker and ansible_facts['distribution'] == "Ubuntu"
+  when: (install_docker | bool) and ansible_facts['distribution'] == "Ubuntu"
 
 - name: start and enable docker service
   systemd:
@@ -19,7 +19,7 @@
 # ---------- Docker compose ----------
 - name: install docker compose [Ubuntu]
   include_tasks: Ubuntu-docker-compose.yml
-  when: install_docker_compose and ansible_facts['distribution'] == "Ubuntu"
+  when: (install_docker_compose | bool) and ansible_facts['distribution'] == "Ubuntu"
 
 # ---------- Nvidia stuff ----------
 - name: Nvidia stuff
@@ -29,15 +29,15 @@
 # ---------- Setup monitoring ----------
 - name: Setup monitoring
   include_tasks: monitoring.yml
-  when: monitoring
+  when: (monitoring | bool)
 
 # ---------- Jupyter hub ----------
 - name: prepare Jupyter Hub
   include_tasks: prepare-jupyter-hub.yml
-  when: prepare_jupyter
+  when: (prepare_jupyter | bool)
 
 - name: run Jupyter Hub
   shell:
     cmd: docker-compose up -d
     chdir: /usr/local/MLinD-INFN
-  when: run_jupyter
+  when: (run_jupyter | bool)
