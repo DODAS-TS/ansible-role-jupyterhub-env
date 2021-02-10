@@ -15,7 +15,7 @@
           #  - 9400:9400
     prometheus_nvidia: "- 'nvidia:9400'"
     cacheable: yes
-  when: install_nvidia_container_toolkit
+  when: use_gpu
 
 # ---------- Enable monitoring without nvidia ----------
 - name: prepare variables for monitoring without nvidia
@@ -23,7 +23,7 @@
     nvidia_monitoring: ""
     prometheus_nvidia: ""
     cacheable: yes
-  when: not install_nvidia_container_toolkit
+  when: not use_gpu
 
 # ---------- Create directory for monitoring ----------
 - name: Create directory for monitoring

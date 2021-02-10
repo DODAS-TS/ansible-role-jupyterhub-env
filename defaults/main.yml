@@ -1,6 +1,6 @@
 ---
 # Input var defaults
-
+use_gpu: no
 # docker
 install_docker: yes
 install_docker_compose: yes

@@ -1,0 +1,45 @@
+---
+# ---------- Prepare nvidia driver role ----------
+- name: prepare nvidia driver role
+  include_tasks: nvidia-driver-and-toolkig-prepare-role.yml
+  when: install_nvidia_driver
+
+# ---------- Nvidia Driver ----------
+- name: install nvidia driver [RedHat]
+  include_role:
+    name: /tmp/roles/nvidia.nvidia_driver
+  # vars:
+  #   nvidia_driver_skip_reboot: nvidia.skip_reboot
+  when: install_nvidia_container_toolkit and install_nvidia_driver and "ansible_facts['os_family'] == 'RedHat'"
+
+- name: install nvidia driver [Ubuntu]
+  include_role:
+    name: /tmp/roles/nvidia.nvidia_driver
+  # vars:
+  #   nvidia_driver_ubuntu_install_from_cuda_repo: nvidia.driver.from_cuda
+  #   nvidia_driver_skip_reboot: nvidia.skip_reboot
+  when: install_nvidia_container_toolkit and install_nvidia_driver and ansible_facts['distribution'] == 'Ubuntu'
+
+# ---------- get docker version ----------
+- name: get docker version
+  shell: docker -v
+  register: docker_version
+  when: install_nvidia_container_toolkit
+
+# ---------- check docker ----------
+- name: check docker
+  fail:
+    msg: "Docker is required to install nvidia container toolkit"
+  when: install_nvidia_container_toolkit and docker_version.stdout.find("Docker version ") == -1
+
+# ---------- Nvidia Container Toolkit ----------
+- name: install nvidia container toolkit [Ubuntu]
+  include_tasks: Ubuntu-nvidia-container-toolkit.yml
+  when: install_nvidia_container_toolkit and ansible_facts['distribution'] == 'Ubuntu'
+
+# ---------- restart docker service ----------
+- name: restart docker service
+  systemd:
+    name: docker
+    state: restarted
+  when: install_nvidia_container_toolkit

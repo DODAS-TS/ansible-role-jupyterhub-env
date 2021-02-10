@@ -1,4 +1,15 @@
 ---
+# ---------- get docker-compose version ----------
+- name: get docker-compose version
+  shell: docker-compose -v
+  register: docker_compose_version
+
+# ---------- check docker-compose ----------
+- name: check docker-compose
+  fail:
+    msg: "Docker is required to install nvidia container toolkit"
+  when: docker_compose_version.stdout.find("docker-compose version") == -1
+
 # ---------- Setup Monitoring [prometheus] ----------
 - name: Setup Monitoring [prometheus]
   include_tasks: monitoring-prometheus.yml
