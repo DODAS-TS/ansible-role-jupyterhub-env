@@ -23,10 +23,11 @@
 - name: Create monitoring compose
   template:
     src: monitoring-compose.j2
-    dest: /usr/local/monitoring/docker-compose-monitoring.yml
+    dest: /usr/local/share/monitoring/docker-compose-monitoring.yml
+  become: true
 
 # ---------- Run monitoring ----------
 - name: Run monitoring
   shell:
     cmd: docker-compose -f docker-compose-monitoring.yml up -d
-    chdir: /usr/local/monitoring
+    chdir: /usr/local/share/monitoring

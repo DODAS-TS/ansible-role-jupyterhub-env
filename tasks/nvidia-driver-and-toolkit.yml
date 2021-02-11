@@ -1,7 +1,7 @@
 ---
 # ---------- Prepare nvidia driver role ----------
 - name: prepare nvidia driver role
-  include_tasks: nvidia-driver-and-toolkig-prepare-role.yml
+  include_tasks: nvidia-driver-and-toolkit-prepare-role.yml
   when: (install_nvidia_driver | bool)
 
 # ---------- Nvidia Driver ----------
@@ -42,4 +42,5 @@
   systemd:
     name: docker
     state: restarted
+  become: true
   when: (install_nvidia_container_toolkit | bool)

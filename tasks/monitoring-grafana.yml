@@ -2,21 +2,24 @@
 # ---------- Create directory for monitoring ----------
 - name: Create directory for monitoring
   file:
-    path: /usr/local/monitoring
+    path: /usr/local/share/monitoring
     state: directory
+  become: true
 
 # ---------- Create directory for grafana ----------
 - name: Create directory for grafana
   file:
-    path: /usr/local/monitoring/grafana
+    path: /usr/local/share/monitoring/grafana
     state: directory
+  become: true
 
 # ---------- Create grafana configs ----------
 - name: Create grafana configs
   copy:
     src: "{{ role_path }}/files/grafana"
-    dest: /usr/local/monitoring
+    dest: /usr/local/share/monitoring
     directory_mode: "yes"
+  become: true
 
 # ---------- Enable monitoring also with nvidia ----------
 - name: prepare variables for monitoring

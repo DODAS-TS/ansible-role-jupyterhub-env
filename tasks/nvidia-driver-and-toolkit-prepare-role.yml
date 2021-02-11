@@ -2,7 +2,7 @@
 # ---------- Gen nvidia driver role ----------
 - name: get nvidia.nvidia_driver role
   shell:
-    cmd: ansible-galaxy install -f -p /tmp/roles nvidia.nvidia_driver
+    cmd: ansible-galaxy install -f -c -i -p /tmp/roles nvidia.nvidia_driver
 
 # ---------- Fix reboot cmd ----------
 # Only supported in Ansible >= 2.7

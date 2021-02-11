@@ -5,6 +5,16 @@
     msg: "distro {{ ansible_facts['distribution'] }} not supported"
   when: ansible_facts['distribution'] != 'Ubuntu' and ansible_os_family != 'RedHat'
 
+# ---------- Update Ubuntu ----------
+- name: Update [Ubuntu]
+  apt:
+    update_cache: yes
+    upgrade: yes
+    autoclean: yes
+    autoremove: yes
+  become: true
+  when: ansible_facts['distribution'] == 'Ubuntu'
+
 # ---------- Docker ----------
 - name: install docker [Ubuntu]
   include_tasks: Ubuntu-docker.yml
@@ -15,6 +25,7 @@
     name: docker
     state: started
     enabled: yes
+  become: true
 
 # ---------- Docker compose ----------
 - name: install docker compose [Ubuntu]
