@@ -32,6 +32,12 @@
     msg: "Docker is required to install nvidia container toolkit"
   when: (install_nvidia_container_toolkit | bool) and docker_version.stdout.find("Docker version ") == -1
 
+- name: start and enable docker service
+  systemd:
+    name: docker
+    state: stopped
+  when: (install_nvidia_container_toolkit | bool)
+
 # ---------- Nvidia Container Toolkit ----------
 - name: install nvidia container toolkit [Ubuntu]
   include_tasks: Ubuntu-nvidia-container-toolkit.yml
@@ -41,5 +47,5 @@
 - name: restart docker service
   systemd:
     name: docker
-    state: restarted
+    state: started
   when: (install_nvidia_container_toolkit | bool)

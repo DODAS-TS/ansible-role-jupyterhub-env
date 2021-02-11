@@ -35,6 +35,12 @@
   include_tasks: nvidia-driver-and-toolkit.yml
   when: (use_gpu | bool)
 
+# ---------- restart docker service ----------
+- name: restart docker service
+  systemd:
+    name: docker
+    state: restarted
+
 # ---------- Setup monitoring ----------
 - name: Setup monitoring
   include_tasks: monitoring.yml
