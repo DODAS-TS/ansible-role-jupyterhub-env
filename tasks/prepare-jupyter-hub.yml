@@ -4,10 +4,8 @@
     repo: "https://github.com/dodas-ts/MLinD-INFN"
     dest: /usr/local/MLinD-INFN
     force: yes
-  become: true
 
 - name: prepare compose file
   template:
     src: jupyter_hub-compose.j2
     dest: /usr/local/MLinD-INFN/docker-compose.yaml
-  become: true

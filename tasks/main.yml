@@ -12,7 +12,6 @@
     upgrade: yes
     autoclean: yes
     autoremove: yes
-  become: true
   when: ansible_facts['distribution'] == 'Ubuntu'
 
 # ---------- Docker ----------
@@ -25,7 +24,6 @@
     name: docker
     state: started
     enabled: yes
-  become: true
 
 # ---------- Docker compose ----------
 - name: install docker compose [Ubuntu]

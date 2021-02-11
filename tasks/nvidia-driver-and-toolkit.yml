@@ -42,5 +42,4 @@
   systemd:
     name: docker
     state: restarted
-  become: true
   when: (install_nvidia_container_toolkit | bool)

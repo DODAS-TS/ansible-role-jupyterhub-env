@@ -23,21 +23,18 @@
   file:
     path: /usr/local/share/monitoring
     state: directory
-  become: true
 
 # ---------- Create directory for prometheus ----------
 - name: Create directory for prometheus
   file:
     path: /usr/local/share/monitoring/prometheus
     state: directory
-  become: true
 
 # ---------- Create directory for prometheus config ----------
 - name: Create directory for prometheus config
   file:
     path: /usr/local/share/monitoring/prometheus/config
     state: directory
-  become: true
 
     # ---------- Create directory for prometheus data ----------
 - name: Create directory for prometheus data
@@ -45,11 +42,9 @@
     path: /usr/local/share/monitoring/prometheus/data
     state: directory
     mode: "u+rwx,g+wr,o+rw"
-  become: true
 
 # ---------- Create prometheus config for monitoring from template ----------
 - name: Create prometheus config for monitoring from template
   template:
     src: prometheus-config.j2
     dest: /usr/local/share/monitoring/prometheus/config/prometheus.yml
-  become: true

@@ -24,7 +24,6 @@
   template:
     src: monitoring-compose.j2
     dest: /usr/local/share/monitoring/docker-compose-monitoring.yml
-  become: true
 
 # ---------- Run monitoring ----------
 - name: Run monitoring
