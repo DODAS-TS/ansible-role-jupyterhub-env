@@ -55,5 +55,5 @@
 - name: run Jupyter Hub
   shell:
     cmd: docker-compose up -d
-    chdir: /usr/local/MLinD-INFN
+    chdir: /usr/local/share/MLinD-INFN
   when: (run_jupyter | bool)

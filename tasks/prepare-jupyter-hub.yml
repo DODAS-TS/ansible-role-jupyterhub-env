@@ -2,10 +2,10 @@
 - name: download MLinD-INFN
   git:
     repo: "https://github.com/dodas-ts/MLinD-INFN"
-    dest: /usr/local/MLinD-INFN
+    dest: /usr/local/share/MLinD-INFN
     force: yes
 
 - name: prepare compose file
   template:
     src: jupyter_hub-compose.j2
-    dest: /usr/local/MLinD-INFN/docker-compose.yaml
+    dest: /usr/local/share/MLinD-INFN/docker-compose.yaml
