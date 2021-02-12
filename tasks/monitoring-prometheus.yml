@@ -23,25 +23,28 @@
   file:
     path: /usr/local/share/monitoring
     state: directory
+    mode: 0755
 
 # ---------- Create directory for prometheus ----------
 - name: Create directory for prometheus
   file:
     path: /usr/local/share/monitoring/prometheus
     state: directory
+    mode: 0755
 
 # ---------- Create directory for prometheus config ----------
 - name: Create directory for prometheus config
   file:
     path: /usr/local/share/monitoring/prometheus/config
     state: directory
+    mode: 0755
 
     # ---------- Create directory for prometheus data ----------
 - name: Create directory for prometheus data
   file:
     path: /usr/local/share/monitoring/prometheus/data
     state: directory
-    mode: "u+rwx,g+wr,o+rw"
+    mode: 0755
 
 # ---------- Create prometheus config for monitoring from template ----------
 - name: Create prometheus config for monitoring from template

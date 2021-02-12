@@ -4,12 +4,14 @@
   file:
     path: /usr/local/share/monitoring
     state: directory
+    mode: 0755
 
 # ---------- Create directory for grafana ----------
 - name: Create directory for grafana
   file:
     path: /usr/local/share/monitoring/grafana
     state: directory
+    mode: 0755
 
 # ---------- Create grafana configs ----------
 - name: Create grafana configs
