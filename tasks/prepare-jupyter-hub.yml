@@ -5,6 +5,19 @@
     dest: /usr/local/share/MLinD-INFN
     force: yes
 
+# ---------- Create directory for jupyterhub ----------
+- name: Create directory for jupyterhub
+  file:
+    path: /usr/local/share/jupyterhub
+    state: directory
+    mode: 0755
+
+- name: Create directory for jupyterhub cookies
+  file:
+    path: /usr/local/share/jupyterhub/cookies
+    state: directory
+    mode: 0755
+
 - name: "prepare variables for jupyter"
   set_fact:
     key_value: "yes"

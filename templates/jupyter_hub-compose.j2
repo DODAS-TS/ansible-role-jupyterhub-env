@@ -9,6 +9,7 @@ services:
       - --debug
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
+      - /usr/local/share/jupyterhub/cookies:/srv/jupyterhub/cookies
     ports:
       - {{jupyter_port}}:{{jupyter_port}}
     environment:
