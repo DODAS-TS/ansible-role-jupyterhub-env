@@ -1,4 +1,5 @@
-version: "3.7"
+version: "3.9"
+
 services:
   jupyterhub:
     build: .
@@ -14,7 +15,7 @@ services:
       - OAUTH_ENDPOINT=https://iam.cloud.infn.it
       - OAUTH_CALLBACK_URL=http://{{jupyter_ip}}:{{jupyter_port}}/hub/oauth_callback
       - OAUTH_GROUPS=group1 group2
-      - WITH_GPU=true
+      - WITH_GPU={{jupyter_gpu}}
 
 networks:
   default:
