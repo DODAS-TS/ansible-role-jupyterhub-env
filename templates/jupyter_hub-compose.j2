@@ -15,7 +15,7 @@ services:
       - /usr/local/share/jupyterhub/db:/srv/jupyterhub/db
     environment:
       - OAUTH_ENDPOINT=https://iam.cloud.infn.it
-      - OAUTH_CALLBACK_URL=http://{{server_ip}}:{{jupyter_port}}/hub/oauth_callback
+      - OAUTH_CALLBACK_URL=https://{{server_ip}}:{{jupyter_port}}/hub/oauth_callback
       - OAUTH_GROUPS=group1 group2
       - {{jupyter_gpu}}
 
@@ -29,8 +29,8 @@ services:
       - --api-port=8001
       - --default-target=http://jupyterhub:8088
       - --error-target=http://jupyterhub:8088/hub/error
-      - --ssl-key=/tmp/certs/hostcert.key
-      - --ssl-cert=/tmp/certs/hostcert.pem
+      - --ssl-key=/tmp/certs/jupyter/hostcert.key
+      - --ssl-cert=/tmp/certs/jupyter/hostcert.pem
     volumes:
       - /tmp/certs/jupyter:/tmp/certs/jupyter
     environment:
