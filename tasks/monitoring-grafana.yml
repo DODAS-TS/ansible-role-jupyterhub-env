@@ -35,9 +35,9 @@
           ports:
           - 3000:3000
           volumes:
-          - ./grafana/config:/opt/grafana/
-          - ./grafana/config/provisioning:/etc/grafana/provisioning
-          - ./grafana/dash_models:/opt/dash_models
+          - /usr/local/share/monitoring/grafana/config:/opt/grafana/
+          - /usr/local/share/monitoring/grafana/config/provisioning:/etc/grafana/provisioning
+          - /usr/local/share/monitoring/grafana/dash_models:/opt/dash_models
           environment:
             - GF_SECURITY_ADMIN_PASSWORD={{grafana_password}}
             - GF_USERS_ALLOW_SIGN_UP=false
