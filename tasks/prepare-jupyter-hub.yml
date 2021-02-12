@@ -18,6 +18,12 @@
     state: directory
     mode: 0755
 
+- name: Create directory for jupyterhub db
+  file:
+    path: /usr/local/share/jupyterhub/db
+    state: directory
+    mode: 0755
+
 - name: "prepare variables for jupyter"
   set_fact:
     key_value: "yes"

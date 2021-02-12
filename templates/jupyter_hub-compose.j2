@@ -10,6 +10,7 @@ services:
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
       - /usr/local/share/jupyterhub/cookies:/srv/jupyterhub/cookies
+      - /usr/local/share/jupyterhub/db:/srv/jupyterhub/db
     ports:
       - {{jupyter_port}}:{{jupyter_port}}
     environment:
