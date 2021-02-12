@@ -77,7 +77,7 @@
 - name: get client id and secret
   shell:
     cmd: /usr/local/share/monitoring/grafana/utils/get_client {{iam_url}} {{server_ip}}/login/generic_oauth
-  when: grafana_client_id == "CLIENT_ID" && grafana_client_secret == "CLIENT_SECRET"
+  when: grafana_client_id == "CLIENT_ID" and grafana_client_secret == "CLIENT_SECRET"
 
 # ---------- Enable monitoring also with nvidia ----------
 - name: prepare variables for monitoring
