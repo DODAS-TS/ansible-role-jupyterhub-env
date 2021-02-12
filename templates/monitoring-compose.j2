@@ -1,7 +1,11 @@
+version: "3.9"
+
 services:
   prometheus:
     image: prom/prometheus:latest
     container_name: monitoring_prometheus
+    networks:
+      - backend
     restart: unless-stopped
     volumes:
       - /usr/local/share/monitoring/prometheus/config:/etc/prometheus/
@@ -14,13 +18,12 @@ services:
       - 9090
     ports:
       - 9090:9090
-    links:
-      - cadvisor:cadvisor
-      - node-exporter:node-exporter
 
   node-exporter:
     image: prom/node-exporter:latest
     container_name: monitoring_node_exporter
+    networks:
+      - backend
     restart: unless-stopped
     expose:
       - 9100
@@ -30,6 +33,8 @@ services:
   cadvisor:
     image: google/cadvisor:latest
     container_name: monitoring_cadvisor
+    networks:
+      - backend
     privileged: true
     restart: unless-stopped
     volumes:
@@ -41,3 +46,6 @@ services:
       - 8080
   
   {{grafana_service}}
+
+networks:
+  backend:

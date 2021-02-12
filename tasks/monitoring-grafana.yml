@@ -28,12 +28,12 @@
       grafana:
           image: grafana/grafana:latest
           container_name: monitoring_grafana
+          networks:
+            - backend
           restart: unless-stopped
           command:
           - "-config"
           - "/opt/grafana/custom.ini"
-          links:
-            - prometheus:prometheus
           ports:
           - 3000:3000
           volumes:
