@@ -10,6 +10,12 @@
   when: ansible_facts['distribution'] == 'Ubuntu'
 
 # ---------- Self signed certificates ----------
+- name: download dodas-x509
+  git:
+    repo: "https://github.com/DODAS-TS/dodas-x509.git"
+    dest: /usr/local/share/dodas-x509
+    force: yes
+
 - name: compile dodas-x509
   shell:
     cmd: go get github.com/dodas-ts/dodas-x509/pkg/v1 && go build
