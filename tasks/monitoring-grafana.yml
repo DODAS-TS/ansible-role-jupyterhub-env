@@ -71,7 +71,7 @@
 
 - name: Create grafana config
   template:
-    src: grafana-custom-ini
+    src: grafana-custom-ini.j2
     dest: /usr/local/share/monitoring/grafana/config/config.ini
 
 - name: get client id and secret
