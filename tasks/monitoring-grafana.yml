@@ -16,7 +16,7 @@
   copy:
     src: "{{ role_path }}/files/grafana"
     dest: /usr/local/share/monitoring
-    directory_mode: 1755
+    directory_mode: 0755
 
 # ---------- Enable monitoring also with nvidia ----------
 - name: prepare variables for monitoring
