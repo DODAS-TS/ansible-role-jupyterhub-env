@@ -49,3 +49,15 @@
     name: docker
     state: started
   when: (install_nvidia_container_toolkit | bool)
+
+# ---------- test nvidia container toolkit ----------
+- name: test nvidia container toolkit
+  shell: docker run --rm --gpus all nvidia/cuda:11.0-base nvidia-smi
+  register: docker_nvidia_test
+  when: (install_nvidia_container_toolkit | bool)
+
+# ---------- check docker nvidia ----------
+- name: check docker nvidia
+  fail:
+    msg: NVIDIA Docker is not working properly"
+  when: (install_nvidia_container_toolkit | bool) and docker_nvidia_test.rc != 0
