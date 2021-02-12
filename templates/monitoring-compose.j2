@@ -36,7 +36,6 @@ services:
     privileged: true
     restart: unless-stopped
     volumes:
-      - /tmp/certs:/tmp/certs
       - /:/rootfs:ro
       - /var/run:/var/run:rw
       - /sys:/sys:ro

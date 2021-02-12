@@ -64,7 +64,12 @@
 
 - name: create certificates for grafana
   shell:
-    cmd: dodas-x509 --generate-all --hostname {{server_ip}} && chown 472:472 /tmp/hostcert.* && mkdir -p /tmp/certs && mv /tmp/hostcert.* /tmp/certs
+    cmd: |
+      dodas-x509 --generate-all --hostname {{server_ip}} \
+      && chown 472:472 /tmp/hostcert.* \
+      && mkdir -p /tmp/certs \
+      && mv /tmp/hostcert.* /tmp/certs \
+      && chown 472:472 /tmp/certs
     creates:
       - /tmp/certs/hostcert.pem
       - /tmp/certs/hostcert.key
@@ -98,6 +103,7 @@
           ports:
             - 3000:3000
           volumes:
+            - /tmp/certs:/tmp/certs
             - /usr/local/share/monitoring/grafana/config:/opt/grafana/
             - /usr/local/share/monitoring/grafana/config/provisioning:/etc/grafana/provisioning
             - /usr/local/share/monitoring/grafana/dash_models:/opt/dash_models

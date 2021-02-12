@@ -5,7 +5,7 @@ from sys import argv
 
 def main():
     client = subprocess.check_output(
-        f"IAM_INSTANCE={argv[1]} OAUTH_CALLBACK={argv[2]}:3000/login/generic_oauth dodas-IAMClientRec ml-client",
+        f"IAM_INSTANCE={argv[1]} OAUTH_CALLBACK=https://{argv[2]}:3000/login/generic_oauth dodas-IAMClientRec ml-client",
         shell=True,
     )
     lines = [line for line in client.decode("utf-8").split("\n") if line]
