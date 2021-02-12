@@ -7,7 +7,7 @@ services:
       - /usr/local/share/prometheus/config:/etc/prometheus/
       - /usr/local/share/prometheus/data:/data
     command:
-      - '--config.file=/etc/prometheus/prometheus.yml'
+      - '--config.file=/etc/prometheus/config/prometheus.yml'
       - '--storage.tsdb.path=/data'
       - '--storage.tsdb.retention.time=15d'
     expose:
