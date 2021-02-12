@@ -26,7 +26,7 @@
     cmd: ln -s /usr/local/share/dodas-x509/dodas-x509 /usr/local/bin/dodas-x509
     creates: /usr/local/bin/dodas-x509
 
-- name: create certificates for grafana
+- name: create certificates
   shell:
     cmd: |
       dodas-x509 --generate-all --hostname {{server_ip}} \
