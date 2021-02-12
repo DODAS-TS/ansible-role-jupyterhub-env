@@ -1,0 +1,20 @@
+#!/usr/bin/env python
+import subprocess
+from sys import argv
+
+
+def main():
+    client = subprocess.check_output(f"IAM_INSTANCE={argv[1]} OAUTH_CALLBACK={argv[2]}:3000/login/generic_oauth dodas-IAMClientRec ml-client")
+    lines = client.decode("utf-8").spit("\n")
+
+    with open("/usr/local/share/monitoring/grafana/config/custom.ini") as cur_config:
+        cur_config_string = cur_config.read()
+    
+    cur_config_string = cur_config_string.replace("CLIENT_ID", f'"{lines[-2].strip()}"').replace("CLIENT_SECRET", f'"{lines[-1].strip()}"')
+
+    with open("/usr/local/share/monitoring/grafana/config/custom.ini", "w") as cur_config:
+        cur_config.write(cur_config_string)
+
+
+if __name__ == "__main__":
+    main()

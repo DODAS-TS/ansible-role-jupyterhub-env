@@ -1,0 +1,21 @@
+[auth.generic_oauth]
+enabled = true
+allow_sign_up = true
+team_ids =
+allowed_organizations =
+name = IAM
+client_id = {{grafana_client_id}}
+client_secret = {{grafana_client_secret}}
+scopes = openid profile email
+auth_url = https://{{iam_url}}/authorize
+token_url = https://{{iam_url}}/token
+api_url = https://{{iam_url}}/userinfo
+
+# ToDO: fix permissions
+# role_attribute_path = contains(info.groups[*], 'admin') && 'Admin' || contains(info.groups[*], 'editor') && 'Editor' || 'Viewer'
+
+[server]
+domain = {{server_ip}}
+protocol = "https"
+cert_file = /tmp/certs/hostcert.pem
+cert_key = /tmp/certs/hostcert.key
