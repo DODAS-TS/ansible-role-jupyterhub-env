@@ -2,6 +2,8 @@ version: "3.9"
 
 services:
   jupyterhub:
+    depends_on:
+      - http_proxy
     build: .
     command:
       - /opt/conda/bin/python
@@ -11,13 +13,27 @@ services:
       - /var/run/docker.sock:/var/run/docker.sock
       - /usr/local/share/jupyterhub/cookies:/srv/jupyterhub/cookies
       - /usr/local/share/jupyterhub/db:/srv/jupyterhub/db
-    ports:
-      - {{jupyter_port}}:{{jupyter_port}}
     environment:
       - OAUTH_ENDPOINT=https://iam.cloud.infn.it
-      - OAUTH_CALLBACK_URL=http://{{jupyter_ip}}:{{jupyter_port}}/hub/oauth_callback
+      - OAUTH_CALLBACK_URL=http://0.0.0.0:8088/hub/oauth_callback
       - OAUTH_GROUPS=group1 group2
-      - WITH_GPU={{jupyter_gpu}}
+      - {{jupyter_gpu}}
+
+  http_proxy:
+    image: jupyterhub/configurable-http-proxy
+    command:
+      - configurable-http-proxy
+      - --ip={{jupyter_ip}}
+      - --port={{jupyter_port}}
+      - --api-ip=0.0.0.0
+      - --api-port=8001
+      - --default-target=http://jupyterhub:8088
+      - --error-target=http://jupyterhub:8088/hub/error
+    environment:
+      - CONFIGPROXY_AUTH_TOKEN={{jupyter_proxy_token}}
+    ports:
+      - {{jupyter_port}}:{{jupyter_port}}
+      - 8001:8001
 
 networks:
   default:

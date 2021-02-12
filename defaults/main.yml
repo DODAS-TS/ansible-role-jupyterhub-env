@@ -15,8 +15,8 @@ prepare_jupyter: yes
 run_jupyter: yes
 jupyter_ip: "0.0.0.0"
 jupyter_port: "8888"
-jupyter_gpu: "false"
+jupyter_proxy_token: "test_token"
 # monitoring
 monitoring: yes
 grafana: yes
-grafana_password: "password"
+grafana_password: "gpassword"
