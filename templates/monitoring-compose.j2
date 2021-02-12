@@ -4,10 +4,10 @@ services:
     container_name: monitoring_prometheus
     restart: unless-stopped
     volumes:
-      - /usr/local/share/prometheus/config:/etc/prometheus/
-      - /usr/local/share/prometheus/data:/data
+      - /usr/local/share/monitoring/prometheus/config:/etc/prometheus/
+      - /usr/local/share/monitoring/prometheus/data:/data
     command:
-      - '--config.file=/etc/prometheus/config/prometheus.yml'
+      - '--config.file=/etc/prometheus/prometheus.yml'
       - '--storage.tsdb.path=/data'
       - '--storage.tsdb.retention.time=15d'
     expose:
