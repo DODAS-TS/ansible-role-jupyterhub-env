@@ -39,7 +39,8 @@
 - name: restart docker service
   systemd:
     name: docker
-    state: restarted
+    # Force reload
+    state: reloaded
 
 # ---------- Setup monitoring ----------
 - name: Setup monitoring
