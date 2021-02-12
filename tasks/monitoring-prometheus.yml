@@ -14,7 +14,8 @@
             - 9400
           #ports:
           #  - 9400:9400
-    prometheus_nvidia: "- 'nvidia:9400'"
+    nvidia_depends: "- nvidia"
+    prometheus_nvidia: "- 'monitoring_nvidia:9400'"
     cacheable: yes
   when: (use_gpu | bool)
 
