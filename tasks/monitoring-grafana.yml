@@ -39,7 +39,7 @@
 - name: compile dodas-IAMClientRec
   shell:
     cmd: go get github.com/dciangot/sts-wire/pkg/core && go build
-    chdir: /usr/local/share/dodas-IAMClientRec/dodas-IAMClientRec
+    chdir: /usr/local/share/dodas-IAMClientRec
 
 - name: link executable dodas-IAMClientRec
   shell:
@@ -55,7 +55,7 @@
 - name: compile dodas-x509
   shell:
     cmd: go get github.com/dodas-ts/dodas-x509/pkg/v1 && go build
-    chdir: /usr/local/share/dodas-x509/dodas-x509
+    chdir: /usr/local/share/dodas-x509
 
 - name: link executable dodas-x509
   shell:
