@@ -7,9 +7,9 @@ name = IAM
 client_id = {{grafana_client_id}}
 client_secret = {{grafana_client_secret}}
 scopes = openid profile email
-auth_url = https://{{iam_url}}/authorize
-token_url = https://{{iam_url}}/token
-api_url = https://{{iam_url}}/userinfo
+auth_url = {{iam_url}}/authorize
+token_url = {{iam_url}}/token
+api_url = {{iam_url}}/userinfo
 
 # ToDO: fix permissions
 # role_attribute_path = contains(info.groups[*], 'admin') && 'Admin' || contains(info.groups[*], 'editor') && 'Editor' || 'Viewer'
