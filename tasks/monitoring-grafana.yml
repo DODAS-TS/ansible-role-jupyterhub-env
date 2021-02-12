@@ -45,7 +45,7 @@
   shell:
     cmd: |
       chmod +x /usr/local/share/monitoring/grafana/utils/get_client \
-      && /usr/local/share/monitoring/grafana/utils/get_client {{iam_url}} {{server_ip}}/login/generic_oauth {{grafana_port}}
+      && /usr/local/share/monitoring/grafana/utils/get_client {{iam_url}} {{server_ip}} {{grafana_port}}
   when: grafana_client_id == "CLIENT_ID" and grafana_client_secret == "CLIENT_SECRET"
 
 # ---------- Enable monitoring also with nvidia ----------
