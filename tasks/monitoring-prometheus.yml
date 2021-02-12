@@ -44,6 +44,8 @@
   file:
     path: /usr/local/share/monitoring/prometheus/data
     state: directory
+    owner: nobody
+    group: nogroup
     mode: 0755
 
 # ---------- Create prometheus config for monitoring from template ----------
