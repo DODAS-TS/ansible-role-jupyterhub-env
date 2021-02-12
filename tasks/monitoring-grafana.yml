@@ -30,8 +30,6 @@
           container_name: monitoring_grafana
           depends_on:
             - prometheus
-          networks:
-            - backend
           restart: unless-stopped
           command:
             - "-config"
