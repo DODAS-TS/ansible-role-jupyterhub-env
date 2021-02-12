@@ -42,6 +42,10 @@
     # Force reload
     state: reloaded
 
+# ---------- Make self signed certificates ----------
+- name: Make self signed certificates
+  include_tasks: make-self-signed-certificates.yml
+
 # ---------- Setup monitoring ----------
 - name: Setup monitoring
   include_tasks: monitoring.yml

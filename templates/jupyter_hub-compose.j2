@@ -23,12 +23,16 @@ services:
     image: jupyterhub/configurable-http-proxy
     command:
       - configurable-http-proxy
-      - --ip={{jupyter_ip}}
+      - --ip=0.0.0.0
       - --port={{jupyter_port}}
       - --api-ip=0.0.0.0
       - --api-port=8001
       - --default-target=http://jupyterhub:8088
       - --error-target=http://jupyterhub:8088/hub/error
+      - --ssl-key=/tmp/certs/hostcert.key
+      - --ssl-cert=/tmp/certs/hostcert.pem
+    volumes:
+      - /tmp/certs/jupyter:/tmp/certs/jupyter
     environment:
       - CONFIGPROXY_AUTH_TOKEN={{jupyter_proxy_token}}
     ports:

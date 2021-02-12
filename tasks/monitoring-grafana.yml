@@ -20,16 +20,6 @@
     dest: /usr/local/share/monitoring
     directory_mode: 0755
 
-# ---------- Install IAM client ----------
-- name: Install golang [Ubuntu]
-  apt:
-    name: golang
-    state: present
-    autoclean: yes
-    autoremove: yes
-    update_cache: yes
-  when: ansible_facts['distribution'] == 'Ubuntu'
-
 - name: download dodas-IAMClientRec
   git:
     repo: "https://github.com/dciangot/dodas-IAMClientRec"
@@ -51,28 +41,6 @@
     repo: "https://github.com/DODAS-TS/dodas-x509.git"
     dest: /usr/local/share/dodas-x509
     force: yes
-
-- name: compile dodas-x509
-  shell:
-    cmd: go get github.com/dodas-ts/dodas-x509/pkg/v1 && go build
-    chdir: /usr/local/share/dodas-x509
-
-- name: link executable dodas-x509
-  shell:
-    cmd: ln -s /usr/local/share/dodas-x509/dodas-x509 /usr/local/bin/dodas-x509
-    creates: /usr/local/bin/dodas-x509
-
-- name: create certificates for grafana
-  shell:
-    cmd: |
-      dodas-x509 --generate-all --hostname {{server_ip}} \
-      && chown 472:472 /tmp/hostcert.* \
-      && mkdir -p /tmp/certs \
-      && mv /tmp/hostcert.* /tmp/certs \
-      && chown 472:472 /tmp/certs
-    creates:
-      - /tmp/certs/hostcert.pem
-      - /tmp/certs/hostcert.key
 
 - name: Create grafana config
   template:
@@ -103,7 +71,7 @@
           ports:
             - 3000:3000
           volumes:
-            - /tmp/certs:/tmp/certs
+            - /tmp/certs/grafana:/tmp/certs/grafana
             - /usr/local/share/monitoring/grafana/config:/opt/grafana/
             - /usr/local/share/monitoring/grafana/config/provisioning:/etc/grafana/provisioning
             - /usr/local/share/monitoring/grafana/dash_models:/opt/dash_models

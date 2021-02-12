@@ -1,0 +1,35 @@
+---
+# ---------- Install IAM client ----------
+- name: Install golang [Ubuntu]
+  apt:
+    name: golang
+    state: present
+    autoclean: yes
+    autoremove: yes
+    update_cache: yes
+  when: ansible_facts['distribution'] == 'Ubuntu'
+
+# ---------- Self signed certificates ----------
+- name: compile dodas-x509
+  shell:
+    cmd: go get github.com/dodas-ts/dodas-x509/pkg/v1 && go build
+    chdir: /usr/local/share/dodas-x509
+
+- name: link executable dodas-x509
+  shell:
+    cmd: ln -s /usr/local/share/dodas-x509/dodas-x509 /usr/local/bin/dodas-x509
+    creates: /usr/local/bin/dodas-x509
+
+- name: create certificates for grafana
+  shell:
+    cmd: |
+      dodas-x509 --generate-all --hostname {{server_ip}} \
+      && mkdir -p /tmp/certs/jupyter \
+      && mkdir -p /tmp/certs/grafana \
+      && cp /tmp/hostcert.* /tmp/certs/jupyter \
+      && cp /tmp/hostcert.* /tmp/certs/grafana \
+      && chown -R 472:472 /tmp/certs/grafana \
+      && chown -R nobody:nogroup /tmp/certs/jupyter
+    creates:
+      - /tmp/certs/hostcert.pem
+      - /tmp/certs/hostcert.key
