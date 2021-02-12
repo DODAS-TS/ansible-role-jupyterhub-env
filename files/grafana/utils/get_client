@@ -8,7 +8,7 @@ def main():
         f"IAM_INSTANCE={argv[1]} OAUTH_CALLBACK={argv[2]}:3000/login/generic_oauth dodas-IAMClientRec ml-client",
         shell=True,
     )
-    lines = client.decode("utf-8").split("\n")
+    lines = [line for line in client.decode("utf-8").split("\n") if line]
 
     with open("/usr/local/share/monitoring/grafana/config/custom.ini") as cur_config:
         cur_config_string = cur_config.read()
