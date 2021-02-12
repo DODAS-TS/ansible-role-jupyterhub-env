@@ -35,8 +35,8 @@
   include_tasks: nvidia-driver-and-toolkit.yml
   when: (use_gpu | bool)
 
-# ---------- restart docker service ----------
-- name: restart docker service
+# ---------- reload docker service ----------
+- name: reload docker service
   systemd:
     name: docker
     # Force reload
