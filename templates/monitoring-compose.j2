@@ -10,8 +10,8 @@ services:
       - cadvisor
       {{nvidia_depends}}
     volumes:
-      - /usr/local/share/monitoring/prometheus/config:/etc/prometheus/
-      - /usr/local/share/monitoring/prometheus/data:/data
+      - /usr/local/share/dodasts/monitoring/prometheus/config:/etc/prometheus/
+      - /usr/local/share/dodasts/monitoring/prometheus/data:/data
     command:
       - '--config.file=/etc/prometheus/prometheus.yml'
       - '--storage.tsdb.path=/data'

@@ -2,37 +2,37 @@
 - name: download MLinD-INFN
   git:
     repo: "https://github.com/dodas-ts/MLinD-INFN"
-    dest: /usr/local/share/MLinD-INFN
+    dest: /usr/local/share/dodasts/MLinD-INFN
     force: yes
 
 - name: "change token in jupyterhub"
   replace:
-    path: /usr/local/share/MLinD-INFN/jupyterhub_config.py
+    path: /usr/local/share/dodasts/MLinD-INFN/jupyterhub_config.py
     regexp: 'c\.ConfigurableHTTPProxy\.auth_token[a-zA-Z\ \=\"\_]*'
     replace: 'c.ConfigurableHTTPProxy.auth_token = "{{jupyter_proxy_token}}"'
 
 - name: "change image in jupyterhub"
   replace:
-    path: /usr/local/share/MLinD-INFN/jupyterhub_config.py
+    path: /usr/local/share/dodasts/MLinD-INFN/jupyterhub_config.py
     regexp: '\<datalist\ id\=\"images\"\>[\n\t\ \<\>\=\"\/\_\:\-0-9a-zA-Z]*<\/datalist\>'
     replace: '<datalist id="images"><option value="{{jupyter_image}}">{{jupyter_image|upper}}</option></datalist>'
 
 # ---------- Create directory for jupyterhub ----------
 - name: Create directory for jupyterhub
   file:
-    path: /usr/local/share/jupyterhub
+    path: /usr/local/share/dodasts/jupyterhub
     state: directory
     mode: 0755
 
 - name: Create directory for jupyterhub cookies
   file:
-    path: /usr/local/share/jupyterhub/cookies
+    path: /usr/local/share/dodasts/jupyterhub/cookies
     state: directory
     mode: 0755
 
 - name: Create directory for jupyterhub db
   file:
-    path: /usr/local/share/jupyterhub/db
+    path: /usr/local/share/dodasts/jupyterhub/db
     state: directory
     mode: 0755
 
@@ -46,4 +46,4 @@
 - name: prepare compose file
   template:
     src: jupyter_hub-compose.j2
-    dest: /usr/local/share/MLinD-INFN/docker-compose.yaml
+    dest: /usr/local/share/dodasts/MLinD-INFN/docker-compose.yaml

@@ -2,14 +2,14 @@
 # ---------- Create directory for monitoring ----------
 - name: Create directory for monitoring
   file:
-    path: /usr/local/share/monitoring
+    path: /usr/local/share/dodasts/monitoring
     state: directory
     mode: 0755
 
 # ---------- Create directory for grafana ----------
 - name: Create directory for grafana
   file:
-    path: /usr/local/share/monitoring/grafana
+    path: /usr/local/share/dodasts/monitoring/grafana
     state: directory
     mode: 0755
 
@@ -17,35 +17,35 @@
 - name: Create grafana configs
   copy:
     src: "{{ role_path }}/files/grafana"
-    dest: /usr/local/share/monitoring
+    dest: /usr/local/share/dodasts/monitoring
     directory_mode: 0755
 
 - name: download dodas-IAMClientRec
   git:
     repo: "https://github.com/dciangot/dodas-IAMClientRec"
-    dest: /usr/local/share/dodas-IAMClientRec
+    dest: /usr/local/share/dodasts/dodas-IAMClientRec
     force: yes
 
 - name: compile dodas-IAMClientRec
   shell:
     cmd: go get github.com/dciangot/sts-wire/pkg/core && go build
-    chdir: /usr/local/share/dodas-IAMClientRec
+    chdir: /usr/local/share/dodasts/dodas-IAMClientRec
 
 - name: link executable dodas-IAMClientRec
   shell:
-    cmd: ln -s /usr/local/share/dodas-IAMClientRec/dodas-IAMClientRec /usr/local/bin/dodas-IAMClientRec
+    cmd: ln -s /usr/local/share/dodasts/dodas-IAMClientRec/dodas-IAMClientRec /usr/local/bin/dodas-IAMClientRec
     creates: /usr/local/bin/dodas-IAMClientRec
 
 - name: Create grafana config
   template:
     src: grafana-custom-ini.j2
-    dest: /usr/local/share/monitoring/grafana/config/custom.ini
+    dest: /usr/local/share/dodasts/monitoring/grafana/config/custom.ini
 
 - name: get client id and secret
   shell:
     cmd: |
-      chmod +x /usr/local/share/monitoring/grafana/utils/get_client \
-      && /usr/local/share/monitoring/grafana/utils/get_client {{iam_url}} {{server_ip}} {{grafana_port}}
+      chmod +x /usr/local/share/dodasts/monitoring/grafana/utils/get_client \
+      && /usr/local/share/dodasts/monitoring/grafana/utils/get_client {{iam_url}} {{server_ip}} {{grafana_port}}
   when: grafana_client_id == "CLIENT_ID" and grafana_client_secret == "CLIENT_SECRET"
 
 - name: prepare variables for monitoring
@@ -65,9 +65,9 @@
             - 3000:3000
           volumes:
             - /tmp/certs/grafana:/tmp/certs/grafana
-            - /usr/local/share/monitoring/grafana/config:/opt/grafana/
-            - /usr/local/share/monitoring/grafana/config/provisioning:/etc/grafana/provisioning
-            - /usr/local/share/monitoring/grafana/dash_models:/opt/dash_models
+            - /usr/local/share/dodasts/monitoring/grafana/config:/opt/grafana/
+            - /usr/local/share/dodasts/monitoring/grafana/config/provisioning:/etc/grafana/provisioning
+            - /usr/local/share/dodasts/monitoring/grafana/dash_models:/opt/dash_models
           environment:
             - GF_SECURITY_ADMIN_USER="{{grafana_admin_user}}"
             - GF_SECURITY_ADMIN_PASSWORD="{{grafana_admin_password}}"

@@ -64,11 +64,11 @@
 - name: build Jupyter Hub
   shell:
     cmd: docker-compose build --no-cache
-    chdir: /usr/local/share/MLinD-INFN
+    chdir: /usr/local/share/dodasts/MLinD-INFN
   when: (run_jupyter | bool)
 
 - name: run Jupyter Hub
   shell:
     cmd: docker-compose up -d
-    chdir: /usr/local/share/MLinD-INFN
+    chdir: /usr/local/share/dodasts/MLinD-INFN
   when: (run_jupyter | bool)

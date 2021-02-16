@@ -13,17 +13,17 @@
 - name: download dodas-x509
   git:
     repo: "https://github.com/DODAS-TS/dodas-x509.git"
-    dest: /usr/local/share/dodas-x509
+    dest: /usr/local/share/dodasts/dodas-x509
     force: yes
 
 - name: compile dodas-x509
   shell:
     cmd: go get github.com/dodas-ts/dodas-x509/pkg/v1 && go build
-    chdir: /usr/local/share/dodas-x509
+    chdir: /usr/local/share/dodasts/dodas-x509
 
 - name: link executable dodas-x509
   shell:
-    cmd: ln -s /usr/local/share/dodas-x509/dodas-x509 /usr/local/bin/dodas-x509
+    cmd: ln -s /usr/local/share/dodasts/dodas-x509/dodas-x509 /usr/local/bin/dodas-x509
     creates: /usr/local/bin/dodas-x509
 
 - name: create certificates

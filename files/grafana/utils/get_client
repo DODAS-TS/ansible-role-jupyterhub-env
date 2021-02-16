@@ -10,7 +10,9 @@ def main():
     )
     lines = [line for line in client.decode("utf-8").split("\n") if line]
 
-    with open("/usr/local/share/monitoring/grafana/config/custom.ini") as cur_config:
+    with open(
+        "/usr/local/share/dodasts/monitoring/grafana/config/custom.ini"
+    ) as cur_config:
         cur_config_string = cur_config.read()
 
     cur_config_string = cur_config_string.replace(
@@ -18,7 +20,7 @@ def main():
     ).replace("CLIENT_SECRET", f'"{lines[-1].strip()}"')
 
     with open(
-        "/usr/local/share/monitoring/grafana/config/custom.ini", "w"
+        "/usr/local/share/dodasts/monitoring/grafana/config/custom.ini", "w"
     ) as cur_config:
         cur_config.write(cur_config_string)
 

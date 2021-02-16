@@ -22,28 +22,28 @@
 # ---------- Create directory for monitoring ----------
 - name: Create directory for monitoring
   file:
-    path: /usr/local/share/monitoring
+    path: /usr/local/share/dodasts/monitoring
     state: directory
     mode: 0755
 
 # ---------- Create directory for prometheus ----------
 - name: Create directory for prometheus
   file:
-    path: /usr/local/share/monitoring/prometheus
+    path: /usr/local/share/dodasts/monitoring/prometheus
     state: directory
     mode: 0755
 
 # ---------- Create directory for prometheus config ----------
 - name: Create directory for prometheus config
   file:
-    path: /usr/local/share/monitoring/prometheus/config
+    path: /usr/local/share/dodasts/monitoring/prometheus/config
     state: directory
     mode: 0755
 
     # ---------- Create directory for prometheus data ----------
 - name: Create directory for prometheus data
   file:
-    path: /usr/local/share/monitoring/prometheus/data
+    path: /usr/local/share/dodasts/monitoring/prometheus/data
     state: directory
     owner: nobody
     group: nogroup
@@ -53,4 +53,4 @@
 - name: Create prometheus config for monitoring from template
   template:
     src: prometheus-config.j2
-    dest: /usr/local/share/monitoring/prometheus/config/prometheus.yml
+    dest: /usr/local/share/dodasts/monitoring/prometheus/config/prometheus.yml
