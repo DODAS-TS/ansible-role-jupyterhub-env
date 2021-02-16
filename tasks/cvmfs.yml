@@ -1,4 +1,13 @@
 ---
+- name: Install fuse [Ubuntu]
+  apt:
+    name: fuse
+    state: present
+    autoclean: yes
+    autoremove: yes
+    update_cache: yes
+  when: ansible_facts['distribution'] == 'Ubuntu'
+
 - name: download docker-img_cvmfs
   git:
     repo: "https://github.com/dodas-ts/docker-img_cvmfs"
@@ -7,7 +16,7 @@
 
 - name: build cvmfs image
   shell:
-    cmd: docker build -t cvmfs .
+    cmd: docker build -t cvmfs . && mkdir -p /cvmfs
     chdir: /usr/local/share/dodasts/docker-img_cvmfs
 
 - name: prepare variables for cvmfs
