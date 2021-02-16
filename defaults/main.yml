@@ -27,3 +27,5 @@ monitoring: yes
 grafana: yes
 grafana_admin_user: ""
 grafana_admin_password: ""
+# cvmfs
+cvmfs_repos: ""

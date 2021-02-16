@@ -1,0 +1,28 @@
+---
+- name: download docker-img_cvmfs
+  git:
+    repo: "https://github.com/dodas-ts/docker-img_cvmfs"
+    dest: /usr/local/share/docker-img_cvmfs
+    force: yes
+
+- name: build cvmfs image
+  shell:
+    cmd: docker build -t cvmfs
+    chdir: /usr/local/share/docker-img_cvmfs
+
+- name: prepare variables for cvmfs
+  set_fact:
+    key_value: "yes"
+    cvmfs_service: |
+      cvmfs:
+          image: cvmfs
+          privileged: true
+          volumes:
+            - type: bind
+              source: /cvmfs
+              target: /cvmfs
+              bind:
+                propagation: rshared
+          environment:
+            - REPO_LIST={{cvmfs_repos}}
+    cacheable: yes

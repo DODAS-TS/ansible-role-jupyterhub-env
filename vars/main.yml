@@ -3,4 +3,5 @@
 nvidia_monitoring: ""
 nvidia_depends: ""
 jupyter_gpu: "WITH_GPU=false"
+cvmfs_service: ""
 prometheus_nvidia: ""

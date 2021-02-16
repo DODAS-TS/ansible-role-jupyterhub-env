@@ -48,7 +48,6 @@
       && /usr/local/share/monitoring/grafana/utils/get_client {{iam_url}} {{server_ip}} {{grafana_port}}
   when: grafana_client_id == "CLIENT_ID" and grafana_client_secret == "CLIENT_SECRET"
 
-# ---------- Enable monitoring also with nvidia ----------
 - name: prepare variables for monitoring
   set_fact:
     key_value: "yes"
