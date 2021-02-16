@@ -1,6 +1,8 @@
 version: "3.9"
 
 services:
+  {{cvmfs_service}}
+  
   jupyterhub:
     depends_on:
       - http_proxy

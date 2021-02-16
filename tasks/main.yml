@@ -51,6 +51,11 @@
   include_tasks: monitoring.yml
   when: (monitoring | bool)
 
+# ---------- Setup CVMFS ----------
+- name: Setup CVMFS
+  include_tasks: cvmfs.yml
+  when: cvmfs_repos != ""
+
 # ---------- Jupyter hub ----------
 - name: prepare Jupyter Hub
   include_tasks: prepare-jupyter-hub.yml
