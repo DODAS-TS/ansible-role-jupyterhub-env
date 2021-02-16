@@ -7,7 +7,7 @@
 
 - name: build cvmfs image
   shell:
-    cmd: docker build -t cvmfs
+    cmd: docker build -t cvmfs .
     chdir: /usr/local/share/docker-img_cvmfs
 
 - name: prepare variables for cvmfs
