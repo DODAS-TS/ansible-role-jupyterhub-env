@@ -16,6 +16,7 @@ run_jupyter: yes
 jupyter_port: "8888"
 jupyter_proxy_token: "test_token"
 iam_url: "" # https://iam.example.url.it
+iam_groups: "" # group1 group2
 server_ip: "" # 192.168.1.42
 grafana_port: "3000"
 grafana_client_id: "CLIENT_ID"
