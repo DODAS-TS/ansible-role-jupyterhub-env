@@ -70,6 +70,8 @@
             - /usr/local/share/monitoring/grafana/config/provisioning:/etc/grafana/provisioning
             - /usr/local/share/monitoring/grafana/dash_models:/opt/dash_models
           environment:
-            - GF_SECURITY_ADMIN_PASSWORD={{grafana_password}}
+            - GF_SECURITY_ADMIN_USER="{{grafana_admin_user}}"
+            - GF_SECURITY_ADMIN_PASSWORD="{{grafana_admin_password}}"
+            - GF_SECURITY_DISABLE_INITIAL_ADMIN_CREATION=true
             - GF_USERS_ALLOW_SIGN_UP=false
     cacheable: yes

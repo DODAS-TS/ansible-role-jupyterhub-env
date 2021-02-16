@@ -24,4 +24,5 @@ grafana_client_secret: "CLIENT_SECRET"
 # monitoring
 monitoring: yes
 grafana: yes
-grafana_password: "gpassword"
+grafana_admin_user: ""
+grafana_admin_password: ""
