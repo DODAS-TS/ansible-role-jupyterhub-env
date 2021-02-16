@@ -9,7 +9,13 @@
   replace:
     path: /usr/local/share/MLinD-INFN/jupyterhub_config.py
     regexp: 'c\.ConfigurableHTTPProxy\.auth_token[a-zA-Z\ \=\"\_]*'
-    replace: "c.ConfigurableHTTPProxy.auth_token = \"{{jupyter_proxy_token}}\""
+    replace: 'c.ConfigurableHTTPProxy.auth_token = "{{jupyter_proxy_token}}"'
+
+- name: "change image in jupyterhub"
+  replace:
+    path: /usr/local/share/MLinD-INFN/jupyterhub_config.py
+    regexp: '\<datalist\ id\=\"images\"\>[\n\t\ \<\>\=\"\/\_\:\-0-9a-zA-Z]*<\/datalist\>'
+    replace: '<datalist id="images"><option value="{{jupyter_image}}">{{jupyter_image|upper}}</option></datalist>'
 
 # ---------- Create directory for jupyterhub ----------
 - name: Create directory for jupyterhub
