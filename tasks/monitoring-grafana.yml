@@ -30,6 +30,8 @@
   shell:
     cmd: go get github.com/dciangot/sts-wire/pkg/core && go build
     chdir: /usr/local/share/dodasts/dodas-IAMClientRec
+  environment:
+    GOPATH: /opt/go
 
 - name: link executable dodas-IAMClientRec
   shell:
