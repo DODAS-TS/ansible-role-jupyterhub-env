@@ -11,6 +11,7 @@
 - name: make cvmfs dir
   shell:
     cmd: mkdir -p /cvmfs
+    creates: /cvmfs
 
 - name: prepare variables for cvmfs
   set_fact:
