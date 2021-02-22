@@ -28,7 +28,7 @@
 
 - name: compile dodas-IAMClientRec
   shell:
-    cmd: go get -d github.com/DODAS-TS/sts-wire/pkg/core && go build
+    cmd: go build
     chdir: /usr/local/share/dodasts/dodas-IAMClientRec
 
 - name: link executable dodas-IAMClientRec
