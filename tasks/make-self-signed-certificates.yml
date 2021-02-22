@@ -1,13 +1,13 @@
 ---
 # ---------- Install IAM client ----------
-- name: Install golang [Ubuntu]
-  apt:
-    name: golang
-    state: present
-    autoclean: yes
-    autoremove: yes
-    update_cache: yes
-  when: ansible_facts['distribution'] == 'Ubuntu'
+- name: Install golang
+  shell:
+    cmd: |
+      wget https://golang.org/dl/go1.16.linux-amd64.tar.gz \
+      && tar -C /usr/local -xzf go1.16.linux-amd64.tar.gz \
+      && echo "export PATH=$PATH:/usr/local/go/bin" > /etc/profile.d/go.sh
+    chdir: /tmp
+    creates: /etc/profile.d/go.sh
 
 # ---------- Self signed certificates ----------
 - name: download dodas-x509
