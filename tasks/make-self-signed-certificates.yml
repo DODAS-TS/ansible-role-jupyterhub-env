@@ -8,7 +8,8 @@
       && echo "export GOROOT=/usr/local/go" >> /etc/profile.d/go.sh \
       && echo "export GOPATH=/opt/go" >> /etc/profile.d/go.sh \
       && echo "export PATH=/usr/local/go/bin:/opt/go/bin:$PATH" >> /etc/profile.d/go.sh \
-      && ln -s /usr/local/go/bin/* /usr/local/bin/
+      && ln -sf /usr/local/go/bin/* /usr/local/bin/
+    warn: False
     chdir: /tmp
     creates:
       - /etc/profile.d/go.sh
