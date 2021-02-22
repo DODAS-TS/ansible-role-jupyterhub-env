@@ -4,7 +4,7 @@
   shell:
     cmd: |
       wget https://golang.org/dl/go1.16.linux-amd64.tar.gz \
-      && tar -C /usr/local -xzf go1.16.linux-amd64.tar.gz \ 
+      && tar -C /usr/local -xzf go1.16.linux-amd64.tar.gz \
       && echo "export GOROOT=/usr/local/go" >> /etc/profile.d/go.sh \
       && echo "export GOPATH=/opt/go" >> /etc/profile.d/go.sh \
       && echo "export PATH=/usr/local/go/bin:/opt/go/bin:$PATH" >> /etc/profile.d/go.sh
