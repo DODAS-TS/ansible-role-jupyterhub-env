@@ -5,7 +5,9 @@
     cmd: |
       wget https://golang.org/dl/go1.16.linux-amd64.tar.gz \
       && tar -C /usr/local -xzf go1.16.linux-amd64.tar.gz \
-      && echo "export PATH=$PATH:/usr/local/go/bin" > /etc/profile.d/go.sh
+      && echo "export GOROOT=/usr/local/go" >> /etc/profile.d/go.sh \
+      && echo "export GOPATH=/opt/go" >> /etc/profile.d/go.sh \
+      && echo "export PATH=/usr/local/go/bin:/opt/go/bin:$PATH" >> /etc/profile.d/go.sh
     chdir: /tmp
     creates: /etc/profile.d/go.sh
 
@@ -20,8 +22,6 @@
   shell:
     cmd: go get github.com/dodas-ts/dodas-x509/pkg/v1 && go build
     chdir: /usr/local/share/dodasts/dodas-x509
-  environment:
-    GOPATH: /opt/go
 
 - name: link executable dodas-x509
   shell:

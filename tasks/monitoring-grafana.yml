@@ -22,16 +22,14 @@
 
 - name: download dodas-IAMClientRec
   git:
-    repo: "https://github.com/dciangot/dodas-IAMClientRec"
+    repo: "https://github.com/DODAS-TS/dodas-IAMClientRec.git"
     dest: /usr/local/share/dodasts/dodas-IAMClientRec
     force: yes
 
 - name: compile dodas-IAMClientRec
   shell:
-    cmd: go get github.com/dciangot/sts-wire/pkg/core && go build
+    cmd: go get github.com/DODAS-TS/sts-wire/pkg/core && go build
     chdir: /usr/local/share/dodasts/dodas-IAMClientRec
-  environment:
-    GOPATH: /opt/go
 
 - name: link executable dodas-IAMClientRec
   shell:
