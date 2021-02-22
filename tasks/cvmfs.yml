@@ -8,17 +8,6 @@
     update_cache: yes
   when: ansible_facts['distribution'] == 'Ubuntu'
 
-- name: download docker-img_cvmfs
-  git:
-    repo: "https://github.com/dodas-ts/docker-img_cvmfs"
-    dest: /usr/local/share/dodasts/docker-img_cvmfs
-    force: yes
-
-- name: build cvmfs image
-  shell:
-    cmd: docker build -t cvmfs .
-    chdir: /usr/local/share/dodasts/docker-img_cvmfs
-
 - name: make cvmfs dir
   shell:
     cmd: mkdir -p /cvmfs
@@ -28,7 +17,7 @@
     key_value: "yes"
     cvmfs_service: |
       cvmfs:
-          image: cvmfs
+          image: dodasts/cvmfs:latest
           privileged: true
           volumes:
             - type: bind
