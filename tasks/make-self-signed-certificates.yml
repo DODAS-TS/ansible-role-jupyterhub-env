@@ -20,6 +20,8 @@
   shell:
     cmd: go get github.com/dodas-ts/dodas-x509/pkg/v1 && go build
     chdir: /usr/local/share/dodasts/dodas-x509
+  environment:
+    GOPATH: /opt/go
 
 - name: link executable dodas-x509
   shell:
