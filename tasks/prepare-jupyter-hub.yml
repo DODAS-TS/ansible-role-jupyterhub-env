@@ -1,19 +1,19 @@
 ---
-- name: download MLinD-INFN
+- name: download single-node-jupyterhub
   git:
-    repo: "https://github.com/dodas-ts/MLinD-INFN"
-    dest: /usr/local/share/dodasts/MLinD-INFN
+    repo: "https://github.com/dodas-ts/single-node-jupyterhub"
+    dest: /usr/local/share/dodasts/single-node-jupyterhub
     force: yes
 
 - name: "change token in jupyterhub"
   replace:
-    path: /usr/local/share/dodasts/MLinD-INFN/jupyterhub_config.py
+    path: /usr/local/share/dodasts/single-node-jupyterhub/jupyterhub_config.py
     regexp: 'c\.ConfigurableHTTPProxy\.auth_token[a-zA-Z\ \=\"\_]*'
     replace: 'c.ConfigurableHTTPProxy.auth_token = "{{jupyter_proxy_token}}"'
 
 - name: "change image in jupyterhub"
   replace:
-    path: /usr/local/share/dodasts/MLinD-INFN/jupyterhub_config.py
+    path: /usr/local/share/dodasts/single-node-jupyterhub/jupyterhub_config.py
     regexp: '\<datalist\ id\=\"images\"\>[\n\t\ \<\>\=\"\/\_\:\-0-9a-zA-Z]*<\/datalist\>'
     replace: '<datalist id="images"><option value="{{jupyter_image}}">{{jupyter_image|upper}}</option></datalist>'
 
@@ -46,4 +46,4 @@
 - name: prepare compose file
   template:
     src: jupyter_hub-compose.j2
-    dest: /usr/local/share/dodasts/MLinD-INFN/docker-compose.yaml
+    dest: /usr/local/share/dodasts/single-node-jupyterhub/docker-compose.yaml
