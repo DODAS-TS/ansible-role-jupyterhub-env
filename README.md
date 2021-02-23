@@ -1,4 +1,4 @@
-# ansible-role-nvidia-docker
+# ansible-role-jupyterhub-env
 
 A role to have a nvidia docker environment
 

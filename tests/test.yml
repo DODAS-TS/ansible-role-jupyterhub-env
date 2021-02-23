@@ -2,4 +2,4 @@
 - hosts: localhost
   become: yes
   roles:
-    - ansible-role-nvidia-docker
+    - ansible-role-jupyterhub-env
