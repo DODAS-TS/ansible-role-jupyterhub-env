@@ -1,7 +1,7 @@
 ---
 - name: download single-node-jupyterhub
   git:
-    repo: "https://github.com/dodas-ts/single-node-jupyterhub"
+    repo: "{{jupyter_repo_url}}"
     dest: /usr/local/share/dodasts/single-node-jupyterhub
     force: yes
 
