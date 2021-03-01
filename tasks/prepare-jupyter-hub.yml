@@ -15,7 +15,17 @@
   replace:
     path: /usr/local/share/dodasts/jupyterhub/jupyterhub_config.py
     regexp: '\<datalist\ id\=\"images\"\>[\n\t\ \<\>\=\"\/\_\:\-0-9a-zA-Z]*<\/datalist\>'
-    replace: '<datalist id="images"><option value="{{jupyter_image}}">{{jupyter_image|upper}}</option></datalist>'
+    replace: |
+      <datalist id="images">
+      {{ jupyter_images.split() | join('\n') }}
+      </datalist>
+
+- name: "insert image list"
+  lineinfile:
+    path: /usr/local/share/dodasts/jupyterhub/jupyterhub_config.py
+    regexp: "{{ item }}"
+    line: <option value="{{ item }}">{{ item|upper}}</option>
+  with_items: "{{ jupyter_images.split() }}"
 
 # ---------- Create directory for jupyterhub ----------
 - name: Create directory for jupyterhub
