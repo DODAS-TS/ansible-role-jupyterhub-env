@@ -8,8 +8,8 @@ services:
       - http_proxy
     build: .
     command:
-      - /opt/conda/bin/python
-      - /opt/conda/bin/jupyterhub
+      - /usr/bin/python3
+      - /usr/local/bin/jupyterhub
       - --debug
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
@@ -20,6 +20,7 @@ services:
       - OAUTH_CALLBACK_URL=https://{{server_ip}}:{{jupyter_port}}/hub/oauth_callback
       - OAUTH_GROUPS={{iam_groups}}
       - {{jupyter_gpu}}
+      - ADMIN_OAUTH_GROUPS={{iam_admin_groups}}
 
   http_proxy:
     image: jupyterhub/configurable-http-proxy
