@@ -13,6 +13,8 @@ api_url = {{iam_url}}/userinfo
 
 # ToDO: fix permissions
 # role_attribute_path = contains(info.groups[*], 'admin') && 'Admin' || contains(info.groups[*], 'editor') && 'Editor' || 'Viewer'
+[security]
+cookie_secure=true
 
 [server]
 domain = {{server_ip}}
