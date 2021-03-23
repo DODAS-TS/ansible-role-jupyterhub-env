@@ -49,6 +49,8 @@
 
 - name: create ram list placeholders
   set_fact:
+    key_value: "yes"
+    cacheable: yes
     list_ram_size_placeholders: "{{ list_ram_sizes | product(['G']) | map('join', '') | list }}"
 
 - name: ram list placeholders
