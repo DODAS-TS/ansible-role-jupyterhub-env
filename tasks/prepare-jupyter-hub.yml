@@ -103,8 +103,8 @@
   template:
     src: jupyter_hub-compose.j2
     dest: /usr/local/share/dodasts/jupyterhub/docker-compose.yaml
- 
-# finally pre-cache default images 
+
+# finally pre-cache default images
 - name: pull an image
   docker_image:
     name: "{{ item }}"
