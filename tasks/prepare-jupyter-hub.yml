@@ -60,7 +60,7 @@
 - name: "change ram size in jupyterhub"
   replace:
     path: /usr/local/share/dodasts/jupyterhub/jupyterhub_config.py
-    regexp: '\<select\ name\=\"mem\"[\n\t\ \<\>\=\"\/\_\:\-0-9a-zA-Z]*<\/select\>[\s]'
+    regexp: '\<\!\-\-\ MEM\ START\ \-\-\>[\n\t\ \<\>\=\"\/\_\:\-0-9a-zA-Z]*\<\!\-\-\ MEM\ END\ \-\-\>'
     replace: |
       <select name="mem" size="1">
         {{ list_ram_size_placeholders | join('\n') }}
