@@ -105,7 +105,6 @@
     dest: /usr/local/share/dodasts/jupyterhub/docker-compose.yaml
 
 # finally pre-cache default images
-- name: pull an image
-  docker_image:
-    name: "{{ item }}"
+- name: pull images
+  command: docker pull "{{ item }}"
   with_items: "{{ jupyter_images.split() }}"
