@@ -72,7 +72,7 @@
   lineinfile:
     path: /usr/local/share/dodasts/jupyterhub/jupyterhub_config.py
     regexp: "{{ item }}"
-    line: <option value="{{ item }}">{{ item }}</option>
+    line: <option value="{{ item }}">{{ item }}B</option>
   with_items: "{{ list_ram_size_placeholders }}"
 
 # ---------- Create directory for jupyterhub ----------
