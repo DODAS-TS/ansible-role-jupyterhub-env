@@ -62,9 +62,11 @@
     path: /usr/local/share/dodasts/jupyterhub/jupyterhub_config.py
     regexp: '\<\!\-\-\ MEM\ START\ \-\-\>[\n\t\ \<\>\=\"\/\_\:\-0-9a-zA-Z]*\<\!\-\-\ MEM\ END\ \-\-\>'
     replace: |
+      <!-- MEM START -->
       <select name="mem" size="1">
         {{ list_ram_size_placeholders | join('\n') }}
       </select>
+      <!-- MEM END -->
 
 - name: "insert ram size list"
   lineinfile:
