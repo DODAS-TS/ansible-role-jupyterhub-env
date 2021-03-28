@@ -64,14 +64,14 @@
     replace: |
       <!-- MEM START -->
       <select name="mem" size="1">
-        {{ list_ram_size_placeholders | join('\n') }}
+        {{ ['ram-size-'] | product(list_ram_size_placeholders) | map('join', '') | join('\n') }}
       </select>
       <!-- MEM END -->
 
 - name: "insert ram size list"
   lineinfile:
     path: /usr/local/share/dodasts/jupyterhub/jupyterhub_config.py
-    regexp: "{{ item }}"
+    regexp: "ram-size-{{ item }}"
     line: <option value="{{ item }}">{{ item }}B</option>
   with_items: "{{ list_ram_size_placeholders }}"
 
