@@ -35,7 +35,7 @@
   set_fact:
     key_value: "yes"
     cacheable: yes
-    ram_giga: "{{ ((ansible_facts.memtotal_mb|int) / 1024)|int }}"
+    ram_giga: "{{ ((ansible_facts.memtotal_mb|int) / 1000)|int }}"
 
 - name: create ram list
   set_fact:
