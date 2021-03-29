@@ -27,6 +27,54 @@
     line: <option value="{{ item }}">{{ item|upper}}</option>
   with_items: "{{ jupyter_images.split() }}"
 
+- name: ram size
+  debug:
+    var: ansible_facts.memtotal_mb
+
+- name: create ram giga var
+  set_fact:
+    key_value: "yes"
+    cacheable: yes
+    ram_giga: "{{ ((ansible_facts.memtotal_mb|int) / 1000)|int }}"
+
+- name: create ram list
+  set_fact:
+    key_value: "yes"
+    cacheable: yes
+    list_ram_sizes: "{{ [1] + range(2, (ram_giga|int) + 1, 2) | list }}"
+
+- name: result ram list
+  debug:
+    var: list_ram_sizes
+
+- name: create ram list placeholders
+  set_fact:
+    key_value: "yes"
+    cacheable: yes
+    list_ram_size_placeholders: "{{ list_ram_sizes | product(['G']) | map('join', '') | list }}"
+
+- name: ram list placeholders
+  debug:
+    var: list_ram_size_placeholders
+
+- name: "change ram size in jupyterhub"
+  replace:
+    path: /usr/local/share/dodasts/jupyterhub/jupyterhub_config.py
+    regexp: '\<\!\-\-\ MEM\ START\ \-\-\>[\n\t\ \<\>\=\"\/\_\:\-0-9a-zA-Z]*\<\!\-\-\ MEM\ END\ \-\-\>'
+    replace: |
+      <!-- MEM START -->
+      <select name="mem" size="1">
+        {{ ['ram-size-'] | product(list_ram_size_placeholders) | map('join', '') | join('\n') }}
+      </select>
+      <!-- MEM END -->
+
+- name: "insert ram size list"
+  lineinfile:
+    path: /usr/local/share/dodasts/jupyterhub/jupyterhub_config.py
+    regexp: "ram-size-{{ item }}"
+    line: <option value="{{ item }}">{{ item }}B</option>
+  with_items: "{{ list_ram_size_placeholders }}"
+
 # ---------- Create directory for jupyterhub ----------
 - name: Create directory for jupyterhub
   file:
