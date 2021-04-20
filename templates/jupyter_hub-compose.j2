@@ -32,10 +32,10 @@ services:
       - --api-port=8001
       - --default-target=http://jupyterhub:8088
       - --error-target=http://jupyterhub:8088/hub/error
-      - --ssl-key=/tmp/certs/jupyter/hostcert.key
-      - --ssl-cert=/tmp/certs/jupyter/hostcert.pem
+      - --ssl-key=/usr/local/share/dodasts/certs/jupyter/hostcert.key
+      - --ssl-cert=/usr/local/share/dodasts/certs/jupyter/hostcert.pem
     volumes:
-      - /tmp/certs/jupyter:/tmp/certs/jupyter
+      - /usr/local/share/dodasts/certs/jupyter:/usr/local/share/dodasts/certs/jupyter
     environment:
       - CONFIGPROXY_AUTH_TOKEN={{jupyter_proxy_token}}
     ports:

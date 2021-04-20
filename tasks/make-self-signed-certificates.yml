@@ -1,4 +1,11 @@
 ---
+# ---------- Create directory for certificates ----------
+- name: Create directory for certificates
+  file:
+    path: /usr/local/share/dodasts/certs
+    state: directory
+    mode: 0755
+
 # ---------- Install IAM client ----------
 - name: Install golang
   shell:
@@ -36,12 +43,12 @@
   shell:
     cmd: |
       dodas-x509 --generate-all --hostname {{server_ip}} \
-      && mkdir -p /tmp/certs/jupyter \
-      && mkdir -p /tmp/certs/grafana \
-      && cp /tmp/hostcert.* /tmp/certs/jupyter \
-      && cp /tmp/hostcert.* /tmp/certs/grafana \
-      && chown -R 472:472 /tmp/certs/grafana \
-      && chown -R nobody:nogroup /tmp/certs/jupyter
+      && mkdir -p /usr/local/share/dodasts/certs/jupyter \
+      && mkdir -p /usr/local/share/dodasts/certs/grafana \
+      && cp /tmp/hostcert.* /usr/local/share/dodasts/certs/jupyter \
+      && cp /tmp/hostcert.* /usr/local/share/dodasts/certs/grafana \
+      && chown -R 472:472 /usr/local/share/dodasts/certs/grafana \
+      && chown -R nobody:nogroup /usr/local/share/dodasts/certs/jupyter
     creates:
-      - /tmp/certs/hostcert.pem
-      - /tmp/certs/hostcert.key
+      - /usr/local/share/dodasts/certs/hostcert.pem
+      - /usr/local/share/dodasts/certs/hostcert.key
