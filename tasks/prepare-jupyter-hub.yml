@@ -103,14 +103,14 @@
   
 - name: modify option
   lineinfile:
-    path: /home/daniele/jupyterhub-ML_INFN/jupyterhub_config.py
+    path: /usr/local/share/dodasts/jupyterhub/jupyterhub_config.py
     regexp: '<option value="Y">Yes</option>'
     line: '<option value="N">Not Available</option>'
   when: (use_gpu|bool == False)
   
 - name: Delete option for GPU
   lineinfile:
-    path: /home/daniele/jupyterhub-ML_INFN/jupyterhub_config.py
+    path: /usr/local/share/dodasts/jupyterhub/jupyterhub_config.py
     state: absent
     regexp: '<option value="N"> No </option>'
   when: (use_gpu|bool == False)
