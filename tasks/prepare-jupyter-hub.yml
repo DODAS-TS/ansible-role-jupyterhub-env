@@ -105,7 +105,6 @@
   lineinfile:
     path: /usr/local/share/dodasts/jupyterhub/jupyterhub_config.py
     regexp: '<option value="Y">Yes</option>'
-    state: absent
     line: '<option value="N">Not Available</option>'
   when: (use_gpu|bool == False)
   
