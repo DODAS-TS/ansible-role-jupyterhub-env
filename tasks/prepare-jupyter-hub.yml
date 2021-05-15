@@ -112,8 +112,8 @@
 - name: Delete option for GPU
   lineinfile:
     path: /usr/local/share/dodasts/jupyterhub/jupyterhub_config.py
-    state: absent
     regexp: '<option value="N"> No </option>'
+    backrefs: yes
   when: (use_gpu|bool == False)
 
 - name: prepare compose file
