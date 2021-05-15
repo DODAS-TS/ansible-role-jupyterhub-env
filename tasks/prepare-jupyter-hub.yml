@@ -104,16 +104,16 @@
 - name: modify option
   lineinfile:
     path: /usr/local/share/dodasts/jupyterhub/jupyterhub_config.py
-    state: present
     regexp: '<option value="Y">Yes</option>'
     line: '<option value="N">Not Available</option>'
+    backrefs: yes
   when: (use_gpu|bool == False)
   
 - name: Delete option for GPU
   lineinfile:
     path: /usr/local/share/dodasts/jupyterhub/jupyterhub_config.py
     regexp: '<option value="N"> No </option>'
-    backrefs: yes
+    state: absent
   when: (use_gpu|bool == False)
 
 - name: prepare compose file
