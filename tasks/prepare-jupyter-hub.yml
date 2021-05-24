@@ -30,25 +30,25 @@
     key_value: "yes"
     jupyterlab_collaborative_service: |
       collab_proxy:
-        build: collab_proxy
-        environment:
-          - JUPYTERHUB_BASE_URL=http://jupyterhub:{{ jupyter_port }}
-          - JUPYTERHUB_API_URL=http://jupyterhub:{{ jupyter_port }}/hub/api
-          - JUPYTERHUB_SERVICE_PREFIX=/services/collab/
-          - JUPYTERHUB_API_TOKEN={{jupyterhub_api_token.stdout | string}}
-          - JUPYTER_TOKEN={{ jupyter_token.stdout | string }}
-        ports:
-          - 8099:8099
-
-      jupyterlab_collab:
-        {{ jupyterlab_collaborative_image_param }}
-        volumes:
-            - /tmp/certs/jupyter:/tmp/certs/jupyter
-            - /usr/local/share/collabspace/:/usr/share/workspace
-        environment:
+          build: collab_proxy
+          environment:
+            - JUPYTERHUB_BASE_URL=http://jupyterhub:{{ jupyter_port }}
+            - JUPYTERHUB_API_URL=http://jupyterhub:{{ jupyter_port }}/hub/api
+            - JUPYTERHUB_SERVICE_PREFIX=/services/collab/
+            - JUPYTERHUB_API_TOKEN={{jupyterhub_api_token.stdout | string}}
             - JUPYTER_TOKEN={{ jupyter_token.stdout | string }}
-        ports:
-          - 8889:8888
+          ports:
+            - 8099:8099
+
+        jupyterlab_collab:
+          {{ jupyterlab_collaborative_image_param }}
+          volumes:
+              - /tmp/certs/jupyter:/tmp/certs/jupyter
+              - /usr/local/share/collabspace/:/usr/share/workspace
+          environment:
+              - JUPYTER_TOKEN={{ jupyter_token.stdout | string }}
+          ports:
+            - 8889:8888
   when: (jupyterhub_collaborative | bool)
 
 - name: add jupyterlab collaborative dependency
