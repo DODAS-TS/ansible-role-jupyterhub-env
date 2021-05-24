@@ -1,20 +1,14 @@
 ---
 - name: download jupyterhub
-  git:
-    repo: "{{ jupyter_repo_url }}"
-    single_branch: yes
-    branch: "main"
-    force: yes
-    dest: /usr/local/share/dodasts/jupyterhub
+  shell: git clone {{ jupyter_repo_url }} /usr/local/share/dodasts/jupyterhub
+  creates:
+    - /usr/local/share/dodasts/jupyterhub
   when: (not (jupyterhub_collaborative | bool))
 
 - name: "download jupyterhub + collaborative service"
-  git:
-    repo: "{{ jupyter_repo_url }}"
-    single_branch: yes
-    branch: "collaborative"
-    force: yes
-    dest: /usr/local/share/dodasts/jupyterhub
+  shell: git clone -b collaborative {{ jupyter_repo_url }} /usr/local/share/dodasts/jupyterhub
+  creates:
+    - /usr/local/share/dodasts/jupyterhub
   when: (jupyterhub_collaborative | bool)
 
 - name: create JUPYTERHUB_API_TOKEN
