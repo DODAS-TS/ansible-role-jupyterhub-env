@@ -49,8 +49,6 @@
             - JUPYTER_TOKEN={{ jupyter_token.stdout | string }}
         ports:
           - 8889:8888
-
-    cacheable: yes
   when: (jupyterhub_collaborative | bool)
 
 - name: add jupyterlab collaborative dependency
