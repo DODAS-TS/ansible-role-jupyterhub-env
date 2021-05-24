@@ -35,7 +35,7 @@
 - name: create certificates
   shell:
     cmd: |
-      dodas-x509 --generate-all --hostname {{server_ip}} \
+      dodas-x509 --generate-all --hostname {{ server_ip }} \
       && mkdir -p /tmp/certs/jupyter \
       && mkdir -p /tmp/certs/grafana \
       && cp /tmp/hostcert.* /tmp/certs/jupyter \

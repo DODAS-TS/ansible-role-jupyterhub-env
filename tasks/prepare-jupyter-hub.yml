@@ -1,16 +1,16 @@
 ---
 - name: download jupyterhub
   git:
-    repo: "{{jupyter_repo_url}}"
+    repo: "{{ jupyter_repo_url }}"
     single_branch: yes
     branch: "main"
     force: yes
     dest: /usr/local/share/dodasts/jupyterhub
   when: (not (jupyterhub_collaborative | bool))
 
-- name: download jupyterhub + collaborative service
+- name: "download jupyterhub + collaborative service"
   git:
-    repo: "{{jupyter_repo_url}}"
+    repo: "{{ jupyter_repo_url }}"
     single_branch: yes
     branch: "collaborative"
     force: yes
@@ -30,7 +30,7 @@
 - name: add jupyterlab collaborative dependency
   set_facts:
     key_value: "yes"
-    jupyterlab_collaborative_image_param: "image: {{jupyterlab_collaborative_image}}"
+    jupyterlab_collaborative_image_param: "image: {{ jupyterlab_collaborative_image }}"
   when: ((jupyterhub_collaborative | bool ) and jupyterlab_collaborative_image != "")
 
 - name: prepare collaborative jupyterlab
@@ -40,21 +40,21 @@
       collab_proxy:
         build: collab_proxy
         environment:
-          - JUPYTERHUB_BASE_URL=http://jupyterhub:{{jupyter_port}}
-          - JUPYTERHUB_API_URL=http://jupyterhub:{{jupyter_port}}/hub/api
+          - JUPYTERHUB_BASE_URL=http://jupyterhub:{{ jupyter_port }}
+          - JUPYTERHUB_API_URL=http://jupyterhub:{{ jupyter_port }}/hub/api
           - JUPYTERHUB_SERVICE_PREFIX=/services/collab/
           - JUPYTERHUB_API_TOKEN={{jupyterhub_api_token.stdout | string}}
-          - JUPYTER_TOKEN={{jupyter_token.stdout | string}}
+          - JUPYTER_TOKEN={{ jupyter_token.stdout | string }}
         ports:
           - 8099:8099
 
       jupyterlab_collab:
-        {{jupyterlab_collaborative_image_param}}
+        {{ jupyterlab_collaborative_image_param }}
         volumes:
             - /tmp/certs/jupyter:/tmp/certs/jupyter
             - /usr/local/share/collabspace/:/usr/share/workspace
         environment:
-            - JUPYTER_TOKEN={{jupyter_token.stdout | string}}
+            - JUPYTER_TOKEN={{ jupyter_token.stdout | string }}
         ports:
           - 8889:8888
 
@@ -71,7 +71,7 @@
   replace:
     path: /usr/local/share/dodasts/jupyterhub/jupyterhub_config.py
     regexp: 'c\.ConfigurableHTTPProxy\.auth_token[a-zA-Z\ \=\"\_]*'
-    replace: 'c.ConfigurableHTTPProxy.auth_token = "{{jupyter_proxy_token}}"'
+    replace: 'c.ConfigurableHTTPProxy.auth_token = "{{ jupyter_proxy_token }}"'
 
 - name: "change image in jupyterhub"
   replace:
@@ -86,7 +86,7 @@
   lineinfile:
     path: /usr/local/share/dodasts/jupyterhub/jupyterhub_config.py
     regexp: "{{ item }}"
-    line: <option value="{{ item }}">{{ item|upper}}</option>
+    line: <option value="{{ item }}">{{ item|upper }}</option>
   with_items: "{{ jupyter_images.split() }}"
 
 - name: ram size

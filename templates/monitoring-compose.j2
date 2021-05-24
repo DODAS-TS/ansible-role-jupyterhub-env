@@ -8,7 +8,7 @@ services:
     depends_on:
       - node_exporter
       - cadvisor
-      {{nvidia_depends}}
+      {{ nvidia_depends }}
     volumes:
       - /usr/local/share/dodasts/monitoring/prometheus/config:/etc/prometheus/
       - /usr/local/share/dodasts/monitoring/prometheus/data:/data
@@ -28,7 +28,7 @@ services:
     expose:
       - 9100
 
-  {{nvidia_monitoring}}
+  {{ nvidia_monitoring }}
 
   cadvisor:
     image: google/cadvisor:latest
@@ -43,7 +43,7 @@ services:
     expose:
       - 8080
   
-  {{grafana_service}}
+  {{ grafana_service }}
 
 networks:
   default:

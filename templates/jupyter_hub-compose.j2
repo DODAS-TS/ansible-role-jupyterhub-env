@@ -1,12 +1,12 @@
 version: "3.9"
 
 services:
-  {{cvmfs_service}}
+  {{ cvmfs_service }}
   
   jupyterhub:
     depends_on:
       - http_proxy
-      {{jupyterlab_collaborative_service_dependency}}
+      {{ jupyterlab_collaborative_service_dependency }}
     build: .
     command:
       - /usr/bin/python3
@@ -17,18 +17,18 @@ services:
       - /usr/local/share/dodasts/jupyterhub/cookies:/srv/jupyterhub/cookies
       - /usr/local/share/dodasts/jupyterhub/db:/srv/jupyterhub/db
     environment:
-      - OAUTH_ENDPOINT={{iam_url}}
-      - OAUTH_CALLBACK_URL=https://{{server_ip}}:{{jupyter_port}}/hub/oauth_callback
-      - OAUTH_GROUPS={{iam_groups}}
-      - {{jupyter_gpu}}
-      - ADMIN_OAUTH_GROUPS={{iam_admin_groups}}
+      - OAUTH_ENDPOINT={{ iam_url }}
+      - OAUTH_CALLBACK_URL=https://{{ server_ip }}:{{ jupyter_port }}/hub/oauth_callback
+      - OAUTH_GROUPS={{ iam_groups }}
+      - {{ jupyter_gpu }}
+      - ADMIN_OAUTH_GROUPS={{ iam_admin_groups }}
 
   http_proxy:
     image: jupyterhub/configurable-http-proxy
     command:
       - configurable-http-proxy
       - --ip=0.0.0.0
-      - --port={{jupyter_port}}
+      - --port={{ jupyter_port }}
       - --api-ip=0.0.0.0
       - --api-port=8001
       - --default-target=http://jupyterhub:8088
@@ -38,12 +38,12 @@ services:
     volumes:
       - /tmp/certs/jupyter:/tmp/certs/jupyter
     environment:
-      - CONFIGPROXY_AUTH_TOKEN={{jupyter_proxy_token}}
+      - CONFIGPROXY_AUTH_TOKEN={{ jupyter_proxy_token }}
     ports:
-      - {{jupyter_port}}:{{jupyter_port}}
+      - {{ jupyter_port }}:{{ jupyter_port }}
       - 8001:8001
     
-  {{jupyterlab_collaborative_service}}
+  {{ jupyterlab_collaborative_service }}
 
 networks:
   default:

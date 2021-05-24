@@ -4,12 +4,12 @@ allow_sign_up = true
 team_ids =
 allowed_organizations =
 name = IAM
-client_id = {{grafana_client_id}}
-client_secret = {{grafana_client_secret}}
+client_id = {{ grafana_client_id }}
+client_secret = {{ grafana_client_secret }}
 scopes = openid profile email
-auth_url = {{iam_url}}/authorize
-token_url = {{iam_url}}/token
-api_url = {{iam_url}}/userinfo
+auth_url = {{ iam_url }}/authorize
+token_url = {{ iam_url }}/token
+api_url = {{ iam_url }}/userinfo
 
 # ToDO: fix permissions
 # role_attribute_path = contains(info.groups[*], 'admin') && 'Admin' || contains(info.groups[*], 'editor') && 'Editor' || 'Viewer'
@@ -17,7 +17,7 @@ api_url = {{iam_url}}/userinfo
 cookie_secure=true
 
 [server]
-domain = {{server_ip}}
+domain = {{ server_ip }}
 protocol = "https"
 cert_file = /tmp/certs/grafana/hostcert.pem
 cert_key = /tmp/certs/grafana/hostcert.key

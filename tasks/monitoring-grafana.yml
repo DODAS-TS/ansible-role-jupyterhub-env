@@ -45,7 +45,7 @@
   shell:
     cmd: |
       chmod +x /usr/local/share/dodasts/monitoring/grafana/utils/get_client \
-      && /usr/local/share/dodasts/monitoring/grafana/utils/get_client {{iam_url}} {{server_ip}} {{grafana_port}}
+      && /usr/local/share/dodasts/monitoring/grafana/utils/get_client {{ iam_url }} {{ server_ip }} {{ grafana_port }}
   when: grafana_client_id == "CLIENT_ID" and grafana_client_secret == "CLIENT_SECRET"
 
 - name: prepare variables for monitoring
@@ -69,8 +69,8 @@
             - /usr/local/share/dodasts/monitoring/grafana/config/provisioning:/etc/grafana/provisioning
             - /usr/local/share/dodasts/monitoring/grafana/dash_models:/opt/dash_models
           environment:
-            - GF_SECURITY_ADMIN_USER={{grafana_admin_user}}
-            - GF_SECURITY_ADMIN_PASSWORD={{grafana_admin_password}}
+            - GF_SECURITY_ADMIN_USER={{ grafana_admin_user }}
+            - GF_SECURITY_ADMIN_PASSWORD={{ grafana_admin_password }}
             - GF_SECURITY_DISABLE_INITIAL_ADMIN_CREATION=true
             - GF_USERS_ALLOW_SIGN_UP=false
     cacheable: yes
