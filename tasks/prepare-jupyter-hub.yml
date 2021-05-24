@@ -1,12 +1,14 @@
 ---
 - name: download jupyterhub
   shell: git clone {{ jupyter_repo_url }} /usr/local/share/dodasts/jupyterhub
+  args:
     creates:
       - /usr/local/share/dodasts/jupyterhub
   when: (not (jupyterhub_collaborative | bool))
 
 - name: "download jupyterhub + collaborative service"
   shell: git clone -b collaborative {{ jupyter_repo_url }} /usr/local/share/dodasts/jupyterhub
+  args:
     creates:
       - /usr/local/share/dodasts/jupyterhub
   when: (jupyterhub_collaborative | bool)
