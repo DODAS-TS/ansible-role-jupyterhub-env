@@ -2,8 +2,70 @@
 - name: download jupyterhub
   git:
     repo: "{{jupyter_repo_url}}"
-    dest: /usr/local/share/dodasts/jupyterhub
+    single_branch: yes
+    branch: "main"
     force: yes
+    dest: /usr/local/share/dodasts/jupyterhub
+  when: (not (jupyterhub_collaborative | bool))
+
+- name: download jupyterhub + collaborative service
+  git:
+    repo: "{{jupyter_repo_url}}"
+    single_branch: yes
+    branch: "collaborative"
+    force: yes
+    dest: /usr/local/share/dodasts/jupyterhub
+  when: (jupyterhub_collaborative | bool)
+
+- name: create JUPYTERHUB_API_TOKEN
+  shell: openssl rand -hex 32
+  register: jupyterhub_api_token
+  when: (jupyterhub_collaborative | bool)
+
+- name: create JUPYTER_TOKEN
+  shell: openssl rand -hex 32
+  register: jupyter_token
+  when: (jupyterhub_collaborative | bool)
+
+- name: add jupyterlab collaborative dependency
+  set_facts:
+    key_value: "yes"
+    jupyterlab_collaborative_image_param: "image: {{jupyterlab_collaborative_image}}"
+  when: ((jupyterhub_collaborative | bool ) and jupyterlab_collaborative_image != "")
+
+- name: prepare collaborative jupyterlab
+  set_fact:
+    key_value: "yes"
+    jupyterlab_collaborative_service: |
+      collab_proxy:
+        build: collab_proxy
+        environment:
+          - JUPYTERHUB_BASE_URL=http://jupyterhub:{{jupyter_port}}
+          - JUPYTERHUB_API_URL=http://jupyterhub:{{jupyter_port}}/hub/api
+          - JUPYTERHUB_SERVICE_PREFIX=/services/collab/
+          - JUPYTERHUB_API_TOKEN={{jupyterhub_api_token.stdout | string}}
+          - JUPYTER_TOKEN={{jupyter_token.stdout | string}}
+        ports:
+          - 8099:8099
+
+      jupyterlab_collab:
+        {{jupyterlab_collaborative_image_param}}
+        volumes:
+            - /tmp/certs/jupyter:/tmp/certs/jupyter
+            - /usr/local/share/collabspace/:/usr/share/workspace
+        environment:
+            - JUPYTER_TOKEN={{jupyter_token.stdout | string}}
+        ports:
+          - 8889:8888
+
+    cacheable: yes
+  when: (jupyterhub_collaborative | bool)
+
+- name: add jupyterlab collaborative dependency
+  set_facts:
+    key_value: "yes"
+    jupyterlab_collaborative_service_dependency: "- collab_proxy"
+  when: (jupyterhub_collaborative | bool)
 
 - name: "change token in jupyterhub"
   replace:

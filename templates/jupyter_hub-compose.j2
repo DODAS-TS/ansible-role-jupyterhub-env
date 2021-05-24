@@ -6,6 +6,7 @@ services:
   jupyterhub:
     depends_on:
       - http_proxy
+      {{jupyterlab_collaborative_service_dependency}}
     build: .
     command:
       - /usr/bin/python3
@@ -41,6 +42,8 @@ services:
     ports:
       - {{jupyter_port}}:{{jupyter_port}}
       - 8001:8001
+    
+  {{jupyterlab_collaborative_service}}
 
 networks:
   default:
