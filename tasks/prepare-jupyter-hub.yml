@@ -24,7 +24,7 @@
   when: (jupyterhub_collaborative | bool)
 
 - name: add jupyterlab collaborative dependency
-  set_facts:
+  set_fact:
     key_value: "yes"
     jupyterlab_collaborative_image_param: "image: {{ jupyterlab_collaborative_image }}"
   when: ((jupyterhub_collaborative | bool ) and jupyterlab_collaborative_image != "")
@@ -58,7 +58,7 @@
   when: (jupyterhub_collaborative | bool)
 
 - name: add jupyterlab collaborative dependency
-  set_facts:
+  set_fact:
     key_value: "yes"
     jupyterlab_collaborative_service_dependency: "- collab_proxy"
   when: (jupyterhub_collaborative | bool)
