@@ -19,6 +19,12 @@
   register: jupyter_token
   when: (jupyterhub_collaborative | bool)
 
+- name: "Write token in config"
+  path: /usr/local/share/dodasts/jupyterhub/jupyterhub_config.py
+    regexp: "API_TOKEN_EXAMPLE"
+    replace: "{{ jupyter_token.stdout | string }}"
+  when: (jupyterhub_collaborative | bool)
+
 - name: add jupyterlab collaborative dependency
   set_fact:
     key_value: "yes"
