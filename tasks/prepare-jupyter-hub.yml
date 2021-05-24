@@ -86,7 +86,7 @@
 - name: create ram giga var
   set_fact:
     key_value: "yes"
-    ram_giga: "{{ ((ansible_facts.memtotal_mb|int) / 1000)|int }}"
+    ram_giga: "{{ ((ansible_facts.memtotal_mb|int) / 1000)| round | int }}"
 
 - name: create ram list
   set_fact:
