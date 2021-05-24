@@ -28,4 +28,3 @@
                 propagation: rshared
           environment:
             - REPO_LIST={{ cvmfs_repos }}
-    cacheable: yes

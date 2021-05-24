@@ -73,4 +73,3 @@
             - GF_SECURITY_ADMIN_PASSWORD={{ grafana_admin_password }}
             - GF_SECURITY_DISABLE_INITIAL_ADMIN_CREATION=true
             - GF_USERS_ALLOW_SIGN_UP=false
-    cacheable: yes

@@ -86,13 +86,11 @@
 - name: create ram giga var
   set_fact:
     key_value: "yes"
-    cacheable: yes
     ram_giga: "{{ ((ansible_facts.memtotal_mb|int) / 1000)|int }}"
 
 - name: create ram list
   set_fact:
     key_value: "yes"
-    cacheable: yes
     list_ram_sizes: "{{ [1] + range(2, (ram_giga|int) + 1, 2) | list }}"
 
 - name: result ram list
@@ -102,7 +100,6 @@
 - name: create ram list placeholders
   set_fact:
     key_value: "yes"
-    cacheable: yes
     list_ram_size_placeholders: "{{ list_ram_sizes | product(['G']) | map('join', '') | list }}"
 
 - name: ram list placeholders
@@ -150,7 +147,6 @@
   set_fact:
     key_value: "yes"
     jupyter_gpu: "WITH_GPU=true"
-    cacheable: yes
   when: (use_gpu | bool)
 
 - name: prepare compose file
