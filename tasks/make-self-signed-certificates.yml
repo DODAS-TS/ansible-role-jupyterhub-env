@@ -36,12 +36,14 @@
   shell:
     cmd: |
       dodas-x509 --generate-all --hostname {{ server_ip }} \
-      && mkdir -p /tmp/certs/jupyter \
-      && mkdir -p /tmp/certs/grafana \
-      && cp /tmp/hostcert.* /tmp/certs/jupyter \
-      && cp /tmp/hostcert.* /tmp/certs/grafana \
-      && chown -R 472:472 /tmp/certs/grafana \
-      && chown -R nobody:nogroup /tmp/certs/jupyter
+      && mkdir -p /usr/local/share/certs/jupyter \
+      && mkdir -p /usr/local/share/certs/grafana \
+      && cp /tmp/hostcert.* /usr/local/share/certs/jupyter \
+      && cp /tmp/hostcert.* /usr/local/share/certs/grafana \
+      && chown -R 472:472 /usr/local/share/certs/grafana \
+      && chown -R nobody:nogroup /usr/local/share/certs/jupyter
     creates:
-      - /tmp/certs/hostcert.pem
-      - /tmp/certs/hostcert.key
+      - /usr/local/share/certs/jupyter/hostcert.pem
+      - /usr/local/share/certs/jupyter/hostcert.key
+      - /usr/local/share/certs/grafana/hostcert.pem
+      - /usr/local/share/certs/grafana/hostcert.key

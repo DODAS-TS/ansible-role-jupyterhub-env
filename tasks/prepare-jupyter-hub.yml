@@ -22,7 +22,7 @@
 - name: "Write token in config"
   path: /usr/local/share/dodasts/jupyterhub/jupyterhub_config.py
     regexp: "API_TOKEN_EXAMPLE"
-    replace: "{{ jupyter_token.stdout | string }}"
+    replace: "{{ jupyterhub_api_token.stdout | string }}"
   when: (jupyterhub_collaborative | bool)
 
 - name: add jupyterlab collaborative dependency
@@ -40,7 +40,7 @@
           environment:
             - JUPYTERHUB_BASE_URL=http://jupyterhub:{{ jupyter_port }}
             - JUPYTERHUB_API_URL=http://jupyterhub:{{ jupyter_port }}/hub/api
-            - JUPYTERHUB_SERVICE_PREFIX=/services/collab/
+            - JUPYTERHUB_SERVICE_PREFIX=/services/Collaborative-Jupyter/
             - JUPYTERHUB_API_TOKEN={{jupyterhub_api_token.stdout | string}}
             - JUPYTER_TOKEN={{ jupyter_token.stdout | string }}
           ports:
@@ -49,7 +49,7 @@
         jupyterlab_collab:
           {{ jupyterlab_collaborative_image_param }}
           volumes:
-              - /tmp/certs/jupyter:/tmp/certs/jupyter
+              - /usr/local/share/certs/jupyter:/usr/local/share/certs/jupyter
               - /usr/local/share/collabspace/:/usr/share/workspace
           environment:
               - JUPYTER_TOKEN={{ jupyter_token.stdout | string }}
