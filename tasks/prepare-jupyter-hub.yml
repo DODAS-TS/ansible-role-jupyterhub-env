@@ -39,8 +39,9 @@
       collab_proxy:
           build: collab_proxy
           environment:
-            - JUPYTERHUB_BASE_URL=http://jupyterhub:{{ jupyter_port }}
-            - JUPYTERHUB_API_URL=http://jupyterhub:{{ jupyter_port }}/hub/api
+            - HOST_IP={{ server_ip }}
+            - JUPYTERHUB_BASE_URL=http://jupyterhub:8088
+            - JUPYTERHUB_API_URL=http://jupyterhub:8088/hub/api
             - JUPYTERHUB_SERVICE_PREFIX=/services/Collaborative-Jupyter/
             - JUPYTERHUB_API_TOKEN={{jupyterhub_api_token.stdout | string}}
             - JUPYTER_TOKEN={{ jupyter_token.stdout | string }}
