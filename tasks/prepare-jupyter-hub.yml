@@ -20,7 +20,8 @@
   when: (jupyterhub_collaborative | bool)
 
 - name: "Write token in config"
-  path: /usr/local/share/dodasts/jupyterhub/jupyterhub_config.py
+  replace:
+    path: /usr/local/share/dodasts/jupyterhub/jupyterhub_config.py
     regexp: "API_TOKEN_EXAMPLE"
     replace: "{{ jupyterhub_api_token.stdout | string }}"
   when: (jupyterhub_collaborative | bool)
