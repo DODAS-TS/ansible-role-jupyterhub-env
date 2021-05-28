@@ -2,41 +2,41 @@
 - name: download jupyterhub
   shell: rm -rf /usr/local/share/dodasts/jupyterhub && \
     git clone {{ jupyter_repo_url }} /usr/local/share/dodasts/jupyterhub
-  when: (not (jupyterhub_collaborative | bool))
+  when: (not (jupyterlab_collaborative | bool))
 
 - name: "download jupyterhub + collaborative service"
   shell: rm -rf /usr/local/share/dodasts/jupyterhub && \
     git clone -b collaborative {{ jupyter_repo_url }} /usr/local/share/dodasts/jupyterhub
-  when: (jupyterhub_collaborative | bool)
+  when: (jupyterlab_collaborative | bool)
 
 - name: create JUPYTERHUB_API_TOKEN
   shell: openssl rand -hex 32
   register: jupyterhub_api_token
-  when: (jupyterhub_collaborative | bool)
+  when: (jupyterlab_collaborative | bool)
 
 - name: create JUPYTER_TOKEN
   shell: openssl rand -hex 32
   register: jupyter_token
-  when: (jupyterhub_collaborative | bool)
+  when: (jupyterlab_collaborative | bool)
 
 - name: "Write token in config"
   replace:
     path: /usr/local/share/dodasts/jupyterhub/jupyterhub_config.py
     regexp: "API_TOKEN_EXAMPLE"
     replace: "{{ jupyterhub_api_token.stdout | string }}"
-  when: (jupyterhub_collaborative | bool)
+  when: (jupyterlab_collaborative | bool)
 
 - name: add jupyterlab collaborative dependency
   set_fact:
     key_value: "yes"
     jupyterlab_collaborative_image_param: "image: {{ jupyterlab_collaborative_image }}"
-  when: ((jupyterhub_collaborative | bool ) and jupyterlab_collaborative_image != "")
+  when: ((jupyterlab_collaborative | bool ) and jupyterlab_collaborative_image != "")
 
 - name: add jupyterlab collaborative gpu
   set_fact:
     key_value: "yes"
     jupyterlab_collaborative_gpu_param: "gpu"
-  when: ((jupyterhub_collaborative | bool ) and (jupyterlab_collaborative_use_gpu | bool))
+  when: ((jupyterlab_collaborative | bool ) and (jupyterlab_collaborative_use_gpu | bool))
 
 - name: prepare collaborative jupyterlab
   set_fact:
@@ -68,13 +68,13 @@
               - JUPYTER_TOKEN={{ jupyter_token.stdout | string }}
           ports:
             - 8889:8888
-  when: (jupyterhub_collaborative | bool)
+  when: (jupyterlab_collaborative | bool)
 
 - name: add jupyterlab collaborative dependency
   set_fact:
     key_value: "yes"
     jupyterlab_collaborative_service_dependency: "- collab_proxy"
-  when: (jupyterhub_collaborative | bool)
+  when: (jupyterlab_collaborative | bool)
 
 - name: "change token in jupyterhub"
   replace:

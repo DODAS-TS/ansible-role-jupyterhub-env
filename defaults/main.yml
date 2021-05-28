@@ -17,8 +17,8 @@ jupyter_repo_url: "https://github.com/dodas-ts/single-node-jupyterhub"
 jupyter_port: "8888"
 jupyter_proxy_token: "test_token"
 jupyter_images: "dodasts/mlinfn-base:v4"
-jupyterhub_collaborative: no
-jupyterhub_collaborative_use_gpu: no
+jupyterlab_collaborative: no
+jupyterlab_collaborative_use_gpu: no
 jupyterlab_collaborative_image: ""
 iam_url: "" # https://iam.example.url.it
 iam_groups: "beta_testers" # group1 group2
