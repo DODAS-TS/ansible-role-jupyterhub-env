@@ -125,23 +125,23 @@
   debug:
     var: list_ram_size_placeholders
 
-- name: "change ram size in jupyterhub"
-  replace:
-    path: /usr/local/share/dodasts/jupyterhub/jupyterhub_config.py
-    regexp: '\<\!\-\-\ MEM\ START\ \-\-\>[\n\t\ \<\>\=\"\/\_\:\-0-9a-zA-Z]*\<\!\-\-\ MEM\ END\ \-\-\>'
-    replace: |
-      <!-- MEM START -->
-      <select name="mem" size="1">
-        {{ ['ram-size-'] | product(list_ram_size_placeholders) | map('join', '') | join('\n') }}
-      </select>
-      <!-- MEM END -->
+#- name: "change ram size in jupyterhub"
+#  replace:
+#    path: /usr/local/share/dodasts/jupyterhub/jupyterhub_config.py
+#    regexp: '\<\!\-\-\ MEM\ START\ \-\-\>[\n\t\ \<\>\=\"\/\_\:\-0-9a-zA-Z]*\<\!\-\-\ MEM\ END\ \-\-\>'
+#    replace: |
+#      <!-- MEM START -->
+#      <select name="mem" size="1">
+#        {{ ['ram-size-'] | product(list_ram_size_placeholders) | map('join', '') | join('\n') }}
+#      </select>
+#      <!-- MEM END -->
 
-- name: "insert ram size list"
-  lineinfile:
-    path: /usr/local/share/dodasts/jupyterhub/jupyterhub_config.py
-    regexp: "ram-size-{{ item }}"
-    line: <option value="{{ item }}">{{ item }}B</option>
-  with_items: "{{ list_ram_size_placeholders }}"
+#- name: "insert ram size list"
+#  lineinfile:
+#    path: /usr/local/share/dodasts/jupyterhub/jupyterhub_config.py
+#    regexp: "ram-size-{{ item }}"
+#    line: <option value="{{ item }}">{{ item }}B</option>
+#  with_items: "{{ list_ram_size_placeholders }}"
 
 # ---------- Create directory for jupyterhub ----------
 - name: Create directory for jupyterhub
