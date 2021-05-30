@@ -35,7 +35,12 @@
 - name: add jupyterlab collaborative gpu
   set_fact:
     key_value: "yes"
-    jupyterlab_collaborative_gpu_param: "gpu"
+    jupyterlab_collaborative_gpu_param: |
+      deploy:
+          resources:
+            reservations:
+              devices:
+                - capabilities: [ gpu ]
   when: ((jupyterlab_collaborative | bool ) and (jupyterlab_collaborative_use_gpu | bool))
 
 - name: prepare collaborative jupyterlab
@@ -56,11 +61,7 @@
 
         jupyterlab_collab:
           {{ jupyterlab_collaborative_image_param }}
-#          deploy:   #spiga
-#            resources:
-#              reservations:
-#                devices:
-#                  - capabilities: [ {{ jupyterlab_collaborative_gpu_param }} ]
+          {{ jupyterlab_collaborative_gpu_param }}
           volumes:
               - /usr/local/share/certs/jupyter:/usr/local/share/certs/jupyter
               - /usr/local/share/collabspace/:/usr/share/workspace
