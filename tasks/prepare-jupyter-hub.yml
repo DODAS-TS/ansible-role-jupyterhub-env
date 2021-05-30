@@ -56,11 +56,11 @@
 
         jupyterlab_collab:
           {{ jupyterlab_collaborative_image_param }}
-          deploy:
-            resources:
-              reservations:
-                devices:
-                  - capabilities: [ {{ jupyterlab_collaborative_gpu_param }} ]
+#          deploy:   #spiga
+#            resources:
+#              reservations:
+#                devices:
+#                  - capabilities: [ {{ jupyterlab_collaborative_gpu_param }} ]
           volumes:
               - /usr/local/share/certs/jupyter:/usr/local/share/certs/jupyter
               - /usr/local/share/collabspace/:/usr/share/workspace
