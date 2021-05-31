@@ -71,6 +71,18 @@
             - 8889:8888
   when: (jupyterlab_collaborative | bool)
 
+- name: prepare backup of user folders
+  set_fact:
+    key_value: "yes"
+    jupyterhub_backup_service: |
+      backup_service:
+          build: backup_service
+          volumes:
+            - /jupyter-users:/source
+            - /jupyter-users-backups:/var/cache/rsnapshot
+
+  when: (jupyter_backup_user_folders | bool)
+
 - name: add jupyterlab collaborative dependency
   set_fact:
     key_value: "yes"
