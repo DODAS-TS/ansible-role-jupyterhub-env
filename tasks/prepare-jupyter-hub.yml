@@ -80,7 +80,7 @@
           volumes:
             - /usr/local/share/collabspace:/source
             - /usr/local/share/collabspace/backup:/var/cache/rsnapshot
-  when: (jupyter_backup_user_folders | bool) and (jupyterlab_collaborative | bool)
+  when: (jupyterlab_collaborative_backup_folders | bool) and (jupyterlab_collaborative | bool)
   tags:
     - hackaton
     - ml-infn

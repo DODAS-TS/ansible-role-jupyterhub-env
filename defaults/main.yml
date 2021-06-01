@@ -17,7 +17,7 @@ jupyter_repo_url: "https://github.com/dodas-ts/single-node-jupyterhub"
 jupyter_port: "8888"
 jupyter_proxy_token: "test_token"
 jupyter_images: "dodasts/mlinfn-base:v4"
-jupyter_backup_user_folders: yes
+jupyterlab_collaborative_backup_folders: yes
 jupyterlab_collaborative: no
 jupyterlab_collaborative_use_gpu: no
 jupyterlab_collaborative_image: ""
