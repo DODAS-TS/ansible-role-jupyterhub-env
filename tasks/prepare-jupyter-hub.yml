@@ -225,7 +225,7 @@
     - ml-infn
 
 - name: Prepare shared backup
-  command: svn checkout https://github.com/tommasoboccali/ml_infn_hackBase/trunk/VM_BACKUP
+  command: svn checkout https://github.com/tommasoboccali/ml_infn_hackBase/trunk/VM_BACKUP .
   args:
     chdir: /jupyter-users/Backup
   tags:
@@ -233,7 +233,7 @@
     - ml-infn
 
 - name: Prepare collabspace
-  command: svn checkout https://github.com/tommasoboccali/ml_infn_hackBase/trunk/VM_COLLABSHARED
+  command: svn checkout https://github.com/tommasoboccali/ml_infn_hackBase/trunk/VM_COLLABSHARED .
   args:
     chdir: /usr/local/share/collabspace
   tags:
