@@ -227,7 +227,7 @@
 - name: Prepare shared backup
   command: svn checkout https://github.com/tommasoboccali/ml_infn_hackBase/trunk/VM_BACKUP .
   args:
-    chdir: /jupyter-users/shared/backup
+    chdir: /jupyter-users/Backup
   tags:
     - hackaton
     - ml-infn
