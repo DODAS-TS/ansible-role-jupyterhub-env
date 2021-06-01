@@ -224,6 +224,24 @@
     - hackaton
     - ml-infn
 
+- name: Create directory 
+  file:
+    path: /jupyter-users/
+    state: directory
+    mode: 0755
+  tags:
+    - hackaton
+    - ml-infn
+
+- name: Create directory 
+  file:
+    path: /jupyter-users/Backup
+    state: directory
+    mode: 0755
+  tags:
+    - hackaton
+    - ml-infn
+
 - name: Prepare shared backup
   command: svn checkout https://github.com/tommasoboccali/ml_infn_hackBase/trunk/VM_BACKUP .
   args:
