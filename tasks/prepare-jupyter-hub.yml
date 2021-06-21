@@ -195,14 +195,14 @@
     - hackaton
     - ml-infn
 
-- name: Create directory for jupyterhub backup
-  file:
-    path: /jupyter-users/shared/backup
-    state: directory
-    mode: 0755
-  tags:
-    - hackaton
-    - ml-infn
+#- name: Create directory for jupyterhub backup
+#  file:
+#    path: /jupyter-users/shared/backup
+#    state: directory
+#    mode: 0755
+#  tags:
+#    - hackaton
+#    - ml-infn
 
 - name: Create directory for jupyterhub collabspace
   file:
@@ -220,6 +220,24 @@
     autoclean: yes
     autoremove: yes
     update_cache: yes
+  tags:
+    - hackaton
+    - ml-infn
+
+- name: Create directory 
+  file:
+    path: /jupyter-users/
+    state: directory
+    mode: 0755
+  tags:
+    - hackaton
+    - ml-infn
+
+- name: Create directory 
+  file:
+    path: /jupyter-users/Backup
+    state: directory
+    mode: 0755
   tags:
     - hackaton
     - ml-infn
