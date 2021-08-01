@@ -68,7 +68,7 @@
           ports:
             - 3000:3000
           volumes:
-            - /tmp/certs/grafana:/tmp/certs/grafana
+            - /usr/local/share/dodasts/certs/grafana:/usr/local/share/dodasts/certs/grafana
             - /usr/local/share/dodasts/monitoring/grafana/config:/opt/grafana/
             - /usr/local/share/dodasts/monitoring/grafana/config/provisioning:/etc/grafana/provisioning
             - /usr/local/share/dodasts/monitoring/grafana/dash_models:/opt/dash_models
