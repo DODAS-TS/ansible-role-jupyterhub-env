@@ -71,20 +71,6 @@
             - 8889:8888
   when: (jupyterlab_collaborative | bool)
 
-- name: prepare backup of collabspace folders
-  set_fact:
-    key_value: "yes"
-    jupyterhub_backup_service: |
-      backup_service:
-          build: backup_service
-          volumes:
-            - /usr/local/share/collabspace:/source
-            - /usr/local/share/collabspace/backup:/var/cache/rsnapshot
-  when: (jupyterlab_collaborative_backup_folders | bool) and (jupyterlab_collaborative | bool)
-  tags:
-    - hackaton
-    - ml-infn
-
 - name: add jupyterlab collaborative dependency
   set_fact:
     key_value: "yes"
@@ -195,15 +181,6 @@
     - hackaton
     - ml-infn
 
-#- name: Create directory for jupyterhub backup
-#  file:
-#    path: /jupyter-users/shared/backup
-#    state: directory
-#    mode: 0755
-#  tags:
-#    - hackaton
-#    - ml-infn
-
 - name: Create directory for jupyterhub collabspace
   file:
     path: /usr/local/share/collabspace
@@ -233,36 +210,6 @@
     - hackaton
     - ml-infn
 
-- name: Create directory
-  file:
-    path: /jupyter-users/Backup
-    state: directory
-    mode: 0755
-  tags:
-    - hackaton
-    - ml-infn
-
-- name: Prepare shared backup
-  command: svn checkout https://github.com/tommasoboccali/ml_infn_hackBase/trunk/VM_BACKUP .
-  args:
-    chdir: /jupyter-users/Backup
-  tags:
-    - hackaton
-    - ml-infn
-
-- name: Prepare collabspace
-  command: svn checkout https://github.com/tommasoboccali/ml_infn_hackBase/trunk/VM_COLLABSHARED .
-  args:
-    chdir: /usr/local/share/collabspace
-  tags:
-    - hackaton
-    - ml-infn
-
-#- name: "prepare variables for jupyter"
-#  set_fact:
-#    key_value: "yes"
-#    jupyter_gpu: "WITH_GPU=true"
-#  when: (use_gpu | bool)
 - name: "prepare variables for jupyter"
   set_fact:
     key_value: "yes"
@@ -276,14 +223,14 @@
     regexp: '<option value="Y">Yes</option>'
     line: '<option value="N">Not Available</option>'
     backrefs: yes
-  when: (use_gpu|bool == False)
+  when: (use_gpu | bool == False)
 
 - name: Delete option for GPU
   lineinfile:
     path: /usr/local/share/dodasts/jupyterhub/jupyterhub_config.py
     regexp: '<option value="N"> No </option>'
     state: absent
-  when: (use_gpu|bool == False)
+  when: (use_gpu | bool == False)
 
 - name: prepare compose file
   template:
