@@ -48,7 +48,8 @@
     key_value: "yes"
     jupyterlab_collaborative_service: |
       collab_proxy:
-          build: collab_proxy
+          # build: collab_proxy
+          image: dodasts/base_collab_proxy:v1
           environment:
             - HOST_IP={{ server_ip }}
             - JUPYTERHUB_BASE_URL=http://jupyterhub:8088
@@ -62,6 +63,7 @@
         jupyterlab_collab:
           {{ jupyterlab_collaborative_image_param }}
           {{ jupyterlab_collaborative_gpu_param }}
+
           volumes:
               - /usr/local/share/certs/jupyter:/usr/local/share/certs/jupyter
               - /usr/local/share/collabspace/:/usr/share/workspace

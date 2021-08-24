@@ -19,7 +19,7 @@ jupyter_proxy_token: "test_token"
 jupyter_images: "dodasts/mlinfn-base:v6"
 jupyterlab_collaborative: no
 jupyterlab_collaborative_use_gpu: no
-jupyterlab_collaborative_image: ""
+jupyterlab_collaborative_image: "dodasts/base_collab:v1"
 iam_url: "" # https://iam.example.url.it
 iam_groups: "beta_testers" # group1 group2
 iam_admin_groups: "" # group1 group2
