@@ -9,6 +9,7 @@ services:
       - http_proxy
       {{ jupyterlab_collaborative_service_dependency }}
     build: .
+    restart: unless-stopped
     command:
       - /usr/bin/python3
       - /usr/local/bin/jupyterhub
@@ -26,6 +27,7 @@ services:
 
   http_proxy:
     image: jupyterhub/configurable-http-proxy
+    restart: unless-stopped
     command:
       - configurable-http-proxy
       - --ip=0.0.0.0
@@ -34,10 +36,10 @@ services:
       - --api-port=8001
       - --default-target=http://jupyterhub:8088
       - --error-target=http://jupyterhub:8088/hub/error
-      - --ssl-key=/usr/local/share/certs/jupyter/hostcert.key
-      - --ssl-cert=/usr/local/share/certs/jupyter/hostcert.pem
+      - --ssl-key=/usr/local/share/dodasts/certs/jupyter/hostcert.key
+      - --ssl-cert=/usr/local/share/dodasts/certs/jupyter/hostcert.pem
     volumes:
-      - /usr/local/share/certs/jupyter:/usr/local/share/certs/jupyter
+      - /usr/local/share/dodasts/certs/jupyter:/usr/local/share/dodasts/certs/jupyter
     environment:
       - CONFIGPROXY_AUTH_TOKEN={{ jupyter_proxy_token }}
     ports:

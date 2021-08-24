@@ -224,7 +224,7 @@
     - hackaton
     - ml-infn
 
-- name: Create directory 
+- name: Create directory
   file:
     path: /jupyter-users/
     state: directory
@@ -233,7 +233,7 @@
     - hackaton
     - ml-infn
 
-- name: Create directory 
+- name: Create directory
   file:
     path: /jupyter-users/Backup
     state: directory
@@ -263,6 +263,27 @@
 #    key_value: "yes"
 #    jupyter_gpu: "WITH_GPU=true"
 #  when: (use_gpu | bool)
+- name: "prepare variables for jupyter"
+  set_fact:
+    key_value: "yes"
+    jupyter_gpu: "WITH_GPU=true"
+    cacheable: yes
+  when: (use_gpu | bool)
+
+- name: modify option
+  lineinfile:
+    path: /usr/local/share/dodasts/jupyterhub/jupyterhub_config.py
+    regexp: '<option value="Y">Yes</option>'
+    line: '<option value="N">Not Available</option>'
+    backrefs: yes
+  when: (use_gpu|bool == False)
+
+- name: Delete option for GPU
+  lineinfile:
+    path: /usr/local/share/dodasts/jupyterhub/jupyterhub_config.py
+    regexp: '<option value="N"> No </option>'
+    state: absent
+  when: (use_gpu|bool == False)
 
 - name: prepare compose file
   template:

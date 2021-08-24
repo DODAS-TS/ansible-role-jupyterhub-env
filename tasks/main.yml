@@ -46,11 +46,6 @@
 - name: Make self signed certificates
   include_tasks: make-self-signed-certificates.yml
 
-# ---------- Setup monitoring ----------
-- name: Setup monitoring
-  include_tasks: monitoring.yml
-  when: (monitoring | bool)
-
 # ---------- Setup CVMFS ----------
 - name: Setup CVMFS
   include_tasks: cvmfs.yml
@@ -72,3 +67,8 @@
     cmd: docker-compose up -d
     chdir: /usr/local/share/dodasts/jupyterhub
   when: (run_jupyter | bool)
+
+  # ---------- Setup monitoring ----------
+- name: Setup monitoring
+  include_tasks: monitoring.yml
+  when: (monitoring | bool)

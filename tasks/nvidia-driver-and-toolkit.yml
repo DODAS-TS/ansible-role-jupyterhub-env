@@ -20,6 +20,11 @@
   #   nvidia_driver_skip_reboot: nvidia.skip_reboot
   when: (install_nvidia_container_toolkit | bool) and (install_nvidia_driver | bool) and ansible_facts['distribution'] == 'Ubuntu'
 
+- name: lock nvidia stuff [Ubuntu]
+  # Lock current version of nvidia driver and cuda stuff installed with nvidia docker role
+  shell: apt-mark hold cuda-drivers-450 nvidia-driver-450
+  when: (install_nvidia_container_toolkit | bool) and (install_nvidia_driver | bool) and ansible_facts['distribution'] == 'Ubuntu'
+
 # ---------- get docker version ----------
 - name: get docker version
   shell: docker -v

@@ -48,11 +48,15 @@
       && /usr/local/share/dodasts/monitoring/grafana/utils/get_client {{ iam_url }} {{ server_ip }} {{ grafana_port }}
   when: grafana_client_id == "CLIENT_ID" and grafana_client_secret == "CLIENT_SECRET"
 
+- name: copy Dockerfile workaround
+  shell: cp /usr/local/share/dodasts/jupyterhub/monitoring/Dockerfile /usr/local/share/dodasts/monitoring/
+
 - name: prepare variables for monitoring
   set_fact:
     key_value: "yes"
     grafana_service: |
       grafana:
+          build: . 
           image: grafana/grafana:latest
           container_name: monitoring_grafana
           depends_on:
@@ -64,7 +68,7 @@
           ports:
             - 3000:3000
           volumes:
-            - /usr/local/share/certs/grafana:/usr/local/share/certs/grafana
+            - /usr/local/share/dodasts/certs/grafana:/usr/local/share/dodasts/certs/grafana
             - /usr/local/share/dodasts/monitoring/grafana/config:/opt/grafana/
             - /usr/local/share/dodasts/monitoring/grafana/config/provisioning:/etc/grafana/provisioning
             - /usr/local/share/dodasts/monitoring/grafana/dash_models:/opt/dash_models
