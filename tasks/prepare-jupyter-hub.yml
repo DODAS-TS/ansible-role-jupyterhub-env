@@ -65,7 +65,7 @@
           {{ jupyterlab_collaborative_gpu_param }}
 
           volumes:
-              - /usr/local/share/certs/jupyter:/usr/local/share/certs/jupyter
+              - /usr/local/share/dodasts/certs/jupyter:/usr/local/share/dodasts/certs/jupyter
               - /usr/local/share/collabspace/:/usr/share/workspace
           environment:
               - JUPYTER_TOKEN={{ jupyter_token.stdout | string }}
