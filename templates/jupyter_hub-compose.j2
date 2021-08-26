@@ -26,6 +26,7 @@ services:
       - JUPYTER_IMAGE_LIST={{ jupyter_images }}
       - JUPYTER_RAM_LIST={{ list_ram_size }}
       - JUPYTER_PROXY_TOKEN={{ jupyter_proxy_token }}
+      - JUPYTERHUB_API_TOKEN={{  jupyterhub_api_token.stdout | string }}
 
   http_proxy:
     image: jupyterhub/configurable-http-proxy
