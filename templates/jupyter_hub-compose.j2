@@ -7,7 +7,7 @@ services:
     depends_on:
       - http_proxy
       {{ jupyterlab_collaborative_service_dependency }}
-    build: .
+    image: dodasts/base_jupyterhub:v1
     restart: unless-stopped
     command:
       - /usr/bin/python3
