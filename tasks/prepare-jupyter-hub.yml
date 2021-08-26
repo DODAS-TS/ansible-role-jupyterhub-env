@@ -115,23 +115,11 @@
     state: directory
     mode: 0755
 
-- name: Create directory for jupyterhub shared
-  file:
-    path: /jupyter-users/shared
-    state: directory
-    mode: 0755
-  tags:
-    - hackaton
-    - ml-infn
-
 - name: Create directory for jupyterhub collabspace
   file:
     path: /usr/local/share/collabspace
     state: directory
     mode: 0755
-  tags:
-    - hackaton
-    - ml-infn
 
 - name: "prepare variables for jupyter"
   set_fact:
