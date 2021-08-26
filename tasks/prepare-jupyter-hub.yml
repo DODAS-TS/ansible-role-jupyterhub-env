@@ -19,13 +19,6 @@
   register: jupyter_token
   when: (jupyterlab_collaborative | bool)
 
-- name: "Write token in config"
-  replace:
-    path: /usr/local/share/dodasts/jupyterhub/jupyterhub_config.py
-    regexp: "API_TOKEN_EXAMPLE"
-    replace: "{{ jupyterhub_api_token.stdout | string }}"
-  when: (jupyterlab_collaborative | bool)
-
 - name: add jupyterlab collaborative dependency
   set_fact:
     key_value: "yes"
@@ -69,6 +62,7 @@
               - /usr/local/share/collabspace/:/usr/share/workspace
           environment:
               - JUPYTER_TOKEN={{ jupyter_token.stdout | string }}
+              - JUPYTERHUB_API_TOKEN={{ jupyterhub_api_token.stdout | string }}
           ports:
             - 8889:8888
   when: (jupyterlab_collaborative | bool)
@@ -79,72 +73,28 @@
     jupyterlab_collaborative_service_dependency: "- collab_proxy"
   when: (jupyterlab_collaborative | bool)
 
-- name: "change token in jupyterhub"
-  replace:
-    path: /usr/local/share/dodasts/jupyterhub/jupyterhub_config.py
-    regexp: 'c\.ConfigurableHTTPProxy\.auth_token[a-zA-Z\ \=\"\_]*'
-    replace: 'c.ConfigurableHTTPProxy.auth_token = "{{ jupyter_proxy_token }}"'
+- name: ram size
+  debug:
+    var: ansible_facts.memtotal_mb
 
-- name: "change image in jupyterhub"
-  replace:
-    path: /usr/local/share/dodasts/jupyterhub/jupyterhub_config.py
-    regexp: '\<datalist\ id\=\"images\"\>[\n\t\ \<\>\=\"\/\_\:\-0-9a-zA-Z]*<\/datalist\>'
-    replace: |
-      <datalist id="images">
-      {{ jupyter_images.split() | join('\n') }}
-      </datalist>
+- name: create ram giga var
+  set_fact:
+    key_value: "yes"
+    ram_giga: "{{ ((ansible_facts.memtotal_mb|int) / 1000)| round | int }}"
 
-- name: "insert image list"
-  lineinfile:
-    path: /usr/local/share/dodasts/jupyterhub/jupyterhub_config.py
-    regexp: "{{ item }}"
-    line: <option value="{{ item }}">{{ item|upper }}</option>
-  with_items: "{{ jupyter_images.split() }}"
+- name: create ram list
+  set_fact:
+    key_value: "yes"
+    list_ram_sizes: "{{ [1] + range(2, (ram_giga|int) + 1, 2) | list }}"
 
-#- name: ram size
-#  debug:
-#    var: ansible_facts.memtotal_mb
+- name: result ram list
+  debug:
+    var: list_ram_sizes
 
-#- name: create ram giga var
-#  set_fact:
-#    key_value: "yes"
-#    ram_giga: "{{ ((ansible_facts.memtotal_mb|int) / 1000)| round | int }}"
-
-#- name: create ram list
-#  set_fact:
-#    key_value: "yes"
-#    list_ram_sizes: "{{ [1] + range(2, (ram_giga|int) + 1, 2) | list }}"
-
-#- name: result ram list
-#  debug:
-#    var: list_ram_sizes
-
-#- name: create ram list placeholders
-#  set_fact:
-#    key_value: "yes"
-#    list_ram_size_placeholders: "{{ list_ram_sizes | product(['G']) | map('join', '') | list }}"
-
-#- name: ram list placeholders
-#  debug:
-#    var: list_ram_size_placeholders
-#
-#- name: "change ram size in jupyterhub"
-#  replace:
-#    path: /usr/local/share/dodasts/jupyterhub/jupyterhub_config.py
-#    regexp: '\<\!\-\-\ MEM\ START\ \-\-\>[\n\t\ \<\>\=\"\/\_\:\-0-9a-zA-Z]*\<\!\-\-\ MEM\ END\ \-\-\>'
-#    replace: |
-#      <!-- MEM START -->
-#      <select name="mem" size="1">
-#        {{ ['ram-size-'] | product(list_ram_size_placeholders) | map('join', '') | join('\n') }}
-#      </select>
-#      <!-- MEM END -->
-
-#- name: "insert ram size list"
-#  lineinfile:
-#    path: /usr/local/share/dodasts/jupyterhub/jupyterhub_config.py
-#    regexp: "ram-size-{{ item }}"
-#    line: <option value="{{ item }}">{{ item }}B</option>
-#  with_items: "{{ list_ram_size_placeholders }}"
+- name: create ram list string
+  set_fact:
+    key_value: "yes"
+    list_ram_size: "{{ list_ram_sizes | product(['G']) | map('join', '') | list | join(',') }}"
 
 # ---------- Create directory for jupyterhub ----------
 - name: Create directory for jupyterhub
@@ -189,21 +139,6 @@
     jupyter_gpu: "WITH_GPU=true"
     cacheable: yes
   when: (use_gpu | bool)
-
-- name: modify option
-  lineinfile:
-    path: /usr/local/share/dodasts/jupyterhub/jupyterhub_config.py
-    regexp: '<option value="Y">Yes</option>'
-    line: '<option value="N">Not Available</option>'
-    backrefs: yes
-  when: (use_gpu | bool == False)
-
-- name: Delete option for GPU
-  lineinfile:
-    path: /usr/local/share/dodasts/jupyterhub/jupyterhub_config.py
-    regexp: '<option value="N"> No </option>'
-    state: absent
-  when: (use_gpu | bool == False)
 
 - name: prepare compose file
   template:

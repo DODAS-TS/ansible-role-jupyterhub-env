@@ -23,6 +23,9 @@ services:
       - OAUTH_GROUPS={{ iam_groups }}
       - {{ jupyter_gpu }}
       - ADMIN_OAUTH_GROUPS={{ iam_admin_groups }}
+      - JUPYTER_IMAGE_LIST={{ jupyter_images }}
+      - JUPYTER_RAM_LIST={{ list_ram_size }}
+      - JUPYTER_PROXY_TOKEN={{ jupyter_proxy_token }}
 
   http_proxy:
     image: jupyterhub/configurable-http-proxy
