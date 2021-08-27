@@ -19,11 +19,22 @@
   register: jupyter_token
   when: (jupyterlab_collaborative | bool)
 
+- name: create jupyterhub proxy token
+  shell: openssl rand -hex 32
+  register: generated_jupyter_proxy_token
+  when: (jupyter_proxy_token == "test_token")
+
 - name: add jupyterlab collaborative dependency
   set_fact:
     key_value: "yes"
     jupyterlab_collaborative_image_param: "image: {{ jupyterlab_collaborative_image }}"
   when: ((jupyterlab_collaborative | bool ) and jupyterlab_collaborative_image != "")
+
+- name: add jupyterlab collaborative gpu
+  set_fact:
+    key_value: "yes"
+    jupyter_proxy_token: generated_jupyter_proxy_token
+  when: (jupyter_proxy_token == "test_token")
 
 # compose gpu support: https://docs.docker.com/compose/gpu-support/
 # deploy:
