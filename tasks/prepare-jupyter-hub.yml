@@ -33,7 +33,7 @@
 - name: add jupyterlab collaborative gpu
   set_fact:
     key_value: "yes"
-    jupyter_proxy_token: { { generated_jupyter_proxy_token | string } }
+    jupyter_proxy_token: "{{ generated_jupyter_proxy_token.stdout | string }}"
   when: (jupyter_proxy_token == "")
 
 # compose gpu support: https://docs.docker.com/compose/gpu-support/
