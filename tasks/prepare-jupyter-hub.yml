@@ -25,15 +25,24 @@
     jupyterlab_collaborative_image_param: "image: {{ jupyterlab_collaborative_image }}"
   when: ((jupyterlab_collaborative | bool ) and jupyterlab_collaborative_image != "")
 
+# compose gpu support: https://docs.docker.com/compose/gpu-support/
+# deploy:
+#   resources:
+#     reservations:
+#       devices:
+#       - driver: nvidia
+#         count: 1
+#         capabilities: [gpu, utility]
 - name: add jupyterlab collaborative gpu
   set_fact:
     key_value: "yes"
     jupyterlab_collaborative_gpu_param: |
       deploy:
-          resources:
-            reservations:
-              devices:
-                - capabilities: [ gpu ]
+            resources:
+              reservations:
+                devices:
+                  - capabilities: [ gpu ]
+
   when: ((jupyterlab_collaborative | bool ) and (jupyterlab_collaborative_use_gpu | bool))
 
 - name: prepare collaborative jupyterlab
