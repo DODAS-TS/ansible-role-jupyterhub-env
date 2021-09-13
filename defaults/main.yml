@@ -4,7 +4,7 @@ use_gpu: no
 # docker
 install_docker: yes
 install_docker_compose: yes
-docker_compose_version: "1.28.2"
+docker_compose_version: "1.29.2"
 # nvidia
 install_nvidia_driver: yes
 install_nvidia_driver_from_cuda: yes
