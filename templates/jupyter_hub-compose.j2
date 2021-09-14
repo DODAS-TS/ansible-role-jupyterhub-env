@@ -7,7 +7,7 @@ services:
     depends_on:
       - http_proxy
       {{ jupyterlab_collaborative_service_dependency }}
-    image: dodasts/base_jupyterhub:v1
+    image: dodasts/snj-base-jhub:latest
     restart: unless-stopped
     command:
       - /usr/bin/python3

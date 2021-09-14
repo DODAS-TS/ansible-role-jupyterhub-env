@@ -16,10 +16,11 @@ run_jupyter: yes
 jupyter_repo_url: "https://github.com/dodas-ts/single-node-jupyterhub"
 jupyter_port: "8888"
 jupyter_proxy_token: ""
-jupyter_images: "dodasts/mlinfn-base:v6" # Comma separated image list
+# https://github.com/DODAS-TS/jupyterhub-ML_INFN/blob/collaborative/Dockerfile
+jupyter_images: "dodasts/snj-base-notebook:latest" # Comma separated image list
 jupyterlab_collaborative: no
 jupyterlab_collaborative_use_gpu: no
-jupyterlab_collaborative_image: "dodasts/base_collab:v1"
+jupyterlab_collaborative_image: "dodasts/snj-base-jlabc:latest"
 iam_url: "" # https://iam.example.url.it
 iam_groups: "beta_testers" # group1 group2
 iam_admin_groups: "" # group1 group2

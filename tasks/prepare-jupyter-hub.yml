@@ -62,7 +62,7 @@
     jupyterlab_collaborative_service: |
       collab_proxy:
           # build: collab_proxy
-          image: dodasts/base_collab_proxy:v1
+          image: dodasts/snj-base-jlabc-proxy:latest
           environment:
             - HOST_IP={{ server_ip }}
             - JUPYTERHUB_BASE_URL=http://jupyterhub:8088
