@@ -13,6 +13,7 @@ services:
       - /usr/bin/python3
       - /usr/local/bin/jupyterhub
       - --debug
+      - --config=/usr/local/share/dodasts/jupyterhub/jupyterhub_config.py
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
       - /usr/local/share/dodasts/jupyterhub/cookies:/usr/local/share/dodasts/jupyterhub/cookies
