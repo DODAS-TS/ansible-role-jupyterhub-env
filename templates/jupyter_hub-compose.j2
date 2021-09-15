@@ -28,7 +28,7 @@ services:
       - JUPYTER_RAM_LIST={{ list_ram_size }}
       - JUPYTER_PROXY_TOKEN={{ jupyter_proxy_token }}
       - JUPYTERHUB_API_TOKEN={{  jupyterhub_api_token.stdout | string }}
-      - JUPYTERHUB_CRYPT_KEY={{  jupyterhub_crypt_key.stdout | string }
+      - JUPYTERHUB_CRYPT_KEY={{  jupyterhub_crypt_key.stdout | string }}
 
   http_proxy:
     image: jupyterhub/configurable-http-proxy
