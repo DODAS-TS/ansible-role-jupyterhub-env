@@ -7,7 +7,7 @@ services:
     depends_on:
       - http_proxy
       {{ jupyterlab_collaborative_service_dependency }}
-    image: dodasts/snj-base-jhub:latest
+    image: {{ compose_base_jhub_image }}
     restart: unless-stopped
     command:
       - /usr/bin/python3
@@ -31,7 +31,7 @@ services:
       - JUPYTERHUB_CRYPT_KEY={{  jupyterhub_crypt_key.stdout | string }}
 
   http_proxy:
-    image: jupyterhub/configurable-http-proxy
+    image: {{ compose_base_http_proxy_image }}
     restart: unless-stopped
     command:
       - configurable-http-proxy

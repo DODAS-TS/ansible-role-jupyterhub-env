@@ -66,7 +66,7 @@
     jupyterlab_collaborative_service: |
       collab_proxy:
           # build: collab_proxy
-          image: dodasts/snj-base-jlabc-proxy:latest
+          image: {{ compose_base_collab_http_proxy_image }}
           environment:
             - HOST_IP={{ server_ip }}
             - JUPYTERHUB_BASE_URL=http://jupyterhub:8088
@@ -160,4 +160,4 @@
 # finally pre-cache default images
 - name: pull images
   command: docker pull "{{ item }}"
-  with_items: "{{ jupyter_images.split() }}"
+  with_items: "{{ jupyter_images.split() + [ jupyterlab_collaborative_image, compose_base_jhub_image, compose_base_http_proxy_image, compose_base_collab_http_proxy_image ]}}"
