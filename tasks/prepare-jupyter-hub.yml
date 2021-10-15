@@ -83,7 +83,7 @@
 
           volumes:
               - /usr/local/share/dodasts/certs/jupyter:/usr/local/share/dodasts/certs/jupyter
-              - /usr/local/share/collabspace/:/usr/share/workspace
+              - /usr/local/share/collabspace/:/usr/share/workspace/collabspace
           environment:
               - JUPYTER_TOKEN={{ jupyter_token.stdout | string }}
               - JUPYTERHUB_API_TOKEN={{ jupyterhub_api_token.stdout | string }}
