@@ -10,3 +10,5 @@
 - name: Execute monitoring role
   include_role:
     name: /tmp/roles/ansible-role-monitoring
+  vars:
+    project_name: single_node_jupyterhub
