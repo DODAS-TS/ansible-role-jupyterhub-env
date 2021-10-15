@@ -161,3 +161,5 @@
 - name: pull images
   command: docker pull "{{ item }}"
   with_items: "{{ jupyter_images.split() + [ jupyterlab_collaborative_image, compose_base_jhub_image, compose_base_http_proxy_image, compose_base_collab_http_proxy_image ]}}"
+  async: 1800 # 30 min
+  poll: 0
