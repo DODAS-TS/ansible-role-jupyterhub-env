@@ -5,34 +5,40 @@ use_gpu: no
 install_docker: yes
 install_docker_compose: yes
 docker_compose_version: "1.29.2"
+
 # nvidia
 install_nvidia_driver: yes
 install_nvidia_driver_from_cuda: yes
 install_nvidia_container_toolkit: yes
 nvidia_driver_skip_reboot: yes
+
 # jupyter
 prepare_jupyter: yes
 run_jupyter: yes
 jupyter_repo_url: "https://github.com/dodas-ts/single-node-jupyterhub"
 jupyter_port: "8888"
 jupyter_proxy_token: ""
+
 # https://github.com/DODAS-TS/jupyterhub-ML_INFN/blob/collaborative/Dockerfile
 jupyter_images: "dodasts/snj-base-notebook:latest" # Comma separated image list
 jupyterlab_collaborative: no
 jupyterlab_collaborative_use_gpu: no
 jupyterlab_collaborative_image: "dodasts/snj-base-jlabc:latest"
+
+# IAM
 iam_url: "" # https://iam.example.url.it
 iam_groups: "beta_testers" # group1 group2
 iam_admin_groups: "" # group1 group2
 server_ip: "" # 192.168.1.42
-grafana_port: "3000"
-grafana_client_id: "CLIENT_ID"
-grafana_client_secret: "CLIENT_SECRET"
+
 # monitoring
 monitoring: yes
+
 grafana: yes
 grafana_port: 3000
 grafana_admin_user: ""
 grafana_admin_password: ""
+grafana_client_id: "CLIENT_ID"
+grafana_client_secret: "CLIENT_SECRET"
 # cvmfs
 cvmfs_repos: ""
