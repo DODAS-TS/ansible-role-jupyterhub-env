@@ -83,7 +83,7 @@
 
           volumes:
               - /usr/local/share/dodasts/certs/jupyter:/usr/local/share/dodasts/certs/jupyter
-              - /usr/local/share/collabspace/:/usr/share/workspace/collabspace
+              - /usr/local/share/collaborativefolder/:/usr/share/workspace/collaborativefolder
           environment:
               - JUPYTER_TOKEN={{ jupyter_token.stdout | string }}
               - JUPYTERHUB_API_TOKEN={{ jupyterhub_api_token.stdout | string }}
@@ -139,9 +139,9 @@
     state: directory
     mode: 0755
 
-- name: Create directory for jupyterhub collabspace
+- name: Create directory for jupyterhub collaborative
   file:
-    path: /usr/local/share/collabspace
+    path: /usr/local/share/collaborativefolder
     state: directory
     mode: 0755
 
