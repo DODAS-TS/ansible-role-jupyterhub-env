@@ -1,6 +1,5 @@
 ---
-# ---------- Get monitoring role ----------
-- name: download dodas-x509
+- name: download monitoring role
   git:
     repo: "https://github.com/DODAS-TS/ansible-role-monitoring.git"
     dest: /tmp/roles/ansible-role-monitoring
@@ -11,14 +10,14 @@
   include_role:
     name: /tmp/roles/ansible-role-monitoring
   vars:
-    project_name: single_node_jupyterhub
-    server_ip: { { server_ip } }
-    iam_url: { { iam_url } }
-    iam_groups: { { iam_groups } }
-    iam_admin_groups: { { iam_admin_groups } }
-    grafana: { { grafana } }
-    grafana_port: { { grafana_port } }
-    grafana_admin_user: { { grafana_admin_user } }
-    grafana_admin_password: { { grafana_admin_password } }
-    grafana_client_id: { { grafana_client_id } }
-    grafana_client_secret: { { grafana_client_secret } }
+    project_name: "single_node_jupyterhub"
+    server_ip: server_ip
+    iam_url: iam_url
+    iam_groups: iam_groups
+    iam_admin_groups: iam_admin_groups
+    grafana: grafana
+    grafana_port: grafana_port
+    grafana_admin_user: grafana_admin_user
+    grafana_admin_password: grafana_admin_password
+    grafana_client_id: grafana_client_id
+    grafana_client_secret: grafana_client_secret
