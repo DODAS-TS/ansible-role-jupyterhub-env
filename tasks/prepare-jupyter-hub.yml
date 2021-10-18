@@ -1,12 +1,17 @@
 ---
 - name: download jupyterhub
-  shell: rm -rf /usr/local/share/dodasts/jupyterhub && \
-    git clone {{ jupyter_repo_url }} /usr/local/share/dodasts/jupyterhub
+  git:
+    repo: "{{ jupyter_repo_url }}"
+    dest: /usr/local/share/dodasts/jupyterhub
+    force: yes
   when: (not (jupyterlab_collaborative | bool))
 
 - name: "download jupyterhub + collaborative service"
-  shell: rm -rf /usr/local/share/dodasts/jupyterhub && \
-    git clone -b collaborative {{ jupyter_repo_url }} /usr/local/share/dodasts/jupyterhub
+  git:
+    repo: "{{ jupyter_repo_url }}"
+    dest: /usr/local/share/dodasts/jupyterhub
+    force: yes
+    version: collaborative
   when: (jupyterlab_collaborative | bool)
 
 - name: create JUPYTERHUB_CRYPT_KEY
