@@ -22,7 +22,6 @@ Variable for the monitoring service:
 - `install_nvidia_driver_from_cuda`: bool (default: yes)
 - `install_nvidia_container_toolkit`: bool (default: yes)
 - `nvidia_driver_skip_reboot`: bool (default: yes)
-
 - `prepare_jupyter`: bool, if you want to setup jupyter (default: yes)
 - `run_jupyter`: bool, if you want to run the jupyterhub compose (default: yes)
 - `jupyter_repo_url`: URL (default: "https://github.com/dodas-ts/single-node-jupyterhub")
