@@ -1,18 +1,46 @@
 ---
-- name: download jupyterhub
-  git:
-    repo: "{{ jupyter_repo_url }}"
-    dest: /usr/local/share/dodasts/jupyterhub
-    force: yes
-  when: (not (jupyterlab_collaborative | bool))
+# ---------- Create directory for jupyterhub ----------
+- name: Create directory for jupyterhub
+  file:
+    path: /usr/local/share/dodasts/jupyterhub
+    state: directory
+    mode: 0755
 
-- name: "download jupyterhub + collaborative service"
-  git:
-    repo: "{{ jupyter_repo_url }}"
-    dest: /usr/local/share/dodasts/jupyterhub
-    force: yes
-    version: collaborative
-  when: (jupyterlab_collaborative | bool)
+- name: Create directory for jupyterhub cookies
+  file:
+    path: /usr/local/share/dodasts/jupyterhub/cookies
+    state: directory
+    mode: 0755
+
+- name: Create directory for jupyterhub db
+  file:
+    path: /usr/local/share/dodasts/jupyterhub/db
+    state: directory
+    mode: 0755
+
+- name: Create directory for jupyter mounts
+  file:
+    path: /jupyter-mounts
+    state: directory
+    mode: 0755
+
+- name: Create directory for jupyter collaborative
+  file:
+    path: /jupyter-mounts/collaborativefolder/
+    state: directory
+    mode: 0755
+
+- name: Create directory for jupyter users
+  file:
+    path: /jupyter-mounts/users/
+    state: directory
+    mode: 0755
+
+- name: Create directory for jupyter shared
+  file:
+    path: /jupyter-mounts/shared/
+    state: directory
+    mode: 0755
 
 - name: create JUPYTERHUB_CRYPT_KEY
   shell: openssl rand -hex 32
@@ -124,31 +152,6 @@
   set_fact:
     key_value: "yes"
     list_ram_size: "{{ list_ram_sizes | product(['G']) | map('join', '') | list | join(',') }}"
-
-# ---------- Create directory for jupyterhub ----------
-- name: Create directory for jupyterhub
-  file:
-    path: /usr/local/share/dodasts/jupyterhub
-    state: directory
-    mode: 0755
-
-- name: Create directory for jupyterhub cookies
-  file:
-    path: /usr/local/share/dodasts/jupyterhub/cookies
-    state: directory
-    mode: 0755
-
-- name: Create directory for jupyterhub db
-  file:
-    path: /usr/local/share/dodasts/jupyterhub/db
-    state: directory
-    mode: 0755
-
-- name: Create directory for jupyterhub collaborative
-  file:
-    path: /usr/local/share/collaborativefolder
-    state: directory
-    mode: 0755
 
 - name: "prepare variables for jupyter"
   set_fact:

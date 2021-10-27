@@ -15,7 +15,6 @@ nvidia_driver_skip_reboot: yes
 # jupyter
 prepare_jupyter: yes
 run_jupyter: yes
-jupyter_repo_url: "https://github.com/dodas-ts/single-node-jupyterhub"
 jupyter_port: "8888"
 jupyter_proxy_token: ""
 
