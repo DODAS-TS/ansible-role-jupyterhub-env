@@ -13,7 +13,7 @@
     cmd: mkdir -p /cvmfs
     creates: /cvmfs
 
-- name: prepare variables for cvmfs
+- name: prepare variable for cvmfs
   set_fact:
     key_value: "yes"
     cvmfs_service: |
@@ -28,3 +28,8 @@
                 propagation: rshared
           environment:
             - REPO_LIST={{ cvmfs_repos }}
+
+- name: prepare compose variable for cvmfs
+  set_fact:
+    key_value: "yes"
+    jupyter_with_cvmfs: true

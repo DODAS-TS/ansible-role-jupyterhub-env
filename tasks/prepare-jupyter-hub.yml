@@ -88,7 +88,7 @@
 
           volumes:
               - /usr/local/share/dodasts/certs/jupyter:/usr/local/share/dodasts/certs/jupyter
-              - /usr/local/share/collaborativefolder/:/usr/share/workspace/collaborativefolder
+              - /jupyter-mounts/collaborativefolder/:/jupyter-workspace/collaborativefolder
           environment:
               - JUPYTER_TOKEN={{ jupyter_token.stdout | string }}
               - JUPYTERHUB_API_TOKEN={{ jupyterhub_api_token.stdout | string }}
