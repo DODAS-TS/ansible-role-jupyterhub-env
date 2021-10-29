@@ -31,6 +31,7 @@ services:
       - JUPYTERHUB_CRYPT_KEY={{  jupyterhub_crypt_key.stdout | string }}
       - JUPYTER_WITH_CVMFS={{ jupyter_with_cvmfs }}
       - DEFAULT_SPAWNER={{ jupyter_default_spawner }}
+      - POST_START_CMD={{ jupyter_post_start_cmd }}
 
   http_proxy:
     image: {{ compose_base_http_proxy_image }}
