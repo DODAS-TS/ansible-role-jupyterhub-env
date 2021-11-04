@@ -46,6 +46,12 @@
   shell: openssl rand -hex 32
   register: jupyterhub_crypt_key
 
+- name: set JUPYTER_COLLAB_SERVICE
+  set_fact:
+    key_value: "yes"
+    jupyter_collab_service: true
+  when: (jupyterlab_collaborative | bool)
+
 - name: create JUPYTERHUB_API_TOKEN
   shell: openssl rand -hex 32
   register: jupyterhub_api_token

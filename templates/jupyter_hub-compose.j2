@@ -32,6 +32,7 @@ services:
       - JUPYTER_WITH_CVMFS={{ jupyter_with_cvmfs }}
       - DEFAULT_SPAWNER={{ jupyter_default_spawner }}
       - POST_START_CMD={{ jupyter_post_start_cmd }}
+      - JUPYTER_COLLAB_SERVICE={{ jupyter_collab_service }}
 
   http_proxy:
     image: {{ compose_base_http_proxy_image }}

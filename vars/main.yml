@@ -13,3 +13,4 @@ jupyterlab_collaborative_image_param: "image: dodasts/snj-base-jlabc:latest"
 jupyterlab_collaborative_gpu_param: ""
 prometheus_nvidia: ""
 jupyter_with_cvmfs: false
+jupyter_collab_service: false

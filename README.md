@@ -62,6 +62,7 @@ The following string variables will be filled with the docker service informatio
 - `jupyterlab_collaborative_gpu_param`: string (default: `""`)
 - `prometheus_nvidia`: string (default: `""`)
 - `jupyter_with_cvmfs`: bool (default: `false`)
+- `jupyter_collab_service`: bool (default: `false`)
 
 Dependencies
 ------------
