@@ -164,7 +164,7 @@
     key_value: "yes"
     jupyter_gpu: "WITH_GPU=true"
     cacheable: yes
-  when: (use_gpu | bool)
+  when: (jupyter_use_gpu | bool)
 
 - name: prepare compose file
   template:

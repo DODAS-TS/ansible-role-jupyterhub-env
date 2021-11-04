@@ -1,6 +1,4 @@
 ---
-# Input var defaults
-use_gpu: no
 # docker
 install_docker: yes
 install_docker_compose: yes
@@ -20,6 +18,7 @@ jupyter_proxy_token: ""
 
 # https://github.com/DODAS-TS/jupyterhub-ML_INFN/blob/collaborative/Dockerfile
 jupyter_images: "dodasts/snj-base-lab:latest" # Comma separated image list
+jupyter_use_gpu: no
 jupyter_default_spawner: "LAB"
 jupyter_post_start_cmd: ""
 jupyterlab_collaborative: no
