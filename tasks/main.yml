@@ -60,7 +60,6 @@
 # ---------- Jupyter hub ----------
 - name: prepare Jupyter Hub
   include_tasks: prepare-jupyter-hub.yml
-  when: (prepare_jupyter | bool)
 
 - name: run Jupyter Hub
   shell:
