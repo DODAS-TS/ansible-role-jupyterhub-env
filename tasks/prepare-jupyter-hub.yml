@@ -67,13 +67,13 @@
   register: generated_jupyter_proxy_token
   when: (jupyter_proxy_token == "")
 
-- name: add jupyterlab collaborative dependency
+- name: change default jupyterlab collaborative image
   set_fact:
     key_value: "yes"
     jupyterlab_collaborative_image_param: "image: {{ jupyterlab_collaborative_image }}"
   when: ((jupyterlab_collaborative | bool ) and jupyterlab_collaborative_image != "")
 
-- name: add jupyterlab collaborative gpu
+- name: add jupyter_proxy_token
   set_fact:
     key_value: "yes"
     jupyter_proxy_token: "{{ generated_jupyter_proxy_token.stdout | string }}"
