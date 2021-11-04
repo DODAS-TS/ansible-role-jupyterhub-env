@@ -14,7 +14,6 @@ Role Variables
 
 Variable for the monitoring service:
 
-- `use_gpu`: bool, if the GPU can be used or not (default: `no`)
 - `install_docker`: bool (default: `yes`)
 - `install_docker_compose`: bool (default: `yes`)
 - `docker_compose_version`: string (default: `"1.29.2"`)
@@ -63,7 +62,7 @@ The following string variables will be filled with the docker service informatio
 - `prometheus_nvidia`: string (default: `""`)
 - `jupyter_with_cvmfs`: bool (default: `false`)
 - `jupyter_collab_service`: bool (default: `false`)
-- `use_gpu`: bool, if the GPU will be used or not (default: `no`)
+- `use_gpu`: bool, if the GPU can be used or not (default: `no`)
 
 Dependencies
 ------------
