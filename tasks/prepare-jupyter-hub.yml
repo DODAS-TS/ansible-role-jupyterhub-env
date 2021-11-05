@@ -103,7 +103,8 @@
     key_value: "yes"
     jupyterlab_collaborative_service: |
       collab_proxy:
-          # build: collab_proxy
+          depends_on: 
+            - jupyterlab_collab
           image: {{ compose_base_collab_http_proxy_image }}
           environment:
             - HOST_IP={{ server_ip }}
