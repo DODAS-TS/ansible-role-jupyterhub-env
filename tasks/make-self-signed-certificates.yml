@@ -10,7 +10,7 @@
 - name: Install golang
   shell:
     cmd: |
-      wget https://golang.org/dl/go1.17.2.linux-amd64.tar.gz \
+      wget -O go1.17.2.linux-amd64.tar.gz https://golang.org/dl/go1.17.2.linux-amd64.tar.gz \
       && rm -rf /usr/local/go \
       && tar -C /usr/local -xzf go1.17.2.linux-amd64.tar.gz \
       && echo "export GOROOT=/usr/local/go" >> /etc/profile.d/go.sh \
