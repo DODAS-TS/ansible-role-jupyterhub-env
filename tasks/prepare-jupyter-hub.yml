@@ -55,7 +55,6 @@
 - name: create JUPYTERHUB_API_TOKEN
   shell: openssl rand -hex 32
   register: jupyterhub_api_token
-  when: (jupyterlab_collaborative | bool)
 
 - name: create JUPYTER_TOKEN
   shell: openssl rand -hex 32
