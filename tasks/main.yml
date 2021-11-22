@@ -5,6 +5,12 @@
     msg: "distro {{ ansible_facts['distribution'] }} not supported"
   when: ansible_facts['distribution'] != 'Ubuntu' and ansible_os_family != 'RedHat'
 
+- name: Check if GPU is used
+  set_fact:
+    key_value: "yes"
+    use_gpu: yes
+  when: ((jupyter_use_gpu | bool) or (jupyterlab_collaborative_use_gpu | bool))
+
 # ---------- Update Ubuntu ----------
 - name: Update [Ubuntu]
   apt:
@@ -54,13 +60,6 @@
 # ---------- Jupyter hub ----------
 - name: prepare Jupyter Hub
   include_tasks: prepare-jupyter-hub.yml
-  when: (prepare_jupyter | bool)
-
-- name: build Jupyter Hub
-  shell:
-    cmd: docker-compose build --no-cache
-    chdir: /usr/local/share/dodasts/jupyterhub
-  when: (run_jupyter | bool)
 
 - name: run Jupyter Hub
   shell:

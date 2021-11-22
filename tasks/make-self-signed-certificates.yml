@@ -10,8 +10,9 @@
 - name: Install golang
   shell:
     cmd: |
-      wget https://golang.org/dl/go1.16.linux-amd64.tar.gz \
-      && tar -C /usr/local -xzf go1.16.linux-amd64.tar.gz \
+      wget -O go1.17.3.linux-amd64.tar.gz https://golang.org/dl/go1.17.3.linux-amd64.tar.gz \
+      && rm -rf /usr/local/go \
+      && tar -C /usr/local -xzf go1.17.3.linux-amd64.tar.gz \
       && echo "export GOROOT=/usr/local/go" >> /etc/profile.d/go.sh \
       && echo "export GOPATH=/opt/go" >> /etc/profile.d/go.sh \
       && echo "export PATH=/usr/local/go/bin:/opt/go/bin:$PATH" >> /etc/profile.d/go.sh \
@@ -42,7 +43,7 @@
 - name: create certificates
   shell:
     cmd: |
-      dodas-x509 --generate-all --hostname {{server_ip}} \
+      dodas-x509 --generate-all --hostname {{ server_ip }} \
       && mkdir -p /usr/local/share/dodasts/certs/jupyter \
       && mkdir -p /usr/local/share/dodasts/certs/grafana \
       && cp /tmp/hostcert.* /usr/local/share/dodasts/certs/jupyter \
@@ -50,5 +51,7 @@
       && chown -R 472:472 /usr/local/share/dodasts/certs/grafana \
       && chown -R nobody:nogroup /usr/local/share/dodasts/certs/jupyter
     creates:
-      - /usr/local/share/dodasts/certs/hostcert.pem
-      - /usr/local/share/dodasts/certs/hostcert.key
+      - /usr/local/share/dodasts/certs/jupyter/hostcert.pem
+      - /usr/local/share/dodasts/certs/jupyter/hostcert.key
+      - /usr/local/share/dodasts/certs/grafana/hostcert.pem
+      - /usr/local/share/dodasts/certs/grafana/hostcert.key
