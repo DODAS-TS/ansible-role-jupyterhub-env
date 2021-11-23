@@ -1,4 +1,4 @@
-# ansible-role-jupyterhub-env
+# ansible-role-jupyterhub-env [![Ansible Lint](https://github.com/DODAS-TS/ansible-role-jupyterhub-env/actions/workflows/ansible-lint.yml/badge.svg)](https://github.com/DODAS-TS/ansible-role-jupyterhub-env/actions/workflows/ansible-lint.yml)
 
 A role to setup a node with a jupyterhub that spawns jupyterlab with or without GPU utilization and a monitoring service.
 
