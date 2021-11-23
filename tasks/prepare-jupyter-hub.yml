@@ -64,19 +64,19 @@
 - name: create jupyterhub proxy token
   shell: openssl rand -hex 32
   register: generated_jupyter_proxy_token
-  when: (jupyter_proxy_token == "")
+  when: (jupyter_proxy_token|lenght == 0)
 
 - name: change default jupyterlab collaborative image
   set_fact:
     key_value: "yes"
     jupyterlab_collaborative_image_param: "image: {{ jupyterlab_collaborative_image }}"
-  when: ((jupyterlab_collaborative | bool ) and jupyterlab_collaborative_image != "")
+  when: ((jupyterlab_collaborative | bool ) and (jupyterlab_collaborative_image|lenght > 0))
 
 - name: add jupyter_proxy_token
   set_fact:
     key_value: "yes"
     jupyter_proxy_token: "{{ generated_jupyter_proxy_token.stdout | string }}"
-  when: (jupyter_proxy_token == "")
+  when: (jupyter_proxy_token|lenght == 0)
 
 # compose gpu support: https://docs.docker.com/compose/gpu-support/
 # deploy:
@@ -103,7 +103,7 @@
     key_value: "yes"
     jupyterlab_collaborative_service: |
       collab_proxy:
-          depends_on: 
+          depends_on:
             - jupyterlab_collab
           image: {{ compose_base_collab_http_proxy_image }}
           restart: unless-stopped
@@ -112,7 +112,7 @@
             - JUPYTERHUB_BASE_URL=http://jupyterhub:8088
             - JUPYTERHUB_API_URL=http://jupyterhub:8088/hub/api
             - JUPYTERHUB_SERVICE_PREFIX=/services/Collaborative-Jupyter/
-            - JUPYTERHUB_API_TOKEN={{jupyterhub_api_token.stdout | string}}
+            - JUPYTERHUB_API_TOKEN={{ jupyterhub_api_token.stdout | string }}
             - JUPYTER_TOKEN={{ jupyter_token.stdout | string }}
           ports:
             - 8099:8099
@@ -176,6 +176,6 @@
 # finally pre-cache default images
 - name: pull images
   command: docker pull "{{ item }}"
-  with_items: "{{ jupyter_images.split() + [ jupyterlab_collaborative_image, compose_base_jhub_image, compose_base_http_proxy_image, compose_base_collab_http_proxy_image ]}}"
+  with_items: "{{ jupyter_images.split() + [ jupyterlab_collaborative_image, compose_base_jhub_image, compose_base_http_proxy_image, compose_base_collab_http_proxy_image ] }}"
   async: 1800 # 30 min
   poll: 0
