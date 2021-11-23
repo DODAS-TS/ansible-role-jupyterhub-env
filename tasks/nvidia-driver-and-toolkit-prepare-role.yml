@@ -2,13 +2,13 @@
 # ---------- Gen nvidia driver role ----------
 - name: get nvidia.nvidia_driver role
   shell:
-    cmd: ansible-galaxy install -f -c -i -p /tmp/roles nvidia.nvidia_driver
+    cmd: ansible-galaxy install -f -c -i -p /etc/ansible/roles nvidia.nvidia_driver
 
 # ---------- Fix reboot cmd ----------
 # Only supported in Ansible >= 2.7
 - name: "change reboot command for Ansible < 2.7"
   replace:
-    path: /tmp/roles/nvidia.nvidia_driver/tasks/main.yml
+    path: /etc/ansible/roles/nvidia.nvidia_driver/tasks/main.yml
     regexp: 'reboot\:'
     replace: "shell: reboot"
   when: ansible_version.major == 2 and ansible_version.minor < 7
@@ -16,12 +16,12 @@
 # ---------- change defaults ----------
 - name: "change nvidia_driver_skip_reboot to {{ nvidia_driver_skip_reboot }}"
   replace:
-    path: /tmp/roles/nvidia.nvidia_driver/defaults/main.yml
+    path: /etc/ansible/roles/nvidia.nvidia_driver/defaults/main.yml
     regexp: 'nvidia_driver_skip_reboot\:\ no'
     replace: "nvidia_driver_skip_reboot: {{ nvidia_driver_skip_reboot }}"
 
 - name: "change nvidia_driver_ubuntu_install_from_cuda_repo to {{ install_nvidia_driver_from_cuda }}"
   replace:
-    path: /tmp/roles/nvidia.nvidia_driver/defaults/main.yml
+    path: /etc/ansible/roles/nvidia.nvidia_driver/defaults/main.yml
     regexp: 'nvidia_driver_ubuntu_install_from_cuda_repo\:\ no'
     replace: "nvidia_driver_ubuntu_install_from_cuda_repo: {{ install_nvidia_driver_from_cuda }}"

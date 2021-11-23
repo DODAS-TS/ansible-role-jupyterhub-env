@@ -2,14 +2,14 @@
 - name: download monitoring role
   git:
     repo: "https://github.com/DODAS-TS/ansible-role-monitoring.git"
-    dest: /tmp/roles/ansible-role-monitoring
+    dest: /etc/ansible/roles/ansible-role-monitoring
     force: yes
     version: v1.0.0
 
 # ---------- Execute monitoring role ----------
 - name: Execute monitoring role
   include_role:
-    name: /tmp/roles/ansible-role-monitoring
+    name: /etc/ansible/roles/ansible-role-monitoring
   vars:
     monitoring_project_name: "single_node_jupyterhub"
     monitoring_server_ip: "{{ server_ip }}"
