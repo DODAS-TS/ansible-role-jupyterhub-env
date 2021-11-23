@@ -1,7 +1,5 @@
 ---
 # vars file for ansible-role-jupyterhub-env
-nvidia_monitoring: ""
-nvidia_depends: ""
 jupyter_gpu: "WITH_GPU=false"
 cvmfs_service: ""
 compose_base_jhub_image: "dodasts/snj-base-jhub:v1.0.0-snj"
@@ -11,7 +9,6 @@ jupyterlab_collaborative_service: ""
 jupyterlab_collaborative_service_dependency: ""
 jupyterlab_collaborative_image_param: "image: dodasts/snj-base-jlabc:v1.0.0-snj"
 jupyterlab_collaborative_gpu_param: ""
-prometheus_nvidia: ""
 jupyter_with_cvmfs: false
 jupyter_collab_service: false
 use_gpu: no

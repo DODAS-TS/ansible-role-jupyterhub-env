@@ -48,8 +48,6 @@ Variable for the monitoring service:
 
 The following string variables will be filled with the docker service information:
 
-- `nvidia_monitoring`: string (default: `""`)
-- `nvidia_depends`: string (default: `""`)
 - `jupyter_gpu`: string (default: `"WITH_GPU=false"`)
 - `cvmfs_service`: string (default: `""`)
 - `compose_base_jhub_image`: string (default: `"dodasts/snj-base-jhub:v1.0.0-snj"`)
@@ -59,7 +57,6 @@ The following string variables will be filled with the docker service informatio
 - `jupyterlab_collaborative_service_dependency`: string (default: `""`)
 - `jupyterlab_collaborative_image_param`: string (default: `"image: dodasts/snj-base-jlabc:v1.0.0-snj"`)
 - `jupyterlab_collaborative_gpu_param`: string (default: `""`)
-- `prometheus_nvidia`: string (default: `""`)
 - `jupyter_with_cvmfs`: bool (default: `false`)
 - `jupyter_collab_service`: bool (default: `false`)
 - `use_gpu`: bool, if the GPU can be used or not (default: `no`)
