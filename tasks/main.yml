@@ -55,7 +55,7 @@
 # ---------- Setup CVMFS ----------
 - name: Setup CVMFS
   include_tasks: cvmfs.yml
-  when: cvmfs_repos|lenght > 0
+  when: cvmfs_repos|length > 0
 
 # ---------- Jupyter hub ----------
 - name: prepare Jupyter Hub
