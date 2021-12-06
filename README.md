@@ -28,6 +28,8 @@ Variable for the monitoring service:
 - `jupyter_use_gpu`: bool, if to enable the jupyter notebook to use the GPU (default: `no`)
 - `jupyter_default_spawner`: string, indicates to start with lab or notebook (possible values: ["LAB", "NOTEBOOK"])
 - `jupyter_post_start_cmd`: string, the command to run after jupyter spawned (default: "")
+- `jupyter_host_mount_dir`: path of base mount point in the host machine (default: "")
+- `jupyter_mount_dir`: path of mount point in the jupyter env (default: "")
 - `jupyterlab_collaborative`: bool, if to deploy the collaborative service (default: `no`)
 - `jupyterlab_collaborative_use_gpu`: bool, if to enable the collaborative service to use the GPU (default: `no`)
 - `jupyterlab_collaborative_image`: string, the collaborative Docker image (default: `"dodasts/snj-base-jlabc:v1.0.0-snj"`)
