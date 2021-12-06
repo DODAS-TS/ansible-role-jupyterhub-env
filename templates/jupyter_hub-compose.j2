@@ -33,6 +33,8 @@ services:
       - DEFAULT_SPAWNER={{ jupyter_default_spawner }}
       - POST_START_CMD={{ jupyter_post_start_cmd }}
       - JUPYTER_COLLAB_SERVICE={{ jupyter_collab_service }}
+      - DOCKER_NOTEBOOK_MOUNT_DIR={{ jupyter_host_mount_dir }}
+      - DOCKER_NOTEBOOK_DIR={{ jupyter_mount_dir }}
 
   http_proxy:
     image: {{ compose_base_http_proxy_image }}
