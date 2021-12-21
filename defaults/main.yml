@@ -41,5 +41,6 @@ grafana_admin_user: ""
 grafana_admin_password: ""
 grafana_client_id: "CLIENT_ID"
 grafana_client_secret: "CLIENT_SECRET"
+grafana_image: "dodasts/monitoring-grafana:v1.0.1-monitoring"
 # cvmfs
 cvmfs_repos: ""
