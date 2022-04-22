@@ -2,7 +2,7 @@
 # vars file for ansible-role-jupyterhub-env
 jupyter_gpu: "WITH_GPU=false"
 cvmfs_service: ""
-compose_base_jhub_image: "dodasts/snj-base-jhub:v1.0.0-snj"
+compose_base_jhub_image: "{{ jupyter_hub_image }}"
 compose_base_http_proxy_image: "jupyterhub/configurable-http-proxy"
 compose_base_collab_http_proxy_image: "dodasts/snj-base-jlabc-proxy:v1.0.0-snj"
 jupyterlab_collaborative_service: ""
