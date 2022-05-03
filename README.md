@@ -36,6 +36,7 @@ Variable for the monitoring service:
 - `iam_url`: URL of the IAM service
 - `iam_groups`: string with the name of the IAM groups allowed (space separated)
 - `iam_admin_groups`: string with the name of the IAM groups that will be admin (space separated)
+- `iam_subject` : token subject of the user deploying the service
 - `server_ip`: string with the ip of the current server
 - `monitoring`: bool, if to deploy the monitoring service (default: `yes`)
 - `grafana`:  "yes" if you want to setup also grafana

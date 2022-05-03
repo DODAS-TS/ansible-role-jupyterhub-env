@@ -32,6 +32,7 @@ iam_url: "" # https://iam.example.url.it
 iam_groups: "beta_testers" # group1 group2
 iam_admin_groups: "" # group1 group2
 server_ip: "" # 192.168.1.42
+iam_subject: ""
 
 # monitoring
 monitoring: yes
