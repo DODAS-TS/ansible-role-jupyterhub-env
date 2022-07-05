@@ -169,9 +169,9 @@
   when: (jupyter_use_gpu | bool)
 
 - block:
-  - name: Register iam client
+  - name: register iam client
     uri:
-      url: "{{ iam_url }}/register" 
+      url: "{{ iam_url }}/register"
       validate_certs: "no"
       method: POST
       status_code: 201
