@@ -194,7 +194,7 @@
 
   - name: Save client info
     copy:
-      content: "{{iam_response.json}}"
+      content: "{{ iam_response.json }}"
       dest: "/usr/local/share/dodasts/jupyterhub/cookies/.client-iam.json"
 
 - name: prepare compose file
@@ -202,8 +202,8 @@
     src: jupyter_hub-compose.j2
     dest: /usr/local/share/dodasts/jupyterhub/docker-compose.yaml
   vars:
-    iam_client_id: "{{iam_response.json.client_id}}"
-    iam_client_secret: "{{iam_response.json.client_secret}}"
+    iam_client_id: "{{ iam_response.json.client_id }}"
+    iam_client_secret: "{{ iam_response.json.client_secret }}"
 
 # finally pre-cache default images
 - name: pull images
