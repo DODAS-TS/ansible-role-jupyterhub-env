@@ -57,7 +57,7 @@
 
 # ---------- test nvidia container toolkit ----------
 - name: test nvidia container toolkit
-  shell: docker run --rm --gpus all nvidia/cuda:11.0-base nvidia-smi
+  shell: docker run --rm --gpus all nvidia/cuda:11.0.3-base nvidia-smi
   register: docker_nvidia_test
   when: (install_nvidia_container_toolkit | bool)
 
