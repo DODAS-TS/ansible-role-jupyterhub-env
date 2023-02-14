@@ -1,12 +1,10 @@
 ---
 - name: Download monitoring role
   ansible.builtin.git:
-    # repo: "https://github.com/DODAS-TS/ansible-role-monitoring.git"
-    repo: "https://github.com/mginfn/ansible-role-monitoring.git"
+    repo: "https://github.com/DODAS-TS/ansible-role-monitoring.git"
     dest: /etc/ansible/roles/ansible-role-monitoring
     force: true
-    # version: v1.1.0
-    version: feature/fix-docker-compose-nvidia-support
+    version: v1.2.0
 
 # ---------- Execute monitoring role ----------
 - name: Execute monitoring role
