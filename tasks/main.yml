@@ -1,19 +1,19 @@
 ---
 # ---------- check OS ----------
-- name: check OS
-  fail:
+- name: Check OS
+  ansible.builtin.fail:
     msg: "distro {{ ansible_facts['distribution'] }} not supported"
   when: ansible_facts['distribution'] != 'Ubuntu' and ansible_os_family != 'RedHat'
 
 - name: Check if GPU is used
-  set_fact:
+  ansible.builtin.set_fact:
     key_value: "yes"
     use_gpu: yes
   when: ((jupyter_use_gpu | bool) or (jupyterlab_collaborative_use_gpu | bool))
 
 # ---------- Update Ubuntu ----------
 - name: Update [Ubuntu]
-  apt:
+  ansible.builtin.apt:
     update_cache: yes
     upgrade: yes
     autoclean: yes
@@ -21,53 +21,60 @@
   when: ansible_facts['distribution'] == 'Ubuntu'
 
 # ---------- Docker ----------
-- name: install docker [Ubuntu]
-  include_tasks: Ubuntu-docker.yml
+- name: Install docker [Ubuntu]
+  ansible.builtin.include_tasks: Ubuntu-docker.yml
   when: (install_docker | bool) and ansible_facts['distribution'] == "Ubuntu"
 
-- name: start and enable docker service
-  systemd:
+- name: Start and enable docker service
+  ansible.builtin.systemd:
     name: docker
     state: started
     enabled: yes
 
 # ---------- Docker compose ----------
-- name: install docker compose [Ubuntu]
-  include_tasks: Ubuntu-docker-compose.yml
+- name: Install docker compose [Ubuntu]
+  ansible.builtin.include_tasks: Ubuntu-docker-compose.yml
   when: (install_docker_compose | bool) and ansible_facts['distribution'] == "Ubuntu"
 
-# ---------- Nvidia stuff ----------
-- name: Nvidia stuff
-  include_tasks: nvidia-driver-and-toolkit.yml
+# ---------- GPU support ----------
+- name: Add GPU support
+  # include_tasks: nvidia-driver-and-toolkit.yml
+  ansible.builtin.include_tasks: gpu-support.yaml
+  vars:
+    enable_gpu: true
+    gpu_support_role: git+https://baltig.infn.it/infn-cloud/ansible-role-gpu-support,v1.0.0
+    nvidia_driver_branch: "515"
+    nvidia_driver_ubuntu_install_from_cuda_repo: true
+    nvidia_driver_skip_reboot: true
   when: (use_gpu | bool)
 
 # ---------- reload docker service ----------
-- name: reload docker service
-  systemd:
+- name: Reload docker service
+  ansible.builtin.systemd:
     name: docker
     # Force reload
     state: reloaded
 
 # ---------- Make self signed certificates ----------
 - name: Make self signed certificates
-  include_tasks: make-self-signed-certificates.yml
+  ansible.builtin.include_tasks: make-self-signed-certificates.yml
 
 # ---------- Setup CVMFS ----------
 - name: Setup CVMFS
-  include_tasks: cvmfs.yml
+  ansible.builtin.include_tasks: cvmfs.yml
   when: cvmfs_repos|length > 0
 
 # ---------- Jupyter hub ----------
-- name: prepare Jupyter Hub
-  include_tasks: prepare-jupyter-hub.yml
+- name: Prepare Jupyter Hub
+  ansible.builtin.include_tasks: prepare-jupyter-hub.yml
 
-- name: run Jupyter Hub
-  shell:
+- name: Run Jupyter Hub
+  ansible.builtin.shell:
     cmd: docker-compose up -d
     chdir: /usr/local/share/dodasts/jupyterhub
   when: (run_jupyter | bool)
 
   # ---------- Setup monitoring ----------
 - name: Setup monitoring
-  include_tasks: monitoring.yml
+  ansible.builtin.include_tasks: monitoring.yml
   when: (monitoring | bool)
