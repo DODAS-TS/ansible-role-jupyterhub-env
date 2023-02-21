@@ -46,6 +46,7 @@
     nvidia_driver_branch: "515"
     nvidia_driver_ubuntu_install_from_cuda_repo: true
     nvidia_driver_skip_reboot: true
+    gpu_partition_flavor: "{{ gpu_partition_flavor }}"
   when: (use_gpu | bool)
 
 # ---------- reload docker service ----------

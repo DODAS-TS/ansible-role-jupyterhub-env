@@ -9,6 +9,7 @@ install_nvidia_driver: yes
 install_nvidia_driver_from_cuda: yes
 install_nvidia_container_toolkit: yes
 nvidia_driver_skip_reboot: yes
+gpu_partition_flavor: "None"
 
 # jupyter
 run_jupyter: yes

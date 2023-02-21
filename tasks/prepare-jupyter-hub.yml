@@ -211,3 +211,21 @@
   with_items: "{{ jupyter_images.split() + [ jupyterlab_collaborative_image, compose_base_jhub_image, compose_base_http_proxy_image, compose_base_collab_http_proxy_image ] }}"
   async: 1800 # 30 min
   poll: 0
+
+# ---------- Collect MIG GPU Information from nvidia-smi ----------
+- name: Collect MIG GPU UUIDs
+  shell:
+    cmd: nvidia-smi -L | grep MIG | awk '{print $6}' | cut -d')' -f1 | paste -s -d, -
+  register: reg_gpu_uuid
+  when: (gpu_partition_flavor != "None" ) and (use_gpu | bool))
+
+# ---------- Extract MIG GPU UUID from nvidia-smi ----------
+- name: Extract MIG GPU UUIDs
+  set_fact: 
+    gpu_uuid={{ reg_gpu_uuid.stdout | string }}
+  when: (gpu_partition_flavor != "None" ) and (use_gpu | bool))
+
+# ---------- JupyterHub config editing to support partitioned GPUs ----------
+- name: Edit JupyterHub config file
+  include_tasks: jupyterhub-partitioned-gpus.yml
+  when: ((gpu_partition_flavor != "None") and (use_gpu | bool))
