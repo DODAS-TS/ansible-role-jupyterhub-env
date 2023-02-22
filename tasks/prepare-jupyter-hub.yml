@@ -197,21 +197,6 @@
       content: "{{ iam_response.json }}"
       dest: "/usr/local/share/dodasts/jupyterhub/cookies/.client-iam.json"
 
-- name: prepare compose file
-  template:
-    src: jupyter_hub-compose.j2
-    dest: /usr/local/share/dodasts/jupyterhub/docker-compose.yaml
-  vars:
-    iam_client_id: "{{ iam_response.json.client_id }}"
-    iam_client_secret: "{{ iam_response.json.client_secret }}"
-
-# finally pre-cache default images
-- name: pull images
-  command: docker pull "{{ item }}"
-  with_items: "{{ jupyter_images.split() + [ jupyterlab_collaborative_image, compose_base_jhub_image, compose_base_http_proxy_image, compose_base_collab_http_proxy_image ] }}"
-  async: 1800 # 30 min
-  poll: 0
-
 # ---------- Collect MIG GPU Information from nvidia-smi ----------
 - name: Collect MIG GPU UUIDs
   shell:
@@ -244,4 +229,18 @@
     cacheable: yes
   when: ((gpu_partition_flavor != "None" ) and (jupyter_use_gpu | bool))
 
-  
+# ---------- Prepare Compose File ----------
+- name: prepare compose file
+  template:
+    src: jupyter_hub-compose.j2
+    dest: /usr/local/share/dodasts/jupyterhub/docker-compose.yaml
+  vars:
+    iam_client_id: "{{ iam_response.json.client_id }}"
+    iam_client_secret: "{{ iam_response.json.client_secret }}"
+
+# finally pre-cache default images
+- name: pull images
+  command: docker pull "{{ item }}"
+  with_items: "{{ jupyter_images.split() + [ jupyterlab_collaborative_image, compose_base_jhub_image, compose_base_http_proxy_image, compose_base_collab_http_proxy_image ] }}"
+  async: 1800 # 30 min
+  poll: 0  
