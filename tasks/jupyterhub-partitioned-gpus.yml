@@ -1,0 +1,58 @@
+---
+# ---------- Collect jupyterhub_config.py from docker image ----------
+- name: start jupyterhub container
+  shell: docker run -it -d --name jupyterhub-temp {{ compose_base_jhub_image }} bash
+
+- name: copy jupyterhub_config file locally
+  shell: docker cp jupyterhub-temp:/srv/jupyterhub/jupyterhub_config.py /tmp/jupyterhub_config.py
+
+- name: stop jupyterhub container
+  shell: docker stop jupyterhub-temp && docker rm jupyterhub-temp
+
+# ---------- Edit jupyterhub_config.py to use MIG GPUs ----------
+- name: Replace Strings in jupyterhub_config.py
+  replace:
+    path: /tmp/jupyterhub_config.py
+    regexp: '"privileged": True,'
+    replace: '"privileged": False,'
+    backup: yes
+
+- name: Replace Strings in jupyterhub_config.py
+  replace:
+    path: /tmp/jupyterhub_config.py
+    regexp: '"Count": 1,  # enable all gpus'
+    replace: '"DeviceIDs": [get_available_gpu_id()]'
+    backup: yes
+
+- name: Add new python functions
+  lineinfile:
+    path: /tmp/jupyterhub_config.py
+    state: present
+    line: "{{ item }}"
+    insertbefore: 'c = get_config()'
+  with_items:
+  - 'import docker'
+  - 'def get_all_gpus_ids():'
+  - '    all_gpu_ids = os.environ.get("ALL_GPUS_IDS")'
+  - '    print(all_gpu_ids) '
+  - '    return set(all_gpu_ids.split(","))'
+  - 'def get_used_gpu_ids():'
+  - '    client = docker.APIClient(base_url="unix://var/run/docker.sock")'
+  - '    gpu_uuid = set()'
+  - '    running_containers_ids = client.containers()'
+  - '    for id in running_containers_ids:'
+  - '        my_c = client.inspect_container(id["Id"])'
+  - '        if my_c["HostConfig"]["DeviceRequests"] is not None:'
+  - '            gpu_uuid.add(my_c["HostConfig"]["DeviceRequests"][0]["DeviceIDs"][0])'
+  - '    return gpu_uuid'
+  - 'def get_available_gpu_ids():'
+  - '    all_gpus_ids = get_all_gpus_ids()'
+  - '    used_gpu_ids = get_used_gpu_ids()'
+  - '    return all_gpus_ids.difference(used_gpu_ids)'
+  - 'def get_available_gpu_id():'
+  - '    ids = get_available_gpu_ids()'
+  - '    if len(ids) > 0:'
+  - '        return next(iter(ids))  # get the first element of the set'
+  - '    else:'
+  - '        raise Exception("No available GPUs")'
+  - ''
