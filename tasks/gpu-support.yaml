@@ -22,4 +22,5 @@
   vars:
     node_type: 'worker'
     node_cluster_type: ''
+    gpu_model: "{{ gpu_model }}"
     gpu_partition_flavor: "{{ gpu_partition_flavor }}"
