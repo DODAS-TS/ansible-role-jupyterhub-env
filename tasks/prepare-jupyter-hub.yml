@@ -217,20 +217,20 @@
   shell:
     cmd: nvidia-smi -L | grep MIG | awk '{print $6}' | cut -d')' -f1 | paste -s -d, -
   register: reg_gpu_uuid
-  when: (gpu_partition_flavor != "None" ) and (jupyter_use_gpu | bool))
+  when: ((gpu_partition_flavor != "None" ) and (jupyter_use_gpu | bool))
 
 # ---------- Extract MIG GPU UUID from nvidia-smi ----------
 - name: Extract MIG GPU UUIDs
   set_fact: 
     gpu_uuid={{ reg_gpu_uuid.stdout | string }}
-  when: (gpu_partition_flavor != "None" ) and (jupyter_use_gpu | bool))
+  when: ((gpu_partition_flavor != "None" ) and (jupyter_use_gpu | bool))
 
 - name: "prepare ALL_GPU_UUIDs env var for jupyterhub"
   set_fact:
     key_value: "yes"
     jupyterhub_all_gpu_uuids: "ALL_GPU_UUIDs={{ gpu_uuid }}"
     cacheable: yes
-  when: (gpu_partition_flavor != "None" ) and (jupyter_use_gpu | bool))
+  when: ((gpu_partition_flavor != "None" ) and (jupyter_use_gpu | bool))
 
 # ---------- JupyterHub config editing to support partitioned GPUs ----------
 - name: Edit JupyterHub config file
