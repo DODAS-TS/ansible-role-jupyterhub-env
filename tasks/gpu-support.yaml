@@ -23,4 +23,4 @@
     node_type: 'worker'
     node_cluster_type: ''
     gpu_model: "A100"
-    gpu_partition_flavor: "None"
+    gpu_partition_flavor: "7x 1g.10gb MIG GPUs"
