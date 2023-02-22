@@ -25,6 +25,7 @@ services:
       - OAUTH_GROUPS={{ iam_groups }}
       - OAUTH_SUB={{ iam_subject }}
       - {{ jupyter_gpu }}
+      - {{ jupyterhub_all_gpu_uuids }}
       - ADMIN_OAUTH_GROUPS={{ iam_admin_groups }}
       - IAM_CLIENT_ID={{ iam_client_id }}
       - IAM_CLIENT_SECRET={{ iam_client_secret }}
