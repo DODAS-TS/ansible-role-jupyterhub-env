@@ -33,7 +33,7 @@
   with_items:
   - 'import docker'
   - 'def get_all_gpus_ids():'
-  - '    all_gpu_ids = os.environ.get("ALL_GPUS_IDS")'
+  - '    all_gpu_ids = os.environ.get("ALL_GPU_UUIDs")'
   - '    print(all_gpu_ids) '
   - '    return set(all_gpu_ids.split(","))'
   - 'def get_used_gpu_ids():'
