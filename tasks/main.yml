@@ -36,6 +36,14 @@
   ansible.builtin.include_tasks: Ubuntu-docker-compose.yml
   when: (install_docker_compose | bool) and ansible_facts['distribution'] == "Ubuntu"
 
+- name: Show gpu_partition_flavor
+  debug:
+    var: gpu_partition_flavor
+
+- name: Show jupyter_use_gpu
+  debug:
+    var: jupyter_use_gpu
+
 # ---------- GPU support ----------
 - name: Add GPU support
   # include_tasks: nvidia-driver-and-toolkit.yml
