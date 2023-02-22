@@ -236,3 +236,12 @@
 - name: Edit JupyterHub config file
   include_tasks: jupyterhub-partitioned-gpus.yml
   when: ((gpu_partition_flavor != "None") and (jupyter_use_gpu | bool))
+
+- name: "prepare ALL_GPU_UUIDs env var for jupyterhub"
+  set_fact:
+    key_value: "yes"
+    jupyterhub_mount_config: "- /tmp/jupyterhub_config.py:/srv/jupyterhub/jupyterhub_config.py"
+    cacheable: yes
+  when: ((gpu_partition_flavor != "None" ) and (jupyter_use_gpu | bool))
+
+  

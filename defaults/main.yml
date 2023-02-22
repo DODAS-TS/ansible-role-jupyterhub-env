@@ -28,6 +28,8 @@ jupyterlab_collaborative: no
 jupyterlab_collaborative_use_gpu: no
 jupyterlab_collaborative_image: "dodasts/snj-base-jlabc:v1.0.0-snj"
 jupyterhub_all_gpu_uuids: "ALL_GPU_UUIDs=None"
+jupyterhub_mount_config: ""
+
 # IAM
 iam_url: "" # https://iam.example.url.it
 iam_groups: "beta_testers" # group1 group2
