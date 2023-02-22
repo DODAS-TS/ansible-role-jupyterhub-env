@@ -16,11 +16,18 @@
     gpu_support_role_install.rc == 0 and
     ('is already installed, skipping' not in gpu_support_role_install.stdout)
 
+- name: Show gpu_model
+  debug:
+    var: gpu_model
+
+- name: Show gpu_partition_flavor
+  debug:
+    var: gpu_partition_flavor
+
 - name: Include ansible-role-gpu-support
   ansible.builtin.include_role:
     name: "{{ gpu_support_role_name }}"
   vars:
     node_type: 'worker'
     node_cluster_type: ''
-    gpu_model: "A100"
-    gpu_partition_flavor: "7x 1g.10gb MIG GPUs"
+    
