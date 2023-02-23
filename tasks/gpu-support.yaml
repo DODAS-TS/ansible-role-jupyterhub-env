@@ -21,5 +21,4 @@
     name: "{{ gpu_support_role_name }}"
   vars:
     node_type: 'worker'
-    node_cluster_type: ''
-    
+    node_cluster_type: ''    
