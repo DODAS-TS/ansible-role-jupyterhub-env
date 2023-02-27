@@ -4,7 +4,7 @@
     repo: "https://github.com/ffornari90/ansible-role-monitoring-env.git"
     dest: /etc/ansible/roles/ansible-role-monitoring
     force: yes
-    version: v0.0.5
+    version: v0.0.1
 
 # ---------- Execute monitoring role ----------
 - name: Execute monitoring role
