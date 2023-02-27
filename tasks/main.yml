@@ -1,19 +1,19 @@
 ---
 # ---------- check OS ----------
-- name: Check OS
-  ansible.builtin.fail:
+- name: check OS
+  fail:
     msg: "distro {{ ansible_facts['distribution'] }} not supported"
   when: ansible_facts['distribution'] != 'Ubuntu' and ansible_os_family != 'RedHat'
 
 - name: Check if GPU is used
-  ansible.builtin.set_fact:
+  set_fact:
     key_value: "yes"
     use_gpu: yes
   when: ((jupyter_use_gpu | bool) or (jupyterlab_collaborative_use_gpu | bool))
 
 # ---------- Update Ubuntu ----------
 - name: Update [Ubuntu]
-  ansible.builtin.apt:
+  apt:
     update_cache: yes
     upgrade: yes
     autoclean: yes
@@ -21,20 +21,21 @@
   when: ansible_facts['distribution'] == 'Ubuntu'
 
 # ---------- Docker ----------
-- name: Install docker [Ubuntu]
-  ansible.builtin.include_tasks: Ubuntu-docker.yml
+- name: install docker [Ubuntu]
+  include_tasks: Ubuntu-docker.yml
   when: (install_docker | bool) and ansible_facts['distribution'] == "Ubuntu"
 
-- name: Start and enable docker service
-  ansible.builtin.systemd:
+- name: start and enable docker service
+  systemd:
     name: docker
     state: started
     enabled: yes
 
 # ---------- Docker compose ----------
-- name: Install docker compose [Ubuntu]
-  ansible.builtin.include_tasks: Ubuntu-docker-compose.yml
+- name: install docker compose [Ubuntu]
+  include_tasks: Ubuntu-docker-compose.yml
   when: (install_docker_compose | bool) and ansible_facts['distribution'] == "Ubuntu"
+
 
 # ---------- GPU support ----------
 - name: Add GPU support
@@ -46,35 +47,34 @@
     nvidia_driver_branch: "515"
     nvidia_driver_ubuntu_install_from_cuda_repo: true
     nvidia_driver_skip_reboot: true
-  when: (use_gpu | bool)
 
 # ---------- reload docker service ----------
-- name: Reload docker service
-  ansible.builtin.systemd:
+- name: reload docker service
+  systemd:
     name: docker
     # Force reload
     state: reloaded
 
-# ---------- Make self signed certificates ----------
-- name: Make self signed certificates
-  ansible.builtin.include_tasks: make-self-signed-certificates.yml
-
 # ---------- Setup CVMFS ----------
 - name: Setup CVMFS
-  ansible.builtin.include_tasks: cvmfs.yml
+  include_tasks: cvmfs.yml
   when: cvmfs_repos|length > 0
 
 # ---------- Jupyter hub ----------
-- name: Prepare Jupyter Hub
-  ansible.builtin.include_tasks: prepare-jupyter-hub.yml
+- name: prepare Jupyter Hub
+  include_tasks: prepare-jupyter-hub.yml
 
-- name: Run Jupyter Hub
-  ansible.builtin.shell:
+# ---------- configure docker compose environment ----------
+- name: configure docker compose environment
+  include_tasks: configure-compose-environment.yml
+
+- name: run Jupyter Hub
+  shell:
     cmd: docker-compose up -d
     chdir: /usr/local/share/dodasts/jupyterhub
   when: (run_jupyter | bool)
 
   # ---------- Setup monitoring ----------
 - name: Setup monitoring
-  ansible.builtin.include_tasks: monitoring.yml
+  include_tasks: monitoring.yml
   when: (monitoring | bool)
