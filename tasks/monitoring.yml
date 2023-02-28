@@ -3,7 +3,7 @@
   ansible.builtin.git:
     repo: "https://github.com/DODAS-TS/ansible-role-monitoring.git"
     dest: /etc/ansible/roles/ansible-role-monitoring
-    force: yes
+    force: true
     version: v1.2.0
 
 # ---------- Execute monitoring role ----------
