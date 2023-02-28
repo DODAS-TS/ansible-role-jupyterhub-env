@@ -176,7 +176,7 @@
       method: POST
       status_code: 201
       headers:
-         Content-Type: "application/json"
+        Content-Type: "application/json"
       body:
         redirect_uris:
           - "https://{{ dns_name }}:{{ jupyter_port }}/hub/oauth_callback"
