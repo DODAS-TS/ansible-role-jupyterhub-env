@@ -1,5 +1,5 @@
 ---
-- name: download monitoring role
+- name: Download monitoring role
   ansible.builtin.git:
     repo: "https://github.com/ffornari90/ansible-role-monitoring-env.git"
     dest: /etc/ansible/roles/ansible-role-monitoring

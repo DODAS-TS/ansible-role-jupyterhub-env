@@ -1,6 +1,6 @@
 ---
 # ---------- check OS ----------
-- name: check OS
+- name: Check OS
   ansible.builtin.fail:
     msg: "distro {{ ansible_facts['distribution'] }} not supported"
   when: ansible_facts['distribution'] != 'Ubuntu' and ansible_os_family != 'RedHat'
@@ -21,7 +21,7 @@
   when: ansible_facts['distribution'] == 'Ubuntu'
 
 # ---------- Docker ----------
-- name: install docker [Ubuntu]
+- name: Install docker [Ubuntu]
   ansible.builtin.include_tasks: Ubuntu-docker.yml
   when: (install_docker | bool) and ansible_facts['distribution'] == "Ubuntu"
 
@@ -32,7 +32,7 @@
     enabled: yes
 
 # ---------- Docker compose ----------
-- name: install docker compose [Ubuntu]
+- name: Install docker compose [Ubuntu]
   ansible.builtin.include_tasks: Ubuntu-docker-compose.yml
   when: (install_docker_compose | bool) and ansible_facts['distribution'] == "Ubuntu"
 
@@ -50,7 +50,7 @@
   when: (use_gpu | bool)
 
 # ---------- reload docker service ----------
-- name: reload docker service
+- name: Reload docker service
   ansible.builtin.systemd:
     name: docker
     # Force reload
@@ -62,14 +62,14 @@
   when: cvmfs_repos|length > 0
 
 # ---------- Jupyter hub ----------
-- name: prepare Jupyter Hub
+- name: Prepare Jupyter Hub
   ansible.builtin.include_tasks: prepare-jupyter-hub.yml
 
 # ---------- configure docker compose environment ----------
-- name: configure docker compose environment
+- name: Configure docker compose environment
   ansible.builtin.include_tasks: configure-compose-environment.yml
 
-- name: run Jupyter Hub
+- name: Run Jupyter Hub
   ansible.builtin.shell:
     cmd: docker-compose up -d
     chdir: /usr/local/share/dodasts/jupyterhub
