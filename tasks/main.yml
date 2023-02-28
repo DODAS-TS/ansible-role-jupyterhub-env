@@ -36,6 +36,7 @@
   ansible.builtin.include_tasks: Ubuntu-docker-compose.yml
   when: (install_docker_compose | bool) and ansible_facts['distribution'] == "Ubuntu"
 
+
 # ---------- GPU support ----------
 - name: Add GPU support
   # include_tasks: nvidia-driver-and-toolkit.yml
@@ -55,10 +56,6 @@
     # Force reload
     state: reloaded
 
-# ---------- Make self signed certificates ----------
-- name: Make self signed certificates
-  ansible.builtin.include_tasks: make-self-signed-certificates.yml
-
 # ---------- Setup CVMFS ----------
 - name: Setup CVMFS
   ansible.builtin.include_tasks: cvmfs.yml
@@ -67,6 +64,10 @@
 # ---------- Jupyter hub ----------
 - name: Prepare Jupyter Hub
   ansible.builtin.include_tasks: prepare-jupyter-hub.yml
+
+# ---------- configure docker compose environment ----------
+- name: Configure docker compose environment
+  ansible.builtin.include_tasks: configure-compose-environment.yml
 
 - name: Run Jupyter Hub
   ansible.builtin.shell:

@@ -20,7 +20,7 @@ services:
       - /usr/local/share/dodasts/jupyterhub/db:/srv/jupyterhub/db
     environment:
       - OAUTH_ENDPOINT={{ iam_url }}
-      - OAUTH_CALLBACK_URL=https://{{ server_ip }}:{{ jupyter_port }}/hub/oauth_callback
+      - OAUTH_CALLBACK_URL=https://{{ dns_name }}:{{ jupyter_port }}/hub/oauth_callback
       - OAUTH_GROUPS={{ iam_groups }}
       - OAUTH_SUB={{ iam_subject }}
       - {{ jupyter_gpu }}
@@ -38,21 +38,93 @@ services:
       - JUPYTER_COLLAB_SERVICE={{ jupyter_collab_service }}
       - DOCKER_NOTEBOOK_MOUNT_DIR={{ jupyter_host_mount_dir }}
       - DOCKER_NOTEBOOK_DIR={{ jupyter_mount_dir }}
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.middlewares.jupyterhub-redirect-ssl.redirectscheme.scheme=https"
+      - "traefik.http.routers.jupyterhub-nossl.middlewares=jupyterhub-redirect-ssl"
+      - "traefik.http.routers.jupyterhub-nossl.rule=Host(`{{ dns_name }}`)"
+      - "traefik.http.routers.jupyterhub-nossl.entrypoints=web"
+      - "traefik.http.routers.jupyterhub.rule=Host(`{{ dns_name }}`)"
+      - "traefik.http.routers.jupyterhub.entrypoints=websecure"
+      - "traefik.http.routers.jupyterhub.tls.certresolver=myhttpchallenge"
+      - "traefik.http.routers.jupyterhub.tls=true"
+      - "traefik.http.services.jupyterhub.loadbalancer.server.port=8000"
+
+  proxy:
+    container_name: proxy
+    image: harbor.cloud.infn.it/cache/library/traefik:${TRAEFIK_VERSION:-latest}
+    restart: unless-stopped
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - letsencrypt:/letsencrypt
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+      - /etc/timezone:/etc/timezone:ro
+      - /etc/localtime:/etc/localtime:ro
+      - /opt/traefik:/config
+    command:
+      - "--log.level=DEBUG"
+      - "--api.insecure=true"
+      - "--providers.docker=true"
+      - "--providers.docker.exposedbydefault=false"
+      - "--providers.file.directory=/config"
+      - "--providers.file.watch=true"
+      - "--entrypoints.web.address=:80"
+      - "--entrypoints.websecure.address=:443"
+      - "--entrypoints.web.http.redirections.entryPoint.to=websecure"
+      - "--certificatesresolvers.myhttpchallenge.acme.httpchallenge=true"
+      - "--certificatesresolvers.myhttpchallenge.acme.httpchallenge.entrypoint=web"
+      - "--certificatesresolvers.myhttpchallenge.acme.email={{ contact_email }}"
+      - "--certificatesresolvers.myhttpchallenge.acme.storage=/letsencrypt/acme.json"
+{% if letsencrypt_test|bool %}
+      - "--certificatesresolvers.myhttpchallenge.acme.caserver=https://acme-staging-v02.api.letsencrypt.org/directory"
+{% endif %}
+
+  grafana_sidecar:
+    depends_on:
+      - proxy
+    image: alpine:latest
+    container_name: grafana_sidecar
+    command: /bin/sh -c "
+        apk add --no-cache jq
+        && while true; do output=$$(jq -r '.myhttpchallenge | .Certificates[] | select(.domain.main==\"'{{ dns_name }}'\") | .key'
+           /letsencrypt/acme.json | base64 -d | tee /usr/local/share/dodasts/certs/grafana/hostcert.key);
+           if [[ -z \"$$output\" || $$? -ne 0 ]]; then sleep 5; else break; fi; done
+        && jq -r '.myhttpchallenge | .Certificates[] | select(.domain.main==\"'{{ dns_name }}'\") | .certificate'
+           /letsencrypt/acme.json | base64 -d > /usr/local/share/dodasts/certs/grafana/hostcert.pem
+        && chown -R 472:472 /usr/local/share/dodasts/certs/grafana
+        && chown nobody:nogroup /letsencrypt/acme.json
+        && nc -klp 1337
+      "
+    volumes:
+      - letsencrypt:/letsencrypt
+      - /usr/local/share/dodasts/certs/grafana:/usr/local/share/dodasts/certs/grafana
 
   http_proxy:
+    depends_on:
+      - grafana_sidecar
     image: {{ compose_base_http_proxy_image }}
     restart: unless-stopped
-    command:
-      - configurable-http-proxy
-      - --ip=0.0.0.0
-      - --port={{ jupyter_port }}
-      - --api-ip=0.0.0.0
-      - --api-port=8001
-      - --default-target=http://jupyterhub:8088
-      - --error-target=http://jupyterhub:8088/hub/error
-      - --ssl-key=/usr/local/share/dodasts/certs/jupyter/hostcert.key
-      - --ssl-cert=/usr/local/share/dodasts/certs/jupyter/hostcert.pem
+    entrypoint: /bin/sh
+    command: -c "
+        while ! nc -z grafana_sidecar 1337; do sleep 5; done
+        && jq -r '.myhttpchallenge | .Certificates[] | select(.domain.main==\"'{{ dns_name }}'\") | .key'
+           /letsencrypt/acme.json | base64 -d > /usr/local/share/dodasts/certs/jupyter/hostcert.key
+        && jq -r '.myhttpchallenge | .Certificates[] | select(.domain.main==\"'{{ dns_name }}'\") | .certificate'
+           /letsencrypt/acme.json | base64 -d > /usr/local/share/dodasts/certs/jupyter/hostcert.pem
+        && configurable-http-proxy
+        --ip=0.0.0.0
+        --port={{ jupyter_port }}
+        --api-ip=0.0.0.0
+        --api-port=8001
+        --default-target=http://jupyterhub:8088
+        --error-target=http://jupyterhub:8088/hub/error
+        --ssl-key=/usr/local/share/dodasts/certs/jupyter/hostcert.key
+        --ssl-cert=/usr/local/share/dodasts/certs/jupyter/hostcert.pem
+      "
     volumes:
+      - letsencrypt:/letsencrypt
       - /usr/local/share/dodasts/certs/jupyter:/usr/local/share/dodasts/certs/jupyter
     environment:
       - CONFIGPROXY_AUTH_TOKEN={{ jupyter_proxy_token }}
@@ -61,6 +133,9 @@ services:
       - 8001:8001
     
   {{ jupyterlab_collaborative_service }}
+
+volumes:
+  letsencrypt:
 
 networks:
   default:

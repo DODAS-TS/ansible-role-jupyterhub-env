@@ -108,7 +108,7 @@
           image: {{ compose_base_collab_http_proxy_image }}
           restart: unless-stopped
           environment:
-            - HOST_IP={{ server_ip }}
+            - HOST_IP={{ dns_name }}
             - JUPYTERHUB_BASE_URL=http://jupyterhub:8088
             - JUPYTERHUB_API_URL=http://jupyterhub:8088/hub/api
             - JUPYTERHUB_SERVICE_PREFIX=/services/Collaborative-Jupyter/
@@ -179,7 +179,7 @@
          Content-Type: "application/json"
       body:
         redirect_uris:
-          - "https://{{ server_ip }}:{{ jupyter_port }}/hub/oauth_callback"
+          - "https://{{ dns_name }}:{{ jupyter_port }}/hub/oauth_callback"
         client_name: "jh-client"
         token_endpoint_auth_method: client_secret_basic
         scope: openid email profile wlcg offline_access address wlcg.groups
