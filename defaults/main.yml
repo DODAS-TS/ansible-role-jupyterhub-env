@@ -9,6 +9,7 @@ install_nvidia_driver: yes
 install_nvidia_driver_from_cuda: yes
 install_nvidia_container_toolkit: yes
 nvidia_driver_skip_reboot: yes
+gpu_partition_flavor: "None"
 
 # jupyter
 run_jupyter: yes
@@ -30,6 +31,8 @@ jupyter_mount_dir: ""
 jupyterlab_collaborative: no
 jupyterlab_collaborative_use_gpu: no
 jupyterlab_collaborative_image: "dodasts/snj-base-jlabc:v1.0.0-snj"
+jupyterhub_all_gpu_uuids: "ALL_GPU_UUIDs=None"
+jupyterhub_mount_config: ""
 
 # IAM
 iam_url: "" # https://iam.example.url.it

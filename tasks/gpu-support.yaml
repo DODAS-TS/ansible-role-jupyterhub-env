@@ -22,3 +22,4 @@
   vars:
     node_type: 'worker'
     node_cluster_type: ''
+        
