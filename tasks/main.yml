@@ -25,7 +25,7 @@
   ansible.builtin.include_tasks: Ubuntu-docker.yml
   when: (install_docker | bool) and ansible_facts['distribution'] == "Ubuntu"
 
-- name: start and enable docker service
+- name: Start and enable docker service
   ansible.builtin.systemd:
     name: docker
     state: started
