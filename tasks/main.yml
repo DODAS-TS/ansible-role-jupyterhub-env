@@ -1,19 +1,19 @@
 ---
 # ---------- check OS ----------
 - name: check OS
-  fail:
+  ansible.builtin.fail:
     msg: "distro {{ ansible_facts['distribution'] }} not supported"
   when: ansible_facts['distribution'] != 'Ubuntu' and ansible_os_family != 'RedHat'
 
 - name: Check if GPU is used
-  set_fact:
+  ansible.builtin.set_fact:
     key_value: "yes"
     use_gpu: yes
   when: ((jupyter_use_gpu | bool) or (jupyterlab_collaborative_use_gpu | bool))
 
 # ---------- Update Ubuntu ----------
 - name: Update [Ubuntu]
-  apt:
+  ansible.builtin.apt:
     update_cache: yes
     upgrade: yes
     autoclean: yes
@@ -22,18 +22,18 @@
 
 # ---------- Docker ----------
 - name: install docker [Ubuntu]
-  include_tasks: Ubuntu-docker.yml
+  ansible.builtin.include_tasks: Ubuntu-docker.yml
   when: (install_docker | bool) and ansible_facts['distribution'] == "Ubuntu"
 
 - name: start and enable docker service
-  systemd:
+  ansible.builtin.systemd:
     name: docker
     state: started
     enabled: yes
 
 # ---------- Docker compose ----------
 - name: install docker compose [Ubuntu]
-  include_tasks: Ubuntu-docker-compose.yml
+  ansible.builtin.include_tasks: Ubuntu-docker-compose.yml
   when: (install_docker_compose | bool) and ansible_facts['distribution'] == "Ubuntu"
 
 
@@ -51,31 +51,31 @@
 
 # ---------- reload docker service ----------
 - name: reload docker service
-  systemd:
+  ansible.builtin.systemd:
     name: docker
     # Force reload
     state: reloaded
 
 # ---------- Setup CVMFS ----------
 - name: Setup CVMFS
-  include_tasks: cvmfs.yml
+  ansible.builtin.include_tasks: cvmfs.yml
   when: cvmfs_repos|length > 0
 
 # ---------- Jupyter hub ----------
 - name: prepare Jupyter Hub
-  include_tasks: prepare-jupyter-hub.yml
+  ansible.builtin.include_tasks: prepare-jupyter-hub.yml
 
 # ---------- configure docker compose environment ----------
 - name: configure docker compose environment
-  include_tasks: configure-compose-environment.yml
+  ansible.builtin.include_tasks: configure-compose-environment.yml
 
 - name: run Jupyter Hub
-  shell:
+  ansible.builtin.shell:
     cmd: docker-compose up -d
     chdir: /usr/local/share/dodasts/jupyterhub
   when: (run_jupyter | bool)
 
   # ---------- Setup monitoring ----------
 - name: Setup monitoring
-  include_tasks: monitoring.yml
+  ansible.builtin.include_tasks: monitoring.yml
   when: (monitoring | bool)

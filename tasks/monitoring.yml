@@ -1,6 +1,6 @@
 ---
 - name: download monitoring role
-  git:
+  ansible.builtin.git:
     repo: "https://github.com/ffornari90/ansible-role-monitoring-env.git"
     dest: /etc/ansible/roles/ansible-role-monitoring
     force: yes
@@ -8,7 +8,7 @@
 
 # ---------- Execute monitoring role ----------
 - name: Execute monitoring role
-  include_role:
+  ansible.builtin.include_role:
     name: /etc/ansible/roles/ansible-role-monitoring
   vars:
     monitoring_project_name: "single_node_jupyterhub"
