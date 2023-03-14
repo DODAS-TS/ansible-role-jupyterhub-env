@@ -168,9 +168,18 @@
   when: (jupyter_use_gpu | bool)
 
 - block:
+  - name: Retrieve registration endpoint from OpenID configuration
+    uri:
+      url: "{{ iam_url }}/.well-known/openid-configuration"
+      method: GET
+      return_content: yes
+    register: openid_config
+  - name: Set registration endpoint variable
+    set_fact:
+      registration_endpoint: "{{ openid_config.json.registration_endpoint }}"
   - name: register iam client
     uri:
-      url: "{{ iam_url }}/register"
+      url: "{{ registration_endpoint }}"
       validate_certs: "no"
       method: POST
       status_code: 201
