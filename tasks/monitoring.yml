@@ -4,7 +4,11 @@
     repo: "https://github.com/DODAS-TS/ansible-role-monitoring.git"
     dest: /etc/ansible/roles/ansible-role-monitoring
     force: true
+<<<<<<< HEAD
     version: v1.2.3
+=======
+    version: v1.2.2
+>>>>>>> main
 
 # ---------- Execute monitoring role ----------
 - name: Execute monitoring role
@@ -14,7 +18,7 @@
     monitoring_project_name: "single_node_jupyterhub"
     monitoring_server_ip: "{{ server_ip }}"
     monitoring_dns_name: "{{ dns_name }}"
-    monitoring_iam_sub:  "{{ iam_subject }}"
+    monitoring_iam_sub: "{{ iam_subject }}"
     monitoring_iam_url: "{{ iam_url }}"
     monitoring_iam_groups: "{{ iam_groups }}"
     monitoring_iam_admin_groups: "{{ iam_admin_groups }}"

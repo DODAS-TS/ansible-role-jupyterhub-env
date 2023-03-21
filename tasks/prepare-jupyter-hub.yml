@@ -95,7 +95,6 @@
               reservations:
                 devices:
                   - capabilities: [ gpu ]
-
   when: ((jupyterlab_collaborative | bool ) and (jupyterlab_collaborative_use_gpu | bool))
 
 - name: prepare collaborative jupyterlab
@@ -169,14 +168,23 @@
   when: (jupyter_use_gpu | bool)
 
 - block:
+  - name: Retrieve registration endpoint from OpenID configuration
+    uri:
+      url: "{{ iam_url }}/.well-known/openid-configuration"
+      method: GET
+      return_content: yes
+    register: openid_config
+  - name: Set registration endpoint variable
+    set_fact:
+      registration_endpoint: "{{ openid_config.json.registration_endpoint }}"
   - name: register iam client
     uri:
-      url: "{{ iam_url }}/register"
+      url: "{{ registration_endpoint }}"
       validate_certs: "no"
       method: POST
       status_code: 201
       headers:
-         Content-Type: "application/json"
+        Content-Type: "application/json"
       body:
         redirect_uris:
           - "https://{{ dns_name }}:{{ jupyter_port }}/hub/oauth_callback"
@@ -231,4 +239,3 @@
   with_items: "{{ jupyter_images.split() + [ jupyterlab_collaborative_image, compose_base_jhub_image, compose_base_http_proxy_image, compose_base_collab_http_proxy_image ] }}"
   async: 1800 # 30 min
   poll: 0
-  
