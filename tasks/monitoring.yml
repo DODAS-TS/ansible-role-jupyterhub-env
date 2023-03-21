@@ -4,11 +4,7 @@
     repo: "https://github.com/DODAS-TS/ansible-role-monitoring.git"
     dest: /etc/ansible/roles/ansible-role-monitoring
     force: true
-<<<<<<< HEAD
     version: v1.2.3
-=======
-    version: v1.2.2
->>>>>>> main
 
 # ---------- Execute monitoring role ----------
 - name: Execute monitoring role
