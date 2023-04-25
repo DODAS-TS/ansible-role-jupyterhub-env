@@ -46,7 +46,7 @@ Variable for the monitoring service:
 - `grafana_admin_password`:  string
 - `grafana_client_id`:  string (used for the IAM login)
 - `grafana_client_secret`:  string (used for the IAM login)
-- `grafana_image`: string (default: `"grafana/grafana:v9.4.7"`)
+- `grafana_image`: string (default: `"grafana/grafana:9.4.7"`)
 - `cvmfs_repos`: string, list of the cvmfs repo to mount (default: `""`)
 
 ### vars
