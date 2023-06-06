@@ -81,11 +81,11 @@ services:
       - "--certificatesresolvers.myhttpchallenge.acme.caserver=https://acme-staging-v02.api.letsencrypt.org/directory"
 {% endif %}
 
-  grafana_sidecar:
+  cert_sidecar:
     depends_on:
       - proxy
     image: alpine:latest
-    container_name: grafana_sidecar
+    container_name: cert_sidecar
     command: /bin/sh -c "
         apk add --no-cache jq
         && while true; do output=$$(jq -r '.myhttpchallenge | .Certificates[] | select(.domain.main==\"'{{ dns_name }}'\") | .key'
@@ -103,12 +103,12 @@ services:
 
   http_proxy:
     depends_on:
-      - grafana_sidecar
+      - cert_sidecar
     image: {{ compose_base_http_proxy_image }}
     restart: unless-stopped
     entrypoint: /bin/sh
     command: -c "
-        while ! nc -z grafana_sidecar 1337; do sleep 5; done
+        while ! nc -z cert_sidecar 1337; do sleep 5; done
         && jq -r '.myhttpchallenge | .Certificates[] | select(.domain.main==\"'{{ dns_name }}'\") | .key'
            /letsencrypt/acme.json | base64 -d > /usr/local/share/dodasts/certs/jupyter/hostcert.key
         && jq -r '.myhttpchallenge | .Certificates[] | select(.domain.main==\"'{{ dns_name }}'\") | .certificate'
