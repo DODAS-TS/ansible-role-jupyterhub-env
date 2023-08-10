@@ -80,9 +80,12 @@ services:
     image: alpine:latest
     container_name: grafana_sidecar
     command: /bin/sh -c "
-        apk add --no-cache jq
+        openssl req -newkey rsa:8192 -keyout /usr/local/share/dodasts/certs/grafana/hostcert.key -out /usr/local/share/dodasts/certs/grafana/hostcert.csr -nodes -subj /C=IT/ST=Italy/O=INFN/CN={{ dns_name }}
+        && openssl x509 -signkey /usr/local/share/dodasts/certs/grafana/hostcert.key -in /usr/local/share/dodasts/certs/grafana/hostcert.csr -req -days 3650 -out /usr/local/share/dodasts/certs/grafana/hostcert.crt
         && nc -klp 1337
       "
+    volumes:
+      - /usr/local/share/dodasts/certs/grafana:/usr/local/share/dodasts/certs/grafana
 
   http_proxy:
     depends_on:
@@ -92,6 +95,8 @@ services:
     entrypoint: /bin/sh
     command: -c "
         while ! nc -z grafana_sidecar 1337; do sleep 5; done
+        && openssl req -newkey rsa:8192 -keyout /usr/local/share/dodasts/certs/jupyter/hostcert.key -out /usr/local/share/dodasts/certs/jupyter/hostcert.csr -nodes -subj /C=IT/ST=Italy/O=INFN/CN={{ dns_name }}
+        && openssl x509 -signkey /usr/local/share/dodasts/certs/jupyter/hostcert.key -in /usr/local/share/dodasts/certs/jupyter/hostcert.csr -req -days 3650 -out /usr/local/share/dodasts/certs/jupyter/hostcert.crt
         && configurable-http-proxy
         --ip=0.0.0.0
         --port={{ jupyter_port }}
@@ -99,7 +104,11 @@ services:
         --api-port=8001
         --default-target=http://jupyterhub:8088
         --error-target=http://jupyterhub:8088/hub/error
+        --ssl-key=/usr/local/share/dodasts/certs/jupyter/hostcert.key
+        --ssl-cert=/usr/local/share/dodasts/certs/jupyter/hostcert.pem
       "
+    volumes:
+      - /usr/local/share/dodasts/certs/jupyter:/usr/local/share/dodasts/certs/jupyter
     environment:
       - CONFIGPROXY_AUTH_TOKEN={{ jupyter_proxy_token }}
     ports:
