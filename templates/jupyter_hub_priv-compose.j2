@@ -80,7 +80,8 @@ services:
     image: alpine:latest
     container_name: grafana_sidecar
     command: /bin/sh -c "
-        openssl req -newkey rsa:8192 -keyout /usr/local/share/dodasts/certs/grafana/hostcert.key -out /usr/local/share/dodasts/certs/grafana/hostcert.csr -nodes -subj /C=IT/ST=Italy/O=INFN/CN={{ dns_name }}
+        apk add --no-cache openssl
+        && openssl req -newkey rsa:4096 -keyout /usr/local/share/dodasts/certs/grafana/hostcert.key -out /usr/local/share/dodasts/certs/grafana/hostcert.csr -nodes -subj /C=IT/ST=Italy/O=INFN/CN={{ dns_name }}
         && openssl x509 -signkey /usr/local/share/dodasts/certs/grafana/hostcert.key -in /usr/local/share/dodasts/certs/grafana/hostcert.csr -req -days 3650 -out /usr/local/share/dodasts/certs/grafana/hostcert.crt
         && nc -klp 1337
       "
@@ -95,7 +96,7 @@ services:
     entrypoint: /bin/sh
     command: -c "
         while ! nc -z grafana_sidecar 1337; do sleep 5; done
-        && openssl req -newkey rsa:8192 -keyout /usr/local/share/dodasts/certs/jupyter/hostcert.key -out /usr/local/share/dodasts/certs/jupyter/hostcert.csr -nodes -subj /C=IT/ST=Italy/O=INFN/CN={{ dns_name }}
+        && openssl req -newkey rsa:4096 -keyout /usr/local/share/dodasts/certs/jupyter/hostcert.key -out /usr/local/share/dodasts/certs/jupyter/hostcert.csr -nodes -subj /C=IT/ST=Italy/O=INFN/CN={{ dns_name }}
         && openssl x509 -signkey /usr/local/share/dodasts/certs/jupyter/hostcert.key -in /usr/local/share/dodasts/certs/jupyter/hostcert.csr -req -days 3650 -out /usr/local/share/dodasts/certs/jupyter/hostcert.crt
         && configurable-http-proxy
         --ip=0.0.0.0
