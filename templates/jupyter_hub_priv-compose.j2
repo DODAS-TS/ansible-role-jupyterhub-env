@@ -84,6 +84,7 @@ services:
         && openssl req -newkey rsa:4096 -keyout /usr/local/share/dodasts/certs/grafana/hostcert.key -out /usr/local/share/dodasts/certs/grafana/hostcert.csr -nodes -subj /C=IT/ST=Italy/O=INFN/CN={{ dns_name }}
         && openssl x509 -signkey /usr/local/share/dodasts/certs/grafana/hostcert.key -in /usr/local/share/dodasts/certs/grafana/hostcert.csr -req -days 1800 -out /usr/local/share/dodasts/certs/grafana/hostcert.pem
         && chown -R 472:472 /usr/local/share/dodasts/certs/grafana
+        && chmod 644 /usr/local/share/dodasts/certs/grafana/*
         && nc -klp 1337
       "
     volumes:
