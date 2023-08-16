@@ -97,7 +97,8 @@ services:
     restart: unless-stopped
     entrypoint: /bin/sh
     command: -c "
-        while ! nc -z grafana_sidecar 1337; do sleep 5; done
+        apt-get update && apt-get install netcat
+        && while ! nc -z grafana_sidecar 1337; do sleep 5; done
         && openssl req -newkey rsa:4096 -keyout /usr/local/share/dodasts/certs/jupyter/hostcert.key -out /usr/local/share/dodasts/certs/jupyter/hostcert.csr -nodes -subj /C=IT/ST=Italy/O=INFN/CN={{ dns_name }}
         && openssl x509 -signkey /usr/local/share/dodasts/certs/jupyter/hostcert.key -in /usr/local/share/dodasts/certs/jupyter/hostcert.csr -req -days 1800 -out /usr/local/share/dodasts/certs/jupyter/hostcert.pem
         && configurable-http-proxy
