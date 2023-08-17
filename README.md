@@ -39,8 +39,7 @@ Variable for the monitoring service:
 - `iam_admin_groups`: string with the name of the IAM groups that will be admin (space separated)
 - `iam_subject` : token subject of the user deploying the service
 - `server_ip`: string with the ip of the current server
-- `monitoring`: bool, if to deploy the monitoring service (default: `yes`)
-- `grafana`:  "yes" if you want to setup also grafana
+- `monitoring`: bool, if to deploy the Grafana monitoring service (default: `yes`)
 - `grafana_port`:  int, the grafana service port
 - `grafana_admin_user`:  string
 - `grafana_admin_password`:  string
