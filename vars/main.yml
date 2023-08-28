@@ -4,10 +4,10 @@ jupyter_gpu: "WITH_GPU=false"
 cvmfs_service: ""
 compose_base_jhub_image: "{{ jupyter_hub_image }}"
 compose_base_http_proxy_image: "jupyterhub/configurable-http-proxy"
-compose_base_collab_http_proxy_image: "dodasts/snj-base-jlabc-proxy:v1.0.0-snj"
+compose_base_collab_http_proxy_image: "dodasts/snj-base-jlabc-proxy:v1.1.1-snj"
 jupyterlab_collaborative_service: ""
 jupyterlab_collaborative_service_dependency: ""
-jupyterlab_collaborative_image_param: "image: dodasts/snj-base-jlabc:v1.0.0-snj"
+jupyterlab_collaborative_image_param: "image: dodasts/snj-base-jlabc:v1.1.1-snj"
 jupyterlab_collaborative_gpu_param: ""
 jupyter_with_cvmfs: false
 jupyter_collab_service: false

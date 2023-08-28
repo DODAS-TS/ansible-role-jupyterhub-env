@@ -232,6 +232,15 @@
   vars:
     iam_client_id: "{{ iam_response.json.client_id }}"
     iam_client_secret: "{{ iam_response.json.client_secret }}"
+  when: cert_manager_type != "self-signed"
+- name: prepare compose file (private network)
+  template:
+    src: jupyter_hub_priv-compose.j2
+    dest: /usr/local/share/dodasts/jupyterhub/docker-compose.yaml
+  vars:
+    iam_client_id: "{{ iam_response.json.client_id }}"
+    iam_client_secret: "{{ iam_response.json.client_secret }}"
+  when: cert_manager_type == "self-signed"
 
 # finally pre-cache default images
 - name: pull images
