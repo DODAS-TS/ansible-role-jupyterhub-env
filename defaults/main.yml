@@ -9,15 +9,20 @@ install_nvidia_driver: yes
 install_nvidia_driver_from_cuda: yes
 install_nvidia_container_toolkit: yes
 nvidia_driver_skip_reboot: yes
+gpu_partition_flavor: "None"
 
 # jupyter
 run_jupyter: yes
 jupyter_port: "8888"
 jupyter_proxy_token: ""
 
+#traefik
+contact_email: ""
+cert_manager_type: letsencrypt-prod # [self-signed, letsencrypt-staging, letsencrypt-prod]
+
 # https://github.com/DODAS-TS/jupyterhub-ML_INFN/blob/collaborative/Dockerfile
-jupyter_hub_image: "dodasts/snj-base-jhub:v1.0.0-snj"
-jupyter_images: "dodasts/snj-base-lab:v1.0.0-snj" # Comma separated image list
+jupyter_hub_image: "dodasts/snj-base-jhub:v1.1.1-snj"
+jupyter_images: "dodasts/snj-base-lab:v1.1.1-snj" # Comma separated image list
 jupyter_use_gpu: no
 jupyter_default_spawner: "LAB"
 jupyter_post_start_cmd: ""
@@ -25,24 +30,25 @@ jupyter_host_mount_dir: ""
 jupyter_mount_dir: ""
 jupyterlab_collaborative: no
 jupyterlab_collaborative_use_gpu: no
-jupyterlab_collaborative_image: "dodasts/snj-base-jlabc:v1.0.0-snj"
+jupyterlab_collaborative_image: "dodasts/snj-base-jlabc:v1.1.1-snj"
+jupyterhub_all_gpu_uuids: "ALL_GPU_UUIDs=None"
+jupyterhub_mount_config: ""
 
 # IAM
 iam_url: "" # https://iam.example.url.it
 iam_groups: "beta_testers" # group1 group2
 iam_admin_groups: "" # group1 group2
 server_ip: "" # 192.168.1.42
+dns_name: ""
 iam_subject: ""
 
 # monitoring
 monitoring: yes
-
-grafana: yes
 grafana_port: 3000
 grafana_admin_user: ""
 grafana_admin_password: ""
 grafana_client_id: "CLIENT_ID"
 grafana_client_secret: "CLIENT_SECRET"
-grafana_image: "dodasts/monitoring-grafana:v1.0.3-monitoring"
+grafana_image: "grafana/grafana:9.5.7"
 # cvmfs
 cvmfs_repos: ""

@@ -1,0 +1,44 @@
+- name: Add HOST_PUBLIC_IP to docker-compose environment variables
+  lineinfile:
+    path: /usr/local/share/dodasts/jupyterhub/.env
+    line: "{{ item.key }}={{ item.value }}"
+    create: yes
+  with_items:
+    - { key: "HOST_PUBLIC_IP", value: "{% if IM_NODE_PUBLIC_IP is defined %}{{ IM_NODE_PUBLIC_IP }}{% else %}{{ IM_NODE_PRIVATE_IP }}{% endif %}" }
+
+- name: Create a directory for traefik configuration
+  file:
+    path: /opt/traefik
+    state: directory
+
+- name: Create configuration file for traefik
+  file:
+    path: /opt/traefik/tls.toml
+    state: touch
+    content: |
+      [tls.options]
+
+        [tls.options.default]
+          minVersion = "VersionTLS12"
+          curvePreferences = ["CurveP521", "CurveP384"]
+          sniStrict = true
+
+          cipherSuites = [
+             "TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256",
+             "TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384",
+             "TLS_ECDHE_RSA_WITH_CHACHA20_POLY1305_SHA256",
+             "TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA",
+             "TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA",
+             "TLS_RSA_WITH_AES_128_GCM_SHA256",
+             "TLS_RSA_WITH_AES_256_GCM_SHA384",
+             "TLS_RSA_WITH_AES_128_CBC_SHA",
+             "TLS_RSA_WITH_AES_256_CBC_SHA"
+          ]
+
+- name: create certificates directories
+  shell:
+    cmd: |
+      mkdir -p /usr/local/share/dodasts/certs/jupyter \
+      && mkdir -p /usr/local/share/dodasts/certs/grafana \
+      && chown -R 472:472 /usr/local/share/dodasts/certs/grafana \
+      && chown -R nobody:nogroup /usr/local/share/dodasts/certs/jupyter
