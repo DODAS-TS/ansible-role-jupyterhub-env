@@ -177,33 +177,49 @@
   - name: Set registration endpoint variable
     set_fact:
       registration_endpoint: "{{ openid_config.json.registration_endpoint }}"
-  - name: register iam client
-    uri:
-      url: "{{ registration_endpoint }}"
-      validate_certs: "no"
-      method: POST
-      status_code: 201
-      headers:
-        Content-Type: "application/json"
-      body:
-        redirect_uris:
-          - "https://{{ dns_name }}:{{ jupyter_port }}/hub/oauth_callback"
-        client_name: "jh-client"
-        token_endpoint_auth_method: client_secret_basic
-        scope: openid email profile wlcg offline_access address wlcg.groups
-        grant_types:
-          - refresh_token
-          - authorization_code
-        response_types:
-          - code
-      body_format: json
-      return_content: yes
-    register: iam_response
+    - name: iam_issuer
+    debug:
+      var: iam_issuer
 
-  - name: Save client info
-    copy:
-      content: "{{ iam_response.json }}"
-      dest: "/usr/local/share/dodasts/jupyterhub/cookies/.client-iam.json"
+  - name: iam_client_id
+    debug:
+      var: iam_client_id
+
+  - name: iam_token
+    debug:
+      var: iam_token
+
+  - name: iam_server_ip
+    debug:
+      var: iam_server_ip
+
+  #- name: register iam client
+  #  uri:
+  #    url: "{{ registration_endpoint }}"
+  #    validate_certs: "no"
+  #    method: POST
+  #    status_code: 201
+  #    headers:
+  #      Content-Type: "application/json"
+  #    body:
+  #      redirect_uris:
+  #        - "https://{{ dns_name }}:{{ jupyter_port }}/hub/oauth_callback"
+  #      client_name: "jh-client"
+  #      token_endpoint_auth_method: client_secret_basic
+  #      scope: openid email profile wlcg offline_access address wlcg.groups
+  #      grant_types:
+  #        - refresh_token
+  #        - authorization_code
+  #      response_types:
+  #        - code
+  #    body_format: json
+  #    return_content: yes
+  #  register: iam_response
+
+  #- name: Save client info
+  #  copy:
+  #    content: "{{ iam_response.json }}"
+  #    dest: "/usr/local/share/dodasts/jupyterhub/cookies/.client-iam.json"
 
 # ---------- Collect MIG GPU UUIDs from nvidia-smi ----------
 - name: Collect MIG GPU UUIDs
