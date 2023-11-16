@@ -219,7 +219,7 @@
 
   - name: Define the redirect_uri variable
     ansible.builtin.set_fact:
-      redirect_uri: "https://{{ dns_name }}:8888/hub/oauth_callback"
+      redirect_uri: "https://{{ dns_name }}:{{ jupyter_port }}/hub/oauth_callback"
     
   - name: Modify the redirect_uris field in the JSON
     ansible.builtin.set_fact:
@@ -245,7 +245,7 @@
       body_format: json
       body: "{{json_content.content | b64decode | from_json }}"
       status_code: 200
-    register: put_response
+    register: iam_response
 
   - name: Delete response.json
     ansible.builtin.file:
@@ -256,6 +256,10 @@
     ansible.builtin.file:
       path: /usr/local/share/updated_file.json
       state: absent
+
+  - name: iam_response
+    debug:
+      var: iam_response
 
   #- name: register iam client
   #  uri:
