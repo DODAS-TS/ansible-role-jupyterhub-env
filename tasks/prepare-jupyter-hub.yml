@@ -177,7 +177,7 @@
   - name: Set registration endpoint variable
     set_fact:
       registration_endpoint: "{{ openid_config.json.registration_endpoint }}"
-  
+
   - name: iam_issuer
     debug:
       var: iam_issuer
