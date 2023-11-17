@@ -71,7 +71,7 @@
 
 - name: Run Jupyter Hub
   ansible.builtin.shell:
-    cmd: docker-compose up -d
+    cmd: docker compose up -d
     chdir: /usr/local/share/dodasts/jupyterhub
   when: (run_jupyter | bool)
 
