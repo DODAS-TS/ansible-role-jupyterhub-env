@@ -243,7 +243,7 @@
         Authorization: "Bearer {{ iam_token }}"
         Content-Type: application/json
       body_format: json
-      body: "{{json_content.content | b64decode | from_json }}"
+      body: "{{ json_content.content | b64decode | from_json }}"
       status_code: 200
     register: iam_response
 
@@ -260,34 +260,6 @@
   - name: iam_response
     debug:
       var: iam_response
-
-  #- name: register iam client
-  #  uri:
-  #    url: "{{ registration_endpoint }}"
-  #    validate_certs: "no"
-  #    method: POST
-  #    status_code: 201
-  #    headers:
-  #      Content-Type: "application/json"
-  #    body:
-  #      redirect_uris:
-  #        - "https://{{ dns_name }}:{{ jupyter_port }}/hub/oauth_callback"
-  #      client_name: "jh-client"
-  #      token_endpoint_auth_method: client_secret_basic
-  #      scope: openid email profile wlcg offline_access address wlcg.groups
-  #      grant_types:
-  #        - refresh_token
-  #        - authorization_code
-  #      response_types:
-  #        - code
-  #    body_format: json
-  #    return_content: yes
-  #  register: iam_response
-
-  #- name: Save client info
-  #  copy:
-  #    content: "{{ iam_response.json }}"
-  #    dest: "/usr/local/share/dodasts/jupyterhub/cookies/.client-iam.json"
 
 # ---------- Collect MIG GPU UUIDs from nvidia-smi ----------
 - name: Collect MIG GPU UUIDs
