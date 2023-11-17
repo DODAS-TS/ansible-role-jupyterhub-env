@@ -178,26 +178,6 @@
     set_fact:
       registration_endpoint: "{{ openid_config.json.registration_endpoint }}"
 
-  - name: iam_issuer
-    debug:
-      var: iam_issuer
-
-  - name: iam_client_id
-    debug:
-      var: iam_client_id
-
-  - name: iam_token
-    debug:
-      var: iam_token
-
-  - name: iam_server_ip
-    debug:
-      var: iam_server_ip
-
-  - name: registration_endpoint
-    debug:
-      var: registration_endpoint
-
   - name: Do the GET call to get the information about the client_id client
     uri:
       url: "{{ registration_endpoint }}/{{ iam_client_id }}"
@@ -211,11 +191,11 @@
   - name: Save the JSON response into a file
     ansible.builtin.copy:
       content: "{{ get_response.json | to_nice_json }}"
-      dest: /usr/local/share/response.json
+      dest: /usr/local/share/dodasts/jupyterhub/cookies/.client-iam.json
 
   - name: Read file directly into fact
     ansible.builtin.set_fact:
-      jsondata: "{{ lookup('file', '/usr/local/share/response.json') }}"
+      jsondata: "{{ lookup('file', '/usr/local/share/dodasts/jupyterhub/cookies/.client-iam.json') }}"
 
   - name: Define the redirect_uri variable
     ansible.builtin.set_fact:
@@ -230,7 +210,7 @@
       content: "{{ updated_json | to_json }}"
       dest: /usr/local/share/updated_file.json
 
-  - name: Leggi il contenuto del file JSON
+  - name: Read JSON content
     ansible.builtin.slurp:
       src: /usr/local/share/updated_file.json
     register: json_content
@@ -247,19 +227,10 @@
       status_code: 200
     register: iam_response
 
-  - name: Delete response.json
-    ansible.builtin.file:
-      path: /usr/local/share/response.json
-      state: absent
-
   - name: Delete updated_file.json
     ansible.builtin.file:
       path: /usr/local/share/updated_file.json
       state: absent
-
-  - name: iam_response
-    debug:
-      var: iam_response
 
 # ---------- Collect MIG GPU UUIDs from nvidia-smi ----------
 - name: Collect MIG GPU UUIDs
