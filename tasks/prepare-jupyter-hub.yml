@@ -207,7 +207,7 @@
       status_code: 200
       return_content: yes
     register: get_response
- 
+
   - name: Save the JSON response into a file
     ansible.builtin.copy:
       content: "{{ get_response.json | to_nice_json }}"
@@ -220,11 +220,11 @@
   - name: Define the redirect_uri variable
     ansible.builtin.set_fact:
       redirect_uri: "https://{{ dns_name }}:{{ jupyter_port }}/hub/oauth_callback"
-    
+
   - name: Modify the redirect_uris field in the JSON
     ansible.builtin.set_fact:
       updated_json: "{{ jsondata | combine({'redirect_uris': [redirect_uri]}) }}"
-    
+
   - name: Save the updated JSON in a file
     ansible.builtin.copy:
       content: "{{ updated_json | to_json }}"
