@@ -92,7 +92,7 @@ Including an example of how to use your role (for instance, with variables passe
 ## :paperclip: Current status
 
 * Installation of **nvidia cuda driver**:
-  * Ubuntu *(tested on 18.04)*
+  * Ubuntu *(tested on 20.04)*
   * RedHat (CentOS)
 * Installation of **nvidia-docker2**:
   * Ubuntu *(tested on 18.04)*
