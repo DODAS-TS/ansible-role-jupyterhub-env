@@ -4,7 +4,7 @@
     repo: "https://github.com/zinus92/ansible-role-monitoring.git"
     dest: /etc/ansible/roles/ansible-role-monitoring
     force: true
-    version: master
+    version: main
 
 # ---------- Execute monitoring role ----------
 - name: Execute monitoring role
