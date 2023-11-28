@@ -36,12 +36,12 @@ Variable for the monitoring service:
 - `jupyterlab_collaborative`: bool, if to deploy the collaborative service (default: `no`)
 - `jupyterlab_collaborative_use_gpu`: bool, if to enable the collaborative service to use the GPU (default: `no`)
 - `jupyterlab_collaborative_image`: string, the collaborative Docker image (default: `"dodasts/snj-base-jlabc:v1.1.1-snj"`)
-- `iam_url`: URL of the IAM service (It can not be empty)
+- `iam_url`: URL of the IAM service (`Mandatory`)
 - `iam_groups`: string with the name of the IAM groups allowed (space separated)
 - `iam_admin_groups`: string with the name of the IAM groups that will be admin (space separated)
-- `iam_subject` : token subject of the user deploying the service
-- `iam_client_id`: string with the IAM client id (It can not be empty)
-- `iam_token` : token needed to interact with the IAM Issuer (It can not be empty)
+- `iam_subject` : string, token subject of the user deploying the service
+- `iam_client_id`: string with the IAM client id (`Mandatory`)
+- `iam_token` : string, token needed to interact with the IAM Issuer (`Mandatory`)
 - `server_ip`: string with the ip of the current server
 - `monitoring`: bool, if to deploy the Grafana monitoring service (default: `yes`)
 - `grafana_port`:  int, the grafana service port
