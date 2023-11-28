@@ -170,7 +170,7 @@
 # ---------- IAM Client retrieving, updating and local saving ----------
 - name: Check vars before interacting with the IAM issuer
   assert:
-    that: 
+    that:
       - iam_url       | length > 0
       - iam_client_id | length > 0
       - iam_token     | length > 0
@@ -178,7 +178,7 @@
       - jupyter_port  | length > 0
     fail_msg: Not defined variable among iam_url, iam_client_id, iam_token, dns_name and jupyter_port.
 
-- name: Collect, Update and store locally the IAM Client info 
+- name: Collect, Update and store locally the IAM Client info
   include_tasks: iam-client.yml
 
 # ---------- Collect MIG GPU UUIDs from nvidia-smi ----------
@@ -225,3 +225,4 @@
   with_items: "{{ jupyter_images.split() + [ jupyterlab_collaborative_image, compose_base_jhub_image, compose_base_http_proxy_image, compose_base_collab_http_proxy_image ] }}"
   async: 1800 # 30 min
   poll: 0
+  
