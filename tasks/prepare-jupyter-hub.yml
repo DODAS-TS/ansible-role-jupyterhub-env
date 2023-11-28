@@ -243,12 +243,34 @@
       ansible.builtin.file:
         path: /tmp/updated-iam-client.json
         state: absent
-  failed_when: >
-    (iam_url       | length == 0) or
-    (iam_client_id | length == 0) or
-    (iam_token     | length == 0) or
-    (dns_name      | length == 0) or
-    (jupyter_port  | length == 0)
+  when: 
+    - iam_url       | length > 0
+    - iam_client_id | length > 0
+    - iam_token     | length > 0
+    - dns_name      | length > 0
+    - jupyter_port  | length > 0
+    
+- name: Check vars before to interact with IAM 2
+  assert:
+    that: 
+      - iam_url       | length == 0
+      - iam_client_id | length > 0
+      - iam_token     | length > 0
+      - dns_name      | length > 0
+      - jupyter_port  | length > 0
+    fail_msg: One or multiple among iam_url, iam_client_id, iam_token, dns_name and jupyter_port has not been defined
+    success_msg: OK
+
+- name: Check vars before to interact with IAM 3
+  assert:
+    that: 
+      - iam_url       | length == 0
+      - iam_client_id | length == 0
+      - iam_token     | length == 0
+      - dns_name      | length == 0
+      - jupyter_port  | length == 0
+    fail_msg: One or multiple among iam_url, iam_client_id, iam_token, dns_name and jupyter_port has not been defined
+    success_msg: OK
 
 # ---------- Collect MIG GPU UUIDs from nvidia-smi ----------
 - name: Collect MIG GPU UUIDs
