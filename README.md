@@ -5,7 +5,9 @@ A role to setup a node with a jupyterhub that spawns jupyterlab with or without 
 Requirements
 ------------
 
-There are no requirements. This role will setup all the necessary dependencies.
+This role needs a working IAM Client to configure the  JupyterHub authentication plugin.
+If you are using this role through [INFN PaaS orchestrator](https://my.cloud.infn.it) the IAM client is created automatically.
+Otherwise, you should provide `iam_url`, `iam_client_id` and `iam_token` variables.
 
 Role Variables
 --------------
@@ -34,12 +36,12 @@ Variable for the monitoring service:
 - `jupyterlab_collaborative`: bool, if to deploy the collaborative service (default: `no`)
 - `jupyterlab_collaborative_use_gpu`: bool, if to enable the collaborative service to use the GPU (default: `no`)
 - `jupyterlab_collaborative_image`: string, the collaborative Docker image (default: `"dodasts/snj-base-jlabc:v1.1.1-snj"`)
-- `iam_url`: URL of the IAM service
+- `iam_url`: URL of the IAM service (It can not be empty)
 - `iam_groups`: string with the name of the IAM groups allowed (space separated)
 - `iam_admin_groups`: string with the name of the IAM groups that will be admin (space separated)
 - `iam_subject` : token subject of the user deploying the service
-- `iam_client_id`: string with the IAM client id  
-- `iam_token` : token needed to interact with the IAM Issuer
+- `iam_client_id`: string with the IAM client id (It can not be empty)
+- `iam_token` : token needed to interact with the IAM Issuer (It can not be empty)
 - `server_ip`: string with the ip of the current server
 - `monitoring`: bool, if to deploy the Grafana monitoring service (default: `yes`)
 - `grafana_port`:  int, the grafana service port
