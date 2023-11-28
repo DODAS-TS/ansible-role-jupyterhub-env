@@ -167,7 +167,7 @@
     cacheable: yes
   when: (jupyter_use_gpu | bool)
 
-- name: Check vars before to interact with IAM 
+- name: Check vars before interacting with the IAM issuer
   assert:
     that: 
       - iam_url       | length > 0
