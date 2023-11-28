@@ -5,8 +5,8 @@ A role to setup a node with a jupyterhub that spawns jupyterlab with or without 
 Requirements
 ------------
 
-This role needs a working IAM Client to configure the  JupyterHub authentication plugin.
-If you are using this role through [INFN PaaS orchestrator](https://my.cloud.infn.it) the IAM client is created automatically.
+This role needs a working IAM Client in order to configure the JupyterHub authentication plugin.
+If you are using this role through [INFN PaaS orchestrator](https://my.cloud.infn.it) the IAM client is created automatically and parameter are passed as well.
 Otherwise, you should provide `iam_url`, `iam_client_id` and `iam_token` variables.
 
 Role Variables
@@ -40,7 +40,7 @@ Variable for the monitoring service:
 - `iam_groups`: string with the name of the IAM groups allowed (space separated)
 - `iam_admin_groups`: string with the name of the IAM groups that will be admin (space separated)
 - `iam_subject` : string, token subject of the user deploying the service
-- `iam_client_id`: string with the IAM client id (`Mandatory`)
+- `iam_client_id`: string, IAM client id (`Mandatory`)
 - `iam_token` : string, token needed to interact with the IAM Issuer (`Mandatory`)
 - `server_ip`: string with the ip of the current server
 - `monitoring`: bool, if to deploy the Grafana monitoring service (default: `yes`)
