@@ -167,70 +167,88 @@
     cacheable: yes
   when: (jupyter_use_gpu | bool)
 
-- block:
-  - name: Retrieve registration endpoint from OpenID configuration
-    uri:
-      url: "{{ iam_url }}/.well-known/openid-configuration"
-      method: GET
-      return_content: yes
-    register: openid_config
-  - name: Set registration endpoint variable
-    set_fact:
-      registration_endpoint: "{{ openid_config.json.registration_endpoint }}"
+- name: Check vars before to interact with IAM 
+  assert:
+    that: 
+      - iam_url       | length > 0
+      - iam_client_id | length > 0
+      - iam_token     | length > 0
+      - dns_name      | length > 0
+      - jupyter_port  | length > 0
+    fail_msg: One or multiple among iam_url, iam_client_id, iam_token, dns_name and jupyter_port has not been defined
+    success_msg: OK
 
-  - name: Collect the IAM client info
-    uri:
-      url: "{{ registration_endpoint }}/{{ iam_client_id }}"
-      method: GET
-      headers:
-        Authorization: "Bearer {{ iam_token }}"
-      status_code: 200
-      return_content: yes
-    register: iam_client_get_response
+- name: Collect, Update and store locally the IAM Client info 
+  block:
+    - name: Retrieve registration endpoint from OpenID configuration
+      uri:
+        url: "{{ iam_url }}/.well-known/openid-configuration"
+        method: GET
+        return_content: yes
+      register: openid_config
+    - name: Set registration endpoint variable
+      set_fact:
+        registration_endpoint: "{{ openid_config.json.registration_endpoint }}"
 
-  - name: Save the IAM Client info locally
-    ansible.builtin.copy:
-      content: "{{ iam_client_get_response.json | to_nice_json }}"
-      dest: /usr/local/share/dodasts/jupyterhub/cookies/.client-iam.json
+    - name: Collect the IAM client info
+      uri:
+        url: "{{ registration_endpoint }}/{{ iam_client_id }}"
+        method: GET
+        headers:
+          Authorization: "Bearer {{ iam_token }}"
+        status_code: 200
+        return_content: yes
+      register: iam_client_get_response
 
-  - name: Define the new redirect_uri variable
-    ansible.builtin.set_fact:
-      redirect_uri: "https://{{ dns_name }}:{{ jupyter_port }}/hub/oauth_callback"
+    - name: Save the IAM Client info locally
+      ansible.builtin.copy:
+        content: "{{ iam_client_get_response.json | to_nice_json }}"
+        dest: /usr/local/share/dodasts/jupyterhub/cookies/.client-iam.json
 
-  - name: Import the local IAM Client info file
-    ansible.builtin.set_fact:
-      iam_client_info: "{{ lookup('file', '/usr/local/share/dodasts/jupyterhub/cookies/.client-iam.json') }}"
+    - name: Define the new redirect_uri variable
+      ansible.builtin.set_fact:
+        redirect_uri: "https://{{ dns_name }}:{{ jupyter_port }}/hub/oauth_callback"
 
-  - name: Update the redirect_uris field
-    ansible.builtin.set_fact:
-      updated_iam_client_info: "{{ iam_client_info | combine({'redirect_uris': [redirect_uri]}) }}"
+    - name: Import the local IAM Client info file
+      ansible.builtin.set_fact:
+        iam_client_info: "{{ lookup('file', '/usr/local/share/dodasts/jupyterhub/cookies/.client-iam.json') }}"
 
-  - name: Save the updated IAM Client info locally
-    ansible.builtin.copy:
-      content: "{{ updated_iam_client_info | to_json }}"
-      dest: /tmp/updated-iam-client.json
+    - name: Update the redirect_uris field
+      ansible.builtin.set_fact:
+        updated_iam_client_info: "{{ iam_client_info | combine({'redirect_uris': [redirect_uri]}) }}"
 
-  - name: Import the local updated IAM Client info file
-    ansible.builtin.slurp:
-      src: /tmp/updated-iam-client.json
-    register: iam_client_file
+    - name: Save the updated IAM Client info locally
+      ansible.builtin.copy:
+        content: "{{ updated_iam_client_info | to_json }}"
+        dest: /tmp/updated-iam-client.json
 
-  - name: Update the IAM client info remotely
-    uri:
-      url: "{{ registration_endpoint }}/{{ iam_client_id }}"
-      method: PUT
-      headers:
-        Authorization: "Bearer {{ iam_token }}"
-        Content-Type: application/json
-      body_format: json
-      body: "{{ iam_client_file.content | b64decode | from_json }}"
-      status_code: 200
-    register: iam_response
+    - name: Import the local updated IAM Client info file
+      ansible.builtin.slurp:
+        src: /tmp/updated-iam-client.json
+      register: iam_client_file
 
-  - name: Delete local IAM Client info file
-    ansible.builtin.file:
-      path: /tmp/updated-iam-client.json
-      state: absent
+    - name: Update the IAM client info remotely
+      uri:
+        url: "{{ registration_endpoint }}/{{ iam_client_id }}"
+        method: PUT
+        headers:
+          Authorization: "Bearer {{ iam_token }}"
+          Content-Type: application/json
+        body_format: json
+        body: "{{ iam_client_file.content | b64decode | from_json }}"
+        status_code: 200
+      register: iam_response
+
+    - name: Delete local IAM Client info file
+      ansible.builtin.file:
+        path: /tmp/updated-iam-client.json
+        state: absent
+  failed_when: >
+    (iam_url       | length == 0) or
+    (iam_client_id | length == 0) or
+    (iam_token     | length == 0) or
+    (dns_name      | length == 0) or
+    (jupyter_port  | length == 0)
 
 # ---------- Collect MIG GPU UUIDs from nvidia-smi ----------
 - name: Collect MIG GPU UUIDs
@@ -260,6 +278,7 @@
     iam_client_id: "{{ iam_response.json.client_id }}"
     iam_client_secret: "{{ iam_response.json.client_secret }}"
   when: cert_manager_type != "self-signed"
+
 - name: prepare compose file (private network)
   template:
     src: jupyter_hub_priv-compose.j2
