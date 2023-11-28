@@ -1,4 +1,4 @@
-- name: Add HOST_PUBLIC_IP to docker-compose environment variables
+- name: Add HOST_PUBLIC_IP to docker compose environment variables
   lineinfile:
     path: /usr/local/share/dodasts/jupyterhub/.env
     line: "{{ item.key }}={{ item.value }}"

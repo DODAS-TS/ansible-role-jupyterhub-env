@@ -204,7 +204,7 @@
 - name: prepare compose file
   template:
     src: jupyter_hub-compose.j2
-    dest: /usr/local/share/dodasts/jupyterhub/docker-compose.yaml
+    dest: /usr/local/share/dodasts/jupyterhub/compose.yaml
   vars:
     iam_client_id: "{{ iam_response.json.client_id }}"
     iam_client_secret: "{{ iam_response.json.client_secret }}"
@@ -213,7 +213,7 @@
 - name: prepare compose file (private network)
   template:
     src: jupyter_hub_priv-compose.j2
-    dest: /usr/local/share/dodasts/jupyterhub/docker-compose.yaml
+    dest: /usr/local/share/dodasts/jupyterhub/compose.yaml
   vars:
     iam_client_id: "{{ iam_response.json.client_id }}"
     iam_client_secret: "{{ iam_response.json.client_secret }}"
@@ -224,5 +224,9 @@
   command: docker pull "{{ item }}"
   with_items: "{{ jupyter_images.split() + [ jupyterlab_collaborative_image, compose_base_jhub_image, compose_base_http_proxy_image, compose_base_collab_http_proxy_image ] }}"
   async: 1800 # 30 min
+<<<<<<< HEAD
   poll: 0
   
+=======
+  poll: 0
+>>>>>>> dd815bbcad6bf394576320e1d05fda369c72af8c
