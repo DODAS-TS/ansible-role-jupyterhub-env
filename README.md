@@ -38,8 +38,8 @@ Variable for the monitoring service:
 - `iam_groups`: string with the name of the IAM groups allowed (space separated)
 - `iam_admin_groups`: string with the name of the IAM groups that will be admin (space separated)
 - `iam_subject` : token subject of the user deploying the service
-- `iam_client_id`: string with the IAM client id to use 
-- `iam_token` : token used to interact with the IAM Issuer
+- `iam_client_id`: string with the IAM client id  
+- `iam_token` : token needed to interact with the IAM Issuer
 - `server_ip`: string with the ip of the current server
 - `monitoring`: bool, if to deploy the Grafana monitoring service (default: `yes`)
 - `grafana_port`:  int, the grafana service port
@@ -89,7 +89,7 @@ Including an example of how to use your role (for instance, with variables passe
            iam_url: https://iam.example.service.it 
            iam_groups: groupA
            iam_client_id: XXXXXXXX-XXXX-XXXX-XXXX-XXXXXXXXXXXX
-           iam_toekn: <TOKEN>
+           iam_token: <TOKEN>
 
 ```
 
