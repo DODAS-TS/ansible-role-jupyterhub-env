@@ -6,7 +6,10 @@ Requirements
 ------------
 
 This role needs a working IAM Client in order to configure the JupyterHub authentication plugin.
-If you are using this role as it is and not through [INFN PaaS orchestrator](https://my.cloud.infn.it), you should provide `iam_url`, `iam_client_id` and `iam_token` variables.
+Mandatory role variable to provides:
+- `iam_url`
+- `iam_client_id` 
+- `iam_token`
 
 Role Variables
 --------------
