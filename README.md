@@ -6,7 +6,8 @@ Requirements
 ------------
 
 This role needs a working IAM Client in order to configure the JupyterHub authentication plugin.
-Mandatory role variable to provides:
+
+Mandatory role variables to provides:
 - `iam_url`
 - `iam_client_id` 
 - `iam_token`
