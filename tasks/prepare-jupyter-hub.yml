@@ -43,7 +43,7 @@
     mode: 0755
 
 - name: create JUPYTERHUB_CRYPT_KEY
-  ansible.builtin.shell: 
+  ansible.builtin.shell:
     cmd: openssl rand -hex 32
   register: jupyterhub_crypt_key
 
@@ -54,18 +54,18 @@
   when: (jupyterlab_collaborative | bool)
 
 - name: create JUPYTERHUB_API_TOKEN
-  ansible.builtin.shell: 
+  ansible.builtin.shell:
     cmd: openssl rand -hex 32
   register: jupyterhub_api_token
 
 - name: create JUPYTER_TOKEN
-  ansible.builtin.shell: 
+  ansible.builtin.shell:
     cmd: openssl rand -hex 32
   register: jupyter_token
   when: (jupyterlab_collaborative | bool)
 
 - name: create jupyterhub proxy token
-  ansible.builtin.shell: 
+  ansible.builtin.shell:
     cmd: openssl rand -hex 32
   register: generated_jupyter_proxy_token
   when: (jupyter_proxy_token|length == 0)
