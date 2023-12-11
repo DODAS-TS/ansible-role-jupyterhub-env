@@ -1,31 +1,34 @@
 ---
 # ---------- Collect jupyterhub_config.py from docker image ----------
 - name: start jupyterhub container
-  shell: docker run -it -d --name jupyterhub-temp {{ compose_base_jhub_image }} bash
+  ansible.builtin.shell:
+    cmd: docker run -it -d --name jupyterhub-temp {{ compose_base_jhub_image }} bash
 
 - name: copy jupyterhub_config file locally
-  shell: docker cp jupyterhub-temp:/srv/jupyterhub/jupyterhub_config.py /tmp/jupyterhub_config.py
+  ansible.builtin.shell:
+    cmd: docker cp jupyterhub-temp:/srv/jupyterhub/jupyterhub_config.py /tmp/jupyterhub_config.py
 
 - name: stop jupyterhub container
-  shell: docker stop jupyterhub-temp && docker rm jupyterhub-temp
+  ansible.builtin.shell:
+    cmd: docker stop jupyterhub-temp && docker rm jupyterhub-temp
 
 # ---------- Edit jupyterhub_config.py to use MIG GPUs ----------
 - name: Replace Strings in jupyterhub_config.py
-  replace:
+  ansible.builtin.replace:
     path: /tmp/jupyterhub_config.py
     regexp: '"privileged": True,'
     replace: '"privileged": False,'
     backup: yes
 
 - name: Replace Strings in jupyterhub_config.py
-  replace:
+  ansible.builtin.replace:
     path: /tmp/jupyterhub_config.py
     regexp: '"Count": 1,  # enable all gpus'
     replace: '"DeviceIDs": [get_available_gpu_id()]'
     backup: yes
 
 - name: Add new python functions
-  lineinfile:
+  ansible.builtin.lineinfile:
     path: /tmp/jupyterhub_config.py
     state: present
     line: "{{ item }}"
@@ -59,7 +62,7 @@
 
 # ---------- Mount edited jupyterhub_config file inside the container ----------
 - name: "Mount edited jupyterhub_config file inside the container"
-  set_fact:
+  ansible.builtin.set_fact:
     key_value: "yes"
     jupyterhub_mount_config: "- /tmp/jupyterhub_config.py:/srv/jupyterhub/jupyterhub_config.py"
     cacheable: yes

@@ -1,6 +1,6 @@
 ---
 - name: install docker [Ubuntu]
-  shell:
+  ansible.builtin.shell:
     cmd: curl https://get.docker.com | sh
     creates: /usr/bin/docker
     warn: False # To prevent warning on using curl as a cmd

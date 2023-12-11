@@ -1,5 +1,5 @@
 - name: Add HOST_PUBLIC_IP to docker compose environment variables
-  lineinfile:
+  ansible.builtin.lineinfile:
     path: /usr/local/share/dodasts/jupyterhub/.env
     line: "{{ item.key }}={{ item.value }}"
     create: yes
@@ -7,12 +7,12 @@
     - { key: "HOST_PUBLIC_IP", value: "{% if IM_NODE_PUBLIC_IP is defined %}{{ IM_NODE_PUBLIC_IP }}{% else %}{{ IM_NODE_PRIVATE_IP }}{% endif %}" }
 
 - name: Create a directory for traefik configuration
-  file:
+  ansible.builtin.file:
     path: /opt/traefik
     state: directory
 
 - name: Create configuration file for traefik
-  file:
+  ansible.builtin.file:
     path: /opt/traefik/tls.toml
     state: touch
     content: |
@@ -36,7 +36,7 @@
           ]
 
 - name: create certificates directories
-  shell:
+  ansible.builtin.shell:
     cmd: |
       mkdir -p /usr/local/share/dodasts/certs/jupyter \
       && mkdir -p /usr/local/share/dodasts/certs/grafana \
