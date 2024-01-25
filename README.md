@@ -5,7 +5,12 @@ A role to setup a node with a jupyterhub that spawns jupyterlab with or without 
 Requirements
 ------------
 
-There are no requirements. This role will setup all the necessary dependencies.
+This role needs a working IAM Client in order to configure the JupyterHub authentication plugin.
+
+Mandatory role variables to provides:
+- `iam_url`
+- `iam_client_id` 
+- `iam_token`
 
 Role Variables
 --------------
@@ -34,10 +39,12 @@ Variable for the monitoring service:
 - `jupyterlab_collaborative`: bool, if to deploy the collaborative service (default: `no`)
 - `jupyterlab_collaborative_use_gpu`: bool, if to enable the collaborative service to use the GPU (default: `no`)
 - `jupyterlab_collaborative_image`: string, the collaborative Docker image (default: `"dodasts/snj-base-jlabc:v1.1.1-snj"`)
-- `iam_url`: URL of the IAM service
+- `iam_url`: URL of the IAM service (`Mandatory`)
 - `iam_groups`: string with the name of the IAM groups allowed (space separated)
 - `iam_admin_groups`: string with the name of the IAM groups that will be admin (space separated)
-- `iam_subject` : token subject of the user deploying the service
+- `iam_subject` : string, token subject of the user deploying the service
+- `iam_client_id`: string, IAM client id (`Mandatory`)
+- `iam_token` : string, token needed to interact with the IAM Issuer (`Mandatory`)
 - `server_ip`: string with the ip of the current server
 - `monitoring`: bool, if to deploy the Grafana monitoring service (default: `yes`)
 - `grafana_port`:  int, the grafana service port
@@ -86,13 +93,15 @@ Including an example of how to use your role (for instance, with variables passe
            run_jupyter: no 
            iam_url: https://iam.example.service.it 
            iam_groups: groupA
+           iam_client_id: XXXXXXXX-XXXX-XXXX-XXXX-XXXXXXXXXXXX
+           iam_token: <TOKEN>
 
 ```
 
 ## :paperclip: Current status
 
 * Installation of **nvidia cuda driver**:
-  * Ubuntu *(tested on 18.04)*
+  * Ubuntu *(tested on 20.04)*
   * RedHat (CentOS)
 * Installation of **nvidia-docker2**:
   * Ubuntu *(tested on 18.04)*

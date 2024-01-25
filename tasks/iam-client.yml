@@ -1,0 +1,50 @@
+---
+- name: Define the new redirect_uri variable
+  ansible.builtin.set_fact:
+    iam_redirect_uri: "https://{{ dns_name }}:{{ jupyter_port }}/hub/oauth_callback"
+
+- name: Retrieve registration endpoint from OpenID configuration
+  ansible.builtin.uri:
+    url: "{{ iam_url }}/.well-known/openid-configuration"
+    method: GET
+    return_content: yes
+  register: openid_config
+
+- name: Set registration endpoint variable
+  ansible.builtin.set_fact:
+    registration_endpoint: "{{ openid_config.json.registration_endpoint }}"
+
+- name: Retrieve the IAM client info
+  ansible.builtin.uri:
+    url: "{{ registration_endpoint }}/{{ iam_client_id }}"
+    method: GET
+    status_code: 200
+    headers:
+      Accept: "application/json"
+      Authorization: "Bearer {{ iam_token }}"
+    return_content: true
+  register: iam_client_get_response
+
+- name: Modify client JSON
+  ansible.builtin.set_fact:
+    modified_client_info: "{{ iam_client_get_response.json | combine({'redirect_uris': [iam_redirect_uri]}) }}"
+
+- name: Update client
+  ansible.builtin.uri:
+    url: "{{ registration_endpoint }}/{{ iam_client_id }}"
+    validate_certs: "no"
+    method: PUT
+    status_code: 200
+    headers:
+      Authorization: "Bearer {{ iam_token }}"
+      Content-Type: application/json
+    body_format: json
+    body: "{{ modified_client_info }}"
+    return_content: true
+  register: iam_response
+
+- name: Save client info
+  ansible.builtin.copy:
+    content: "{{ modified_client_info }}"
+    dest: /usr/local/share/dodasts/jupyterhub/cookies/.client-iam.json
+    mode: "0644"

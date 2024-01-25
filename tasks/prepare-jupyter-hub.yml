@@ -1,79 +1,83 @@
 ---
 # ---------- Create directory for jupyterhub ----------
 - name: Create directory for jupyterhub
-  file:
+  ansible.builtin.file:
     path: /usr/local/share/dodasts/jupyterhub
     state: directory
     mode: 0755
 
 - name: Create directory for jupyterhub cookies
-  file:
+  ansible.builtin.file:
     path: /usr/local/share/dodasts/jupyterhub/cookies
     state: directory
     mode: 0755
 
 - name: Create directory for jupyterhub db
-  file:
+  ansible.builtin.file:
     path: /usr/local/share/dodasts/jupyterhub/db
     state: directory
     mode: 0755
 
 - name: Create directory for jupyter mounts
-  file:
+  ansible.builtin.file:
     path: /jupyter-mounts
     state: directory
     mode: 0755
 
 - name: Create directory for jupyter collaborative
-  file:
+  ansible.builtin.file:
     path: /jupyter-mounts/collaborativefolder/
     state: directory
     mode: 0755
 
 - name: Create directory for jupyter users
-  file:
+  ansible.builtin.file:
     path: /jupyter-mounts/users/
     state: directory
     mode: 0755
 
 - name: Create directory for jupyter shared
-  file:
+  ansible.builtin.file:
     path: /jupyter-mounts/shared/
     state: directory
     mode: 0755
 
 - name: create JUPYTERHUB_CRYPT_KEY
-  shell: openssl rand -hex 32
+  ansible.builtin.shell:
+    cmd: openssl rand -hex 32
   register: jupyterhub_crypt_key
 
 - name: set JUPYTER_COLLAB_SERVICE
-  set_fact:
+  ansible.builtin.set_fact:
     key_value: "yes"
     jupyter_collab_service: true
   when: (jupyterlab_collaborative | bool)
 
 - name: create JUPYTERHUB_API_TOKEN
-  shell: openssl rand -hex 32
+  ansible.builtin.shell:
+    cmd: openssl rand -hex 32
   register: jupyterhub_api_token
 
 - name: create JUPYTER_TOKEN
-  shell: openssl rand -hex 32
+  ansible.builtin.shell:
+    cmd: openssl rand -hex 32
   register: jupyter_token
   when: (jupyterlab_collaborative | bool)
 
 - name: create jupyterhub proxy token
-  shell: openssl rand -hex 32
+  ansible.builtin.shell:
+    cmd: openssl rand -hex 32
   register: generated_jupyter_proxy_token
   when: (jupyter_proxy_token|length == 0)
 
 - name: change default jupyterlab collaborative image
-  set_fact:
+  ansible.builtin.set_fact:
     key_value: "yes"
     jupyterlab_collaborative_image_param: "image: {{ jupyterlab_collaborative_image }}"
   when: ((jupyterlab_collaborative | bool ) and (jupyterlab_collaborative_image|length > 0))
 
 - name: add jupyter_proxy_token
-  set_fact:
+  ansible.builtin.set_fact:
     key_value: "yes"
     jupyter_proxy_token: "{{ generated_jupyter_proxy_token.stdout | string }}"
   when: (jupyter_proxy_token|length == 0)
@@ -87,7 +91,7 @@
 #         count: 1
 #         capabilities: [gpu, utility]
 - name: add jupyterlab collaborative gpu
-  set_fact:
+  ansible.builtin.set_fact:
     key_value: "yes"
     jupyterlab_collaborative_gpu_param: |
       deploy:
@@ -98,7 +102,7 @@
   when: ((jupyterlab_collaborative | bool ) and (jupyterlab_collaborative_use_gpu | bool))
 
 - name: prepare collaborative jupyterlab
-  set_fact:
+  ansible.builtin.set_fact:
     key_value: "yes"
     jupyterlab_collaborative_service: |
       collab_proxy:
@@ -132,88 +136,64 @@
   when: (jupyterlab_collaborative | bool)
 
 - name: add jupyterlab collaborative dependency
-  set_fact:
+  ansible.builtin.set_fact:
     key_value: "yes"
     jupyterlab_collaborative_service_dependency: "- collab_proxy"
   when: (jupyterlab_collaborative | bool)
 
 - name: ram size
-  debug:
+  ansible.builtin.debug:
     var: ansible_facts.memtotal_mb
 
 - name: create ram giga var
-  set_fact:
+  ansible.builtin.set_fact:
     key_value: "yes"
     ram_giga: "{{ ((ansible_facts.memtotal_mb|int) / 1000)| round | int }}"
 
 - name: create ram list
-  set_fact:
+  ansible.builtin.set_fact:
     key_value: "yes"
     list_ram_sizes: "{{ [1] + range(2, (ram_giga|int) + 1, 2) | list }}"
 
 - name: result ram list
-  debug:
+  ansible.builtin.debug:
     var: list_ram_sizes
 
 - name: create ram list string
-  set_fact:
+  ansible.builtin.set_fact:
     key_value: "yes"
     list_ram_size: "{{ list_ram_sizes | product(['G']) | map('join', '') | list | join(',') }}"
 
 - name: "prepare variables for jupyter"
-  set_fact:
+  ansible.builtin.set_fact:
     key_value: "yes"
     jupyter_gpu: "WITH_GPU=true"
     cacheable: yes
   when: (jupyter_use_gpu | bool)
 
-- block:
-  - name: Retrieve registration endpoint from OpenID configuration
-    uri:
-      url: "{{ iam_url }}/.well-known/openid-configuration"
-      method: GET
-      return_content: yes
-    register: openid_config
-  - name: Set registration endpoint variable
-    set_fact:
-      registration_endpoint: "{{ openid_config.json.registration_endpoint }}"
-  - name: register iam client
-    uri:
-      url: "{{ registration_endpoint }}"
-      validate_certs: "no"
-      method: POST
-      status_code: 201
-      headers:
-        Content-Type: "application/json"
-      body:
-        redirect_uris:
-          - "https://{{ dns_name }}:{{ jupyter_port }}/hub/oauth_callback"
-        client_name: "jh-client"
-        token_endpoint_auth_method: client_secret_basic
-        scope: openid email profile wlcg offline_access address wlcg.groups
-        grant_types:
-          - refresh_token
-          - authorization_code
-        response_types:
-          - code
-      body_format: json
-      return_content: yes
-    register: iam_response
+# ---------- IAM Client retrieving, updating and local saving ----------
+- name: Check vars before interacting with the IAM issuer
+  ansible.builtin.assert:
+    that:
+      - iam_url       | length > 0
+      - iam_client_id | length > 0
+      - iam_token     | length > 0
+      - dns_name      | length > 0
+      - jupyter_port  | length > 0
+    fail_msg: Not defined variable among iam_url, iam_client_id, iam_token, dns_name and jupyter_port.
 
-  - name: Save client info
-    copy:
-      content: "{{ iam_response.json }}"
-      dest: "/usr/local/share/dodasts/jupyterhub/cookies/.client-iam.json"
+- name: Collect, Update and store locally the IAM Client info
+  ansible.builtin.include_tasks: iam-client.yml
 
 # ---------- Collect MIG GPU UUIDs from nvidia-smi ----------
 - name: Collect MIG GPU UUIDs
-  shell:
+  ansible.builtin.shell:
     cmd: nvidia-smi -L | grep MIG | awk '{print $6}' | cut -d')' -f1 | paste -s -d, -
   register: reg_gpu_uuid
   when: ((gpu_partition_flavor != "None" ) and (jupyter_use_gpu | bool))
 
 - name: "prepare ALL_GPU_UUIDs env var for jupyterhub"
-  set_fact:
+  ansible.builtin.set_fact:
     key_value: "yes"
     jupyterhub_all_gpu_uuids: "ALL_GPU_UUIDs={{ reg_gpu_uuid.stdout | string }}"
     cacheable: yes
@@ -221,22 +201,23 @@
 
 # ---------- JupyterHub config editing to support partitioned GPUs ----------
 - name: Edit JupyterHub config file
-  include_tasks: jupyterhub-partitioned-gpus.yml
+  ansible.builtin.include_tasks: jupyterhub-partitioned-gpus.yml
   when: ((gpu_partition_flavor != "None") and (jupyter_use_gpu | bool))
 
 # ---------- Prepare Compose File ----------
 - name: prepare compose file
-  template:
+  ansible.builtin.template:
     src: jupyter_hub-compose.j2
-    dest: /usr/local/share/dodasts/jupyterhub/docker-compose.yaml
+    dest: /usr/local/share/dodasts/jupyterhub/compose.yaml
   vars:
     iam_client_id: "{{ iam_response.json.client_id }}"
     iam_client_secret: "{{ iam_response.json.client_secret }}"
   when: cert_manager_type != "self-signed"
+
 - name: prepare compose file (private network)
-  template:
+  ansible.builtin.template:
     src: jupyter_hub_priv-compose.j2
-    dest: /usr/local/share/dodasts/jupyterhub/docker-compose.yaml
+    dest: /usr/local/share/dodasts/jupyterhub/compose.yaml
   vars:
     iam_client_id: "{{ iam_response.json.client_id }}"
     iam_client_secret: "{{ iam_response.json.client_secret }}"
@@ -244,7 +225,8 @@
 
 # finally pre-cache default images
 - name: pull images
-  command: docker pull "{{ item }}"
+  ansible.builtin.command: docker pull "{{ item }}"
   with_items: "{{ jupyter_images.split() + [ jupyterlab_collaborative_image, compose_base_jhub_image, compose_base_http_proxy_image, compose_base_collab_http_proxy_image ] }}"
   async: 1800 # 30 min
   poll: 0
+

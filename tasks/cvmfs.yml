@@ -1,6 +1,6 @@
 ---
 - name: Install fuse [Ubuntu]
-  apt:
+  ansible.builtin.apt:
     name: fuse
     state: present
     autoclean: yes
@@ -9,12 +9,12 @@
   when: ansible_facts['distribution'] == 'Ubuntu'
 
 - name: make cvmfs dir
-  shell:
+  ansible.builtin.shell:
     cmd: mkdir -p /cvmfs
     creates: /cvmfs
 
 - name: prepare variable for cvmfs
-  set_fact:
+  ansible.builtin.set_fact:
     key_value: "yes"
     cvmfs_service: |
       cvmfs:
@@ -30,6 +30,6 @@
             - REPO_LIST={{ cvmfs_repos }}
 
 - name: prepare compose variable for cvmfs
-  set_fact:
+  ansible.builtin.set_fact:
     key_value: "yes"
     jupyter_with_cvmfs: true
