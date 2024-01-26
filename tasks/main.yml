@@ -43,8 +43,8 @@
   ansible.builtin.include_tasks: gpu-support.yaml
   vars:
     enable_gpu: true
-    gpu_support_role: git+https://baltig.infn.it/infn-cloud/ansible-role-gpu-support,v1.2.1
-    nvidia_driver_branch: "515"
+    gpu_support_role: git+https://baltig.infn.it/infn-cloud/ansible-role-gpu-support,v1.2.4
+    nvidia_driver_branch: "535"
     nvidia_driver_ubuntu_install_from_cuda_repo: true
     nvidia_driver_skip_reboot: true
   when: (use_gpu | bool)
