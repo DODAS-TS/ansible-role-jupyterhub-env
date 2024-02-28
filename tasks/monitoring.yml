@@ -1,10 +1,17 @@
 ---
+#- name: Download monitoring role
+#  ansible.builtin.git:
+#    repo: "https://github.com/DODAS-TS/ansible-role-monitoring.git"
+#    dest: /etc/ansible/roles/ansible-role-monitoring
+#    force: true
+#    version: v1.3.1
+
 - name: Download monitoring role
   ansible.builtin.git:
-    repo: "https://github.com/DODAS-TS/ansible-role-monitoring.git"
+    repo: "https://github.com/jvino/ansible-role-monitoring.git"
     dest: /etc/ansible/roles/ansible-role-monitoring
     force: true
-    version: v1.3.1
+    version: new_iam_client_registration
 
 # ---------- Execute monitoring role ----------
 - name: Execute monitoring role
