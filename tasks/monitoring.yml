@@ -1,10 +1,10 @@
 ---
-- name: Download monitoring role
+- name: Download ansible-role-monitoring v1.4.0
   ansible.builtin.git:
     repo: "https://github.com/DODAS-TS/ansible-role-monitoring.git"
     dest: /etc/ansible/roles/ansible-role-monitoring
     force: true
-    version: v1.3.1
+    version: v1.4.0
 
 # ---------- Execute monitoring role ----------
 - name: Execute monitoring role
@@ -12,11 +12,11 @@
     name: /etc/ansible/roles/ansible-role-monitoring
   vars:
     monitoring_project_name: "single_node_jupyterhub"
-    monitoring_server_ip: "{{ server_ip }}"
+    monitoring_iam_client_id: "{{ iam_client_id }}"
+    monitoring_iam_token: "{{ iam_token }}"
     monitoring_dns_name: "{{ dns_name }}"
     monitoring_iam_sub: "{{ iam_subject }}"
     monitoring_iam_url: "{{ iam_url }}"
-    monitoring_iam_groups: "{{ iam_groups }}"
     monitoring_iam_admin_groups: "{{ iam_admin_groups }}"
     service_grafana: "{{ monitoring }}"
     service_grafana_port: "{{ grafana_port }}"
