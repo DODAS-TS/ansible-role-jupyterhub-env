@@ -1,7 +1,7 @@
 ---
 - name: Download monitoring role
   ansible.builtin.git:
-    repo:  "https://github.com/DODAS-TS/ansible-role-monitoring.git"
+    repo: "https://github.com/DODAS-TS/ansible-role-monitoring.git"
     dest: /etc/ansible/roles/ansible-role-monitoring
     force: true
     version: v1.4.0
