@@ -45,13 +45,11 @@ Variable for the monitoring service:
 - `iam_subject` : string, token subject of the user deploying the service
 - `iam_client_id`: string, IAM client id (`Mandatory`)
 - `iam_token` : string, token needed to interact with the IAM Issuer (`Mandatory`)
-- `server_ip`: string with the ip of the current server
+- `dns_name`: string with the ip or hostname of the current server
 - `monitoring`: bool, if to deploy the Grafana monitoring service (default: `yes`)
 - `grafana_port`:  int, the grafana service port
 - `grafana_admin_user`:  string
 - `grafana_admin_password`:  string
-- `grafana_client_id`:  string (used for the IAM login)
-- `grafana_client_secret`:  string (used for the IAM login)
 - `grafana_image`: string (default: `"grafana/grafana:9.5.7"`)
 - `cvmfs_repos`: string, list of the cvmfs repo to mount (default: `""`)
 
@@ -87,7 +85,7 @@ Including an example of how to use your role (for instance, with variables passe
     - hosts: servers
       roles:
          - role: ansible-role-jupyterhub-env
-           server_ip: "a.b.c.d"
+           dns_name: "a.b.c.d.my.cloud.infn.it"
            jupyterlab_collaborative: yes 
            monitoring: no 
            run_jupyter: no 
