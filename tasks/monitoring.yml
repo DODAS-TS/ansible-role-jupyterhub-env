@@ -22,6 +22,4 @@
     service_grafana_port: "{{ grafana_port }}"
     service_grafana_admin_user: "{{ grafana_admin_user }}"
     service_grafana_admin_password: "{{ grafana_admin_password }}"
-    service_grafana_client_id: "{{ grafana_client_id }}"
-    service_grafana_client_secret: "{{ grafana_client_secret }}"
     service_grafana_image: "{{ grafana_image }}"
